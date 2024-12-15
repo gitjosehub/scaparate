@@ -1,17 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import PruebaConexion from './componentes/desarrollo/PruebaConexion'
+import { BrowserRouter } from 'react-router-dom';
+import Cabecera from "./componentes/estructura/Cabecera.jsx";
+import Principal from "./componentes/estructura/Principal.jsx";
+import Pie from "./componentes/estructura/Pie.jsx";
+import PruebaConexion from './componentes/desarrollo/PruebaConexion';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <PruebaConexion />
+      <BrowserRouter>
+        <Cabecera />
+        <Principal />
+        <Pie />
+        <PruebaConexion />
+      </BrowserRouter>
     </>
   )
 }
 
-export default App
+export default App;

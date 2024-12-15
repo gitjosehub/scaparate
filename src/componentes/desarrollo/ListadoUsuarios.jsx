@@ -1,13 +1,12 @@
 import React from "react";
 
-
-const Cabecera = () => {
+const ListadoUsuarios = () => {
 
     return (
         <React.Fragment>
-            <h2>Cabecera</h2>
+
         </React.Fragment>
     );
 }
 
-export default Cabecera;
+export default ListadoUsuarios;
