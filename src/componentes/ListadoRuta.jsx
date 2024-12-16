@@ -6,8 +6,8 @@ import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
 
 const ListadoRuta = (props) => {
     // Desestructuración de props.
-    const { codRuta, titulo, dificultad, codUsuR, codLocalR, codProvR, localidad, provincia } = props.datosRuta;
-    console.log(props.datosRuta);
+    const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia } = props.datosRuta;
+    // console.log(props.datosRuta);
     // Desestructuración de los contextos recibidos a través del hook.
     const { ruta } = useContextoRutas();
     
@@ -15,7 +15,7 @@ const ListadoRuta = (props) => {
     return (
         <React.Fragment>
             <section>
-                <p>{titulo} - {dificultad} - {codLocalR}(es {localidad.nombreLocalidad}) - {codProvR} (en {localidad.provincia.nombreProvincia}) de usu {codUsuR}</p>
+                <p>{titulo} - {dificultad} - {localidad} en {provincia} de usu {codUsuR}</p>
             </section>
         </React.Fragment>
     );

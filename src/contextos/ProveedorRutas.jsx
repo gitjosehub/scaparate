@@ -34,13 +34,18 @@ const ProveedorRutas = ({ children }) => {
       codUsuR: "",
       codLocalR: "",
       codProvR: "",
-      localidad: {
-        nombreLocalidad: "", 
-      },
-      provincia: {
-        nombreProvincia: "", 
-      },
+      localidad: "",
+      provincia: "",
+      imagenesruta: [],
     };
+    // const valorInicialProvincia = {
+    //   codProvincia: "",
+    //   nombreProvincia: "",
+    // };
+    // const valorInicialLocalidad = {
+    //   codLocalidad: "",
+    //   nombreLocalidad: "",
+    // };
     // Creación de estados.
     const [ruta, setRuta] = useState(valorInicialRuta);
     const [rutas, setRutas] = useState(valorInicialArray);
@@ -49,6 +54,8 @@ const ProveedorRutas = ({ children }) => {
     const [erroresFormulario, setErroresFormulario] = useState(valorInicialArray);
     const [errores, setErrores] = useState(valorInicialCadena);
     const [cargando, setCargando] = useState(valorInicialBooleanoTrue);
+    const [provincias, setProvincias] = useState(valorInicialArray);
+    const [localidades, setLocalidades] = useState(valorInicialArray);
 
     // Función asíncrona para conseguir las rutas desde Supabase.
     const obtenerListadoRutas = async () => {
@@ -67,20 +74,50 @@ const ProveedorRutas = ({ children }) => {
         //       localidad (codLocalidad, codProvL, nombreLocalidad),
         //       provincia (codProvincia, nombreProvincia)`);
 
+        // Funciona sin imagenes de rutas.
+        // const { data, error } = await supabaseConexion
+        //     .from("ruta")
+        //     .select(`
+        //       *,
+        //       localidad (codLocalidad, codProvL, nombreLocalidad, 
+        //       provincia (codProvincia, nombreProvincia))
+        //       `);
         const { data, error } = await supabaseConexion
             .from("ruta")
             .select(`
               *,
               localidad (codLocalidad, codProvL, nombreLocalidad, 
-              provincia (codProvincia, nombreProvincia))
+              provincia (codProvincia, nombreProvincia)),
+              imagenruta (imagenRuta)
               `);
+        console.log(data);
         // Controlamos si ha habido error o no.
-        error ? setErrores(error) : setRutas(data);
+        if (error) {
+          setErrores(error); 
+        } else {
+          // Antes de pasarlo al estado, simplificamos y nos quedamos con 
+          // la info que nos interesa, aplanando la estructura del objeto.
+          const simplificaRutas = data.map(elemento => ({
+            codRuta: elemento.codRuta,
+            fechaCreacion: elemento.fechaCreacion,
+            titulo: elemento.titulo,
+            tipoRuta: elemento.tipoRuta,
+            descripcion: elemento.descripcion,
+            dificultad: elemento.dificultad,
+            desnivel: elemento.desnivel,
+            codUsuR: elemento.codUsuR,
+            codLocalR: elemento.codLocalR,
+            codProvR: elemento.codProvR,
+            localidad: elemento.localidad.nombreLocalidad,
+            provincia: elemento.localidad.provincia.nombreProvincia,
+          }));
+          setRutas(simplificaRutas);
+        }
+        // error ? setErrores(error) : setRutas(data);
         } catch (errorConexion) {
-          console.log(errorConexion);
-            setErrores(errorConexion);
+          setErrores(errorConexion);
         } finally {
-            setCargando(false);
+          setCargando(false);
         }
     };
 
@@ -90,12 +127,24 @@ const ProveedorRutas = ({ children }) => {
         setErrores(valorInicialCadena);
         try {
             setCargando(true);
-            const { data, error } = await supabaseConexion
-                .from("ruta")
-                .select("*")
-                .eq("codRuta", id);
+            // Anterior sin provincia, localidad e imagenes.
+            // const { data, error } = await supabaseConexion
+            //     .from("ruta")
+            //     .select("*")
+            //     .eq("codRuta", id);
             // Controlamos si hay error en la consulta.
+            const { data, error } = await supabaseConexion
+                  .from("ruta")
+                  .select(`
+                    *,
+                    localidad (codLocalidad, codProvL, nombreLocalidad, 
+                      provincia (codProvincia, nombreProvincia)
+                    ),
+                    imagenruta (imagenRuta)
+                  `)
+                  .eq("codRuta", id);
             error ? setErrores(error) : setRuta(data[0]);
+            console.log(data[0]);
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
@@ -194,11 +243,96 @@ const ProveedorRutas = ({ children }) => {
         }
     };
 
+    // Función asíncrona para conseguir las provincias de la base de datos.
+    const obtenerProvincias = async () => {
+      try {
+      setCargando(true);
+      const { data, error } = await supabaseConexion
+          .from("provincia")
+          .select("*")
+          .order("nombreProvincia", { ascending: true });
+      console.log(data);
+      // Controlamos si ha habido error o no.
+      error ? setErrores(error) : setProvincias(data);
+      } catch (errorConexion) {
+        setErrores(errorConexion);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    // Función asíncrona para conseguir las provincias de la base de datos.
+    const obtenerLocalidades = async () => {
+      try {
+      setCargando(true);
+      const { data, error } = await supabaseConexion
+          .from("localidad")
+          .select("*")
+          .order("nombreLocalidad", { ascending: true });
+      console.log(data);
+      // Controlamos si ha habido error o no.
+      error ? setErrores(error) : setLocalidades(data);
+      } catch (errorConexion) {
+        setErrores(errorConexion);
+      } finally {
+        setCargando(false);
+      }
+    };
+
     // Función para actualizar los datos del campo de formulario de rutas.
     const actualizarDatoFormulario = (evento) => {
         const { name, value } = evento.target;
-        // Se asignan al estado, que es un objeto clave-valor.
-        setRuta({ ...ruta, [name]: value });
+        // Buscar en estado provincias para actualizar el nombre en el estado
+        // ruta porque solo ha actualizado el codigo, no el nombre de la provincia.
+        // if (name === "codProvR") {
+        //   console.log("entro en el if");
+        //   const provinciaSeleccionada = provincias.find(
+        //     (provincia) => provincia.codProvincia === value
+        //   );
+        //   console.log(`provinciaSeleccionada es: `, provinciaSeleccionada);
+        //   // setRuta({...ruta, provincia: provinciaSeleccionada ? provinciaSeleccionada.nombreProvincia : ""});
+        //   setRuta({ ...ruta, ["provincia"]: provinciaSeleccionada.nombreProvincia});
+        //   // console.log(`provincia es`);
+        //   // console.log(provinciaSeleccionada);
+        // }
+        
+
+        // // Se asignan al estado, que es un objeto clave-valor.
+        // setRuta({ ...ruta, [name]: value });
+        // console.log(`actualizando ruta ...`);
+        // console.log(ruta);
+        // console.log(provincias);
+
+        // No hay forma de que actualize los dos a la vez si no es asi.
+        // Con los select del formulario (provincia y localidad).
+        setRuta((prevRuta) => {
+          let nuevaProvincia = prevRuta.provincia;
+          let nuevaLocalidad = prevRuta.localidad;
+          if (name === "codProvR") {
+              const provinciaSeleccionada = provincias.find(
+                  (provincia) => provincia.codProvincia === value
+              );
+              console.log(`provinciaSeleccionada es: `, provinciaSeleccionada);
+              nuevaProvincia = provinciaSeleccionada ? provinciaSeleccionada.nombreProvincia : "";
+          }
+          if (name === "codLocalR") {
+            const localidadSeleccionada = localidades.find(
+                (localidad) => localidad.codLocalidad === value
+            );
+            console.log(`localidadSeleccionada es: `, localidadSeleccionada);
+            nuevaLocalidad = localidadSeleccionada ? localidadSeleccionada.nombreLocalidad : "";
+          }
+          // Actualiza el estado ruta.
+          return { 
+              ...prevRuta, 
+              [name]: value, 
+              provincia: nuevaProvincia,
+              localidad: nuevaLocalidad,
+          };
+      });
+  
+      console.log(`actualizando ruta ...`);
+      console.log(ruta);
     };
 
 
@@ -232,14 +366,21 @@ const ProveedorRutas = ({ children }) => {
     // Funciones a realizar en la carga del componente.
     useEffect(() => {
         obtenerListadoRutas();
+        obtenerProvincias();
+        obtenerLocalidades();
+        // obtenerRuta('42f3097c-cbc5-44c4-9362-c951ded41b95');
     }, []);
 
     // Objeto con la información a exportar del contexto.
     const datosAExportar = {
+        obtenerProvincias, // igual no porque lo hace en el useEffect ???
+        obtenerLocalidades,
         obtenerListadoRutas,
         obtenerRuta,
         ruta,
         rutas,
+        provincias,
+        localidades,
         crearRuta,
         editarRuta,
         eliminarRuta,
