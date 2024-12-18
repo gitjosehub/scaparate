@@ -14,7 +14,17 @@ const ProveedorRutas = ({ children }) => {
     const valorInicialCadena = "";
     const valorInicialBooleanoTrue = true;
     const valorInicialBooleanoFalse = false;
-    
+    // Antes sin tener nombre de localidad y provincia.
+    // const valorInicialRuta = {
+    //     codRuta: "",
+    //     fechaCreacion: "",
+    //     titulo: "",
+    //     descripcion: "",
+    //     dificultad: "",
+    //     codUsuR: "",
+    //     codLocalR: "",
+    //     codProvR: "",
+    // };
     const valorInicialRuta = {
       codRuta: "",
       fechaCreacion: "",
@@ -28,8 +38,7 @@ const ProveedorRutas = ({ children }) => {
       codProvR: "",
       localidad: "",
       provincia: "",
-      imagen: "",
-      // imagenesruta: "", // antes [] para varias imagenes.
+      imagenesruta: "", // antes [] para varias imagenes.
     };
     // const valorInicialProvincia = {
     //   codProvincia: "",
@@ -55,12 +64,33 @@ const ProveedorRutas = ({ children }) => {
         try {
         setCargando(true);
         // Consulta a la base de datos de supabase.
+        // const { data, error } = await supabaseConexion
+        //     .from("ruta")
+        //     .select("*");
+        // console.log(data);
+        // NUEVA CONSULTA A LA BASE DE DATOS.
+        // const { data, error } = await supabaseConexion
+        //     .from("ruta")
+        //     .select(`
+        //       *,
+        //       localidad (codLocalidad, codProvL, nombreLocalidad),
+        //       provincia (codProvincia, nombreProvincia)`);
+
+        // Funciona sin imagenes de rutas.
+        // const { data, error } = await supabaseConexion
+        //     .from("ruta")
+        //     .select(`
+        //       *,
+        //       localidad (codLocalidad, codProvL, nombreLocalidad, 
+        //       provincia (codProvincia, nombreProvincia))
+        //       `);
         const { data, error } = await supabaseConexion
             .from("ruta")
             .select(`
               *,
               localidad (codLocalidad, codProvL, nombreLocalidad, 
-              provincia (codProvincia, nombreProvincia))
+              provincia (codProvincia, nombreProvincia)),
+              imagenruta (imagenRuta)
               `);
         console.log(data);
         // Controlamos si ha habido error o no.
@@ -73,11 +103,11 @@ const ProveedorRutas = ({ children }) => {
             codRuta: elemento.codRuta,
             fechaCreacion: elemento.fechaCreacion,
             titulo: elemento.titulo,
+            tipoRuta: elemento.tipoRuta,
             descripcion: elemento.descripcion,
             dificultad: elemento.dificultad,
             distancia: elemento.distancia,
             desnivel: elemento.desnivel,
-            imagen: elemento.imagen,
             codUsuR: elemento.codUsuR,
             codLocalR: elemento.codLocalR,
             codProvR: elemento.codProvR,
@@ -100,14 +130,20 @@ const ProveedorRutas = ({ children }) => {
         setErrores(valorInicialCadena);
         try {
             setCargando(true);
-            // Consulta sobre la base de datos.
+            // Anterior sin provincia, localidad e imagenes.
+            // const { data, error } = await supabaseConexion
+            //     .from("ruta")
+            //     .select("*")
+            //     .eq("codRuta", id);
+            // Controlamos si hay error en la consulta.
             const { data, error } = await supabaseConexion
                   .from("ruta")
                   .select(`
                     *,
                     localidad (codLocalidad, codProvL, nombreLocalidad, 
                       provincia (codProvincia, nombreProvincia)
-                    )
+                    ),
+                    imagenruta (imagenRuta)
                   `)
                   .eq("codRuta", id);
             error ? setErrores(error) : setRuta(data[0]);
@@ -119,11 +155,29 @@ const ProveedorRutas = ({ children }) => {
         }
     };
 
-    // Función asíncrona para crear una nueva ruta en BDatos de Supabase.
+    // Función asíncrona para crear una nueva ruta en BDatos de Supabase, 
+    // se realiza sobre dos tablas: ruta e imagenruta.
     const crearRuta = async (usuario_id) => {
         try {
           setCargando(true);
-          // Consula a la base de datos.
+          // Consulta insert para tabla ruta.
+          // const { data, error } = await supabaseConexion
+          //   .from("ruta")
+          //   .insert([
+          //     {
+          //       titulo: "Probando insert en tabla.",
+          //       descripcion: "blablabla",
+          //       // localidad: ruta.localidad,
+          //       dificultad: "5.0",
+          //       distancia: "2.5",
+          //       desnivel: "800",
+          //       // codUsuR: usuario_id,
+          //       codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
+          //       codLocalR: "1725996d-4497-4a46-a3d3-41212111f32c",
+          //       codProvR: "799310d5-daf7-444a-8af6-93796c02e93a"
+          //     },
+          //   ])
+          //   .select();
           const { data, error } = await supabaseConexion
             .from("ruta")
             .insert([
@@ -134,7 +188,6 @@ const ProveedorRutas = ({ children }) => {
                 dificultad: ruta.dificultad,
                 distancia: ruta.distancia,
                 desnivel: ruta.desnivel,
-                imagen: ruta.imagen,
                 // codUsuR: usuario_id,
                 codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
                 codLocalR: ruta.codLocalR,
@@ -142,6 +195,16 @@ const ProveedorRutas = ({ children }) => {
               },
             ])
             .select();
+          // Consulta insert para tabla imagenruta.
+          // const { datai, errori } = await supabaseConexion
+          //   .from("imagenruta")
+          //   .insert([
+          //     {
+          //       codRutaImg: ruta.codRuta,
+          //       imagenRuta: ruta.imagenesruta,
+          //     },
+          //   ])
+          //   .select();
           // Controlamos el posible error en la inserción del registro.
           if (!error) {
             console.log("no ha habido error.");
@@ -162,12 +225,17 @@ const ProveedorRutas = ({ children }) => {
         }
     };
 
-    // Función asíncrona para editar/actualizar una ruta en la BDatos.
+    // Función asíncrona para editar/actualizar una ruta en la BDatos, 
+    // es necesario actualizar dos tablas: ruta e imagenruta.
     const editarRuta = async () => {
       console.log(ruta.codRuta);
         try {
           setCargando(true);
-          // Consulta a la base de datos para actualizar tabla ruta.
+          // Actualizar tabla ruta.
+          // const { data, error } = await supabaseConexion
+          //   .from("ruta")
+          //   .update(ruta)
+          //   .eq("codRuta", ruta.codRuta);
           const { data, error } = await supabaseConexion
             .from("ruta")
             .update([{
@@ -179,10 +247,19 @@ const ProveedorRutas = ({ children }) => {
               // codUsuR: usuario_id,
               codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
               codLocalR: ruta.codLocalR,
-              codProvR: ruta.codProvR,
-              imagen: ruta.imagen
+              codProvR: ruta.codProvR
+              // falta imagen.
             }])
             .eq("codRuta", ruta.codRuta);
+          // Actualizar tabla imagenruta. LOS DOS CAMPOS SON CLAVES.?????
+          // const { datai, errori } = await supabaseConexion
+          //   .from("imagenruta")
+          //   .update([
+          //     {
+          //       imagenRuta: ruta.imagenesruta, 
+          //     }
+          //   ])
+          //   .eq("codRutaImg", ruta.codRuta);
           // Comprobamos si ha habido errores o no.
           if (!error) {
             // Modificamos la ruta en el estado rutas.

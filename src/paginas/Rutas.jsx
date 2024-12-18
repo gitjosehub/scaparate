@@ -1,10 +1,12 @@
 import React from "react";
+import ListadoRutas from "../componentes/ListadoRutas.jsx";
 
 
 const Rutas = () => {
     return (
         <React.Fragment>
-            <h4>Esto es Rutas de scapa.</h4>
+            <h4>Rutas de scapa.</h4>
+            <ListadoRutas />
         </React.Fragment>
     );
 }

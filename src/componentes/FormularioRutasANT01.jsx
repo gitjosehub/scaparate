@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import useContextoRutas from "../hooks/useContextoRutas";
 import { useNavigate } from "react-router-dom";
 
-// Importación elementos de react-bootstrap.
+// Importacion elementos de react-bootstrap.
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,12 +11,11 @@ import Button from 'react-bootstrap/Button';
 
 const FormularioRutas = () => {
 
-    // Desestructuración del contexto.
+    // Desestructuracion del contexto.
     const { ruta, 
         actualizarDatoFormulario,
         crearRuta,
         editarRuta,
-        eliminarRuta,
         validarFormulario,
         erroresFormulario,
         provincias,
@@ -25,10 +24,10 @@ const FormularioRutas = () => {
     // Hook para trabajar con las rutas de router-dom de React.
     const navegar = useNavigate();
 
-    // Estado para controlar las localidades según provincia seleccionada.
+    // Estado para controlar las localidades segun provincia seleccionada.
     const [localidadesPorProvincia, setLocalidadesPorProvincia] = useState([]);
 
-    // Acciones a realizar si cambia la provincia en relación con localidad.
+    // Acciones a realizar si cambia la provincia en relacion con localidad.
     useEffect(() => {
         if (ruta.codProvR) {
           const localidadesPorProvincia = localidades.filter(
@@ -61,11 +60,11 @@ const FormularioRutas = () => {
                 <Row>
                     {/* Columna izquierda */}
                     <Col md={6}>
-                        {/* Campo de texto para título. */}
+                        {/* Campo de texto para titulo. */}
                         <Row className="mb-3">
                             <Form.Group controlId="exampleForm.ControlInput1">
                                 <Form.Label>Título</Form.Label>
-                                <Form.Control type="text" placeholder="Introduce el titulo" size="sm" required autoFocus 
+                                <Form.Control type="text" placeholder="introduce el titulo" size="sm" required autoFocus 
                                 name = "titulo"
                                 value = {ruta.titulo || ""}
                                 onChange = {(evento) => {
@@ -76,7 +75,7 @@ const FormularioRutas = () => {
                             </Form.Group>
                         </Row>
 
-                        {/* Campos numéricos para dificultad, distancia y desnivel*/}
+                        {/* Campos numericos para dificultad, distancia y desnivel*/}
                         <Row className="mb-3">
                             <Col>
                                 <Form.Group controlId="exampleForm.ControlInput2">
@@ -117,8 +116,8 @@ const FormularioRutas = () => {
                             </Col>
                         </Row>
 
+                        {/* Desplegables para provincia y localidad. */}
                         <Row className="mb-3">
-                            {/* Desplegable para provincia. */}
                             <Col>
                                 <Form.Group controlId="exampleForm.SelectProvincia">
                                     <Form.Label>Provincia</Form.Label>
@@ -139,7 +138,6 @@ const FormularioRutas = () => {
                                     <Form.Control.Feedback type="invalid">Selecciona una provincia valida.</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
-                            {/* Desplegable para localidad. */}
                             <Col>
                                 <Form.Group controlId="exampleForm.SelectLocalidad">
                                     <Form.Label>Localidad</Form.Label>
@@ -162,43 +160,14 @@ const FormularioRutas = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Row className="mb-3">
-                            {/*  ANTERIOR: Elemento tipo fichero para imagen. */}
-                            {/* <Col>
-                            <Form.Group controlId="formFileSm" className="mb-3">
-                                <Form.Label>Imagen</Form.Label>
-                                <Form.Control type="file" size="sm" 
-                                name="imagenesruta"
-                                onChange={(evento) => {
-                                    actualizarDatoFormulario(evento);
-                                }}
-                                />
-                            </Form.Group>         
-                            </Col> */}
-                            {/*  Elemento tipo text para imagen. */}
-                            <Col>
-                            <Form.Group controlId="exampleForm.ControlInput1">
-                                <Form.Label>Imagen</Form.Label>
-                                <Form.Control type="text" placeholder="Introduce el nombre y extension de la imagen" size="sm" required  
-                                name = "imagen"
-                                value = {ruta.imagen || ""}
-                                onChange = {(evento) => {
-                                    actualizarDatoFormulario(evento);
-                                }}
-                                />
-                                <Form.Control.Feedback type="invalid">El nombre de la imagen es valido.</Form.Control.Feedback>
-                            </Form.Group>         
-                            </Col>
-                        </Row>
                     </Col>
 
                     {/* Columna derecha. */}
                     <Col md={6} className="d-flex flex-column">
-                    <Row>
-                        {/* Textarea para descripción. */}
+                        {/* Textarea para descripcion. */}
                         <Form.Group controlId="descripcion" className="flex-grow-1">
                             <Form.Label>Descripción</Form.Label>
-                            <Form.Control as="textarea" rows={9} style={{ resize: 'none' }} 
+                            <Form.Control as="textarea" rows={7} style={{ resize: 'none' }} 
                             name = "descripcion"
                             value = {ruta.descripcion || ""}
                             onChange = {(evento) => {
@@ -206,16 +175,15 @@ const FormularioRutas = () => {
                             }}
                             />
                         </Form.Group>
-                    </Row>
-                    <Row className="justify-content-end mt-1">
+                    </Col>
+                </Row>
+
+                {/* Boton del formulario. */}
+                <Row className="justify-content-end mt-3">
                     <Col xs="auto">
-                        {/* Botón del formulario. */}
                         <Button variant="primary" type="submit"
                             onClick={(evento) => {
                                 evento.preventDefault();
-                                // editarRuta();
-                                // eliminarRuta(ruta.codRuta);
-                                // crearRuta("1e9a4f36-fcb5-4a34-a11d-73cea10d7569");
                                 // if (validarFormulario(evento)) {
                                 //   if (accion === "crear") {
                                 //     crearRuta(usuario.id);
@@ -227,13 +195,13 @@ const FormularioRutas = () => {
                                 // }
                                 console.log("Y ahora toca crear o actualizar.");
                             }}
-                        >Crear o Editar
+                        >Enviar
                         </Button>
                     </Col>
                 </Row>
-                    </Col>
-                </Row>
             </Form>
+
+
 
         </React.Fragment>
     );

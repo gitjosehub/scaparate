@@ -16,7 +16,7 @@ function App() {
         <Cabecera />
         <Principal />
         <Pie />
-        <PruebaConexion />
+        {/* <PruebaConexion /> */}
       </ProveedorRutas>
         
       </BrowserRouter>

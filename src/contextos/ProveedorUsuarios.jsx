@@ -30,11 +30,92 @@ const ProveedorUsuarios = ({ children }) => {
     const [erroresFormularioCrear, setErroresFormularioCrear] = useState(valorInicialArray);
     const [cargando, setCargando] = useState(valorInicialFalse);
 
+    // Función asíncrona para crear una cuenta de usuario.
+    const crearCuenta = async () => {
+        // Inicializar valores de estados antes de crear la nueva cuenta.
+        setUsuario(valorInicialUsuario);
+        setDatosSesion(valorInicialSesion);
+        // Controlar consulta a supabase con try / catch.
+        try {
+            const { data, error } = await supabaseConexion.auth.signUp({
+                email: datosSesion.email,
+                password: datosSesion.password,
+                options: {
+                emailRedirectTo: "http://localhost:5173/",
+                },
+            });
+            setUsuario(data.user);
+            // Controlamos el posible error del método signUp.
+            if (!error) {
+                // Cambiamos el estado de sesionIniciada (porque no hay mail de confirmación de cuenta).
+                setSesionIniciada(true);
+            } else {
+                setErrorUsuario(error);
+            }
+        } catch (error) {
+            setErrorUsuario(error.message);
+        } finally {
+            setCargando(false);
+        }
+    };
+
+    // Función asíncrona para que el usuario inicie sesión.
+    const iniciarSesion = async () => {
+        // Inicializar valores de estados antes de iniciar la nueva sesión.
+        setUsuario(valorInicialUsuario);
+        setDatosSesion(valorInicialSesion);
+        // Controlar consulta a supabase con try / catch.
+        try {
+            const { data, error } = await supabaseConexion.auth.signInWithPassword({
+                email: datosSesion.email,
+                password: datosSesion.password,
+                options: {
+                        emailRedirectTo: 'http://localhost:5173/',
+                        },
+            });
+            // Comprobar el objeto que nos devuelve la consulta.
+            // console.log(data);
+            // Comprobamos posible error con el método signInWithPassword.
+            if (error) {
+                setErrorUsuario(error.message);
+            } else {
+                // Obtenemos los datos del usuario para nuestro estado.
+                setUsuario(data.user);
+            }
+        } catch (error) {
+            setErrorUsuario(error.message);
+        } finally {
+            setCargando(false);
+        }
+    };
+
+    // Función asíncrona para cerrar la sesión.
+    const cerrarSesion = async () => {
+        try {
+            await supabaseConexion.auth.signOut();
+            // Redirigimos a la ruta de la parte pública.
+            navegar("login");
+            // Modificamos el estado sesionIniciada.
+            setSesionIniciada(false);
+            setUsuario(valorInicialUsuario);
+            setDatosSesion(valorInicialSesion);
+        } catch (error) {
+            setErrorUsuario(error.message);
+        } finally {
+            setCargando(false);
+        }
+    };
+
+    // Función para actualizar los datos del campo de formulario de login.
+    const actualizarDatoFormulario = (evento) => {
+        const { name, value } = evento.target;
+        // Se asignan al estado, que es un objeto clave-valor.
+        setDatosSesion({ ...datosSesion, [name]: value });
+    };
 
 
 
-
-
+    // ******** FALTAN FUNCIONES PARA VALIDAR FORMULARIO DE LOGIN. *********
 
 
 
@@ -70,16 +151,16 @@ const ProveedorUsuarios = ({ children }) => {
 
     // Objeto con los estados y funciones para exportar del contexto.
     const datosAExportar = {
-        // sesionIniciada,
-        // // datosSesion,
-        // crearCuenta,
-        // iniciarSesion,
-        // cerrarSesion,
-        // actualizarDatoFormulario,
-        // validarFormulario,
-        // erroresFormularioIniciar,
-        // erroresFormularioCrear,
-        // usuario,
+        sesionIniciada,
+        // datosSesion,
+        crearCuenta,
+        iniciarSesion,
+        cerrarSesion,
+        actualizarDatoFormulario,
+        validarFormulario,
+        erroresFormularioIniciar,
+        erroresFormularioCrear,
+        usuario,
     };
     return (
         <ContextoUsuarios.Provider value={datosAExportar}>

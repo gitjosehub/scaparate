@@ -20,6 +20,10 @@ const Enrutador = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="rutas" element={<Rutas />} />
+                    {/* <Route path="ver" element={<MostrarRuta />} /> */}
+                    {/* <Route path="crear" element={<FormularioRutas accion="crear" />} /> */}
+                    {/* <Route path="editar" element={<FormularioRutas accion="editar" />} />
+                    <Route path="eliminar" element={<ConfirmarEliminacionRuta />} /> */}
                 <Route path="eventos" element={<Eventos />} />
                 <Route path="comunidad" element={<Comunidad />} />
                 <Route path="*" element={<Error />} />
