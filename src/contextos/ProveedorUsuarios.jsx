@@ -30,13 +30,14 @@ const ProveedorUsuarios = ({ children }) => {
     const [erroresFormularioCrear, setErroresFormularioCrear] = useState(valorInicialArray);
     const [cargando, setCargando] = useState(valorInicialFalse);
 
-    // Función asíncrona para crear una cuenta de usuario.
+    // Función asíncrona para crear una cuenta de usuario (método signUp de auth).
     const crearCuenta = async () => {
         // Inicializar valores de estados antes de crear la nueva cuenta.
         setUsuario(valorInicialUsuario);
         setDatosSesion(valorInicialSesion);
         // Controlar consulta a supabase con try / catch.
         try {
+            setCargando(true);
             const { data, error } = await supabaseConexion.auth.signUp({
                 email: datosSesion.email,
                 password: datosSesion.password,
@@ -44,6 +45,7 @@ const ProveedorUsuarios = ({ children }) => {
                 emailRedirectTo: "http://localhost:5173/",
                 },
             });
+            // Cambiamos estado usuario con datos del objeto data.user.
             setUsuario(data.user);
             // Controlamos el posible error del método signUp.
             if (!error) {
@@ -65,7 +67,9 @@ const ProveedorUsuarios = ({ children }) => {
         setUsuario(valorInicialUsuario);
         setDatosSesion(valorInicialSesion);
         // Controlar consulta a supabase con try / catch.
+        // Utilizando método signInWithPassword de auth para iniciar sesión.
         try {
+            setCargando(true);
             const { data, error } = await supabaseConexion.auth.signInWithPassword({
                 email: datosSesion.email,
                 password: datosSesion.password,
@@ -75,7 +79,7 @@ const ProveedorUsuarios = ({ children }) => {
             });
             // Comprobar el objeto que nos devuelve la consulta.
             // console.log(data);
-            // Comprobamos posible error con el método signInWithPassword.
+            // Comprobamos posible error en la consulta con el método signInWithPassword.
             if (error) {
                 setErrorUsuario(error.message);
             } else {
@@ -94,7 +98,7 @@ const ProveedorUsuarios = ({ children }) => {
         try {
             await supabaseConexion.auth.signOut();
             // Redirigimos a la ruta de la parte pública.
-            navegar("login");
+            // navegar("login");
             // Modificamos el estado sesionIniciada.
             setSesionIniciada(false);
             setUsuario(valorInicialUsuario);
@@ -148,7 +152,7 @@ const ProveedorUsuarios = ({ children }) => {
             }
         );
     }, []);
-
+    // console.log(`sesionIniciada ${sesionIniciada}`);
     // Objeto con los estados y funciones para exportar del contexto.
     const datosAExportar = {
         sesionIniciada,
@@ -157,9 +161,10 @@ const ProveedorUsuarios = ({ children }) => {
         iniciarSesion,
         cerrarSesion,
         actualizarDatoFormulario,
-        validarFormulario,
-        erroresFormularioIniciar,
-        erroresFormularioCrear,
+        // validarFormulario,
+        // erroresFormularioIniciar,
+        // erroresFormularioCrear,
+        // setSesionIniciada,
         usuario,
     };
     return (

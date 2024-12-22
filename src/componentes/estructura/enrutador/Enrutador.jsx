@@ -11,6 +11,7 @@ import Home from "../../../paginas/Home.jsx";
 import Rutas from "../../../paginas/Rutas.jsx";
 import Eventos from "../../../paginas/Eventos.jsx";
 import Comunidad from "../../../paginas/Comunidad.jsx";
+import FormularioRutas from "../../FormularioRutas.jsx";
 import Error from "../../../paginas/Error.jsx";
 
 const Enrutador = () => {
@@ -19,11 +20,12 @@ const Enrutador = () => {
             {/* Indicamos que componente corresponde con cada ruta. */}
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="rutas" element={<Rutas />} />
-                    {/* <Route path="ver" element={<MostrarRuta />} /> */}
-                    {/* <Route path="crear" element={<FormularioRutas accion="crear" />} /> */}
-                    {/* <Route path="editar" element={<FormularioRutas accion="editar" />} />
-                    <Route path="eliminar" element={<ConfirmarEliminacionRuta />} /> */}
+                <Route path="rutas" element={<Rutas />}>
+                    {/* <Route path="veruta" element={<MostrarRuta />} /> */}
+                    <Route path="crearuta" element={<FormularioRutas accion="crear" />} />
+                    <Route path="editaruta" element={<FormularioRutas accion="editar" />} />
+                    {/* <Route path="eliminaruta" element={<ConfirmarEliminacionRuta />} /> */}
+                </Route>
                 <Route path="eventos" element={<Eventos />} />
                 <Route path="comunidad" element={<Comunidad />} />
                 <Route path="*" element={<Error />} />

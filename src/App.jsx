@@ -5,20 +5,21 @@ import Pie from "./componentes/estructura/Pie.jsx";
 import PruebaConexion from './componentes/desarrollo/PruebaConexion';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProveedorRutas from './contextos/ProveedorRutas.jsx';
+import ProveedorUsuarios from './contextos/ProveedorUsuarios.jsx';
 // import './App.css';
 
 function App() {
   return (
     <>
       <BrowserRouter>
-      
-      <ProveedorRutas>
-        <Cabecera />
-        <Principal />
-        <Pie />
-        {/* <PruebaConexion /> */}
-      </ProveedorRutas>
-        
+        <ProveedorUsuarios>
+          <ProveedorRutas>
+            <Cabecera />
+            <Principal />
+            <Pie />
+            {/* <PruebaConexion /> */}
+          </ProveedorRutas>
+        </ProveedorUsuarios>
       </BrowserRouter>
     </>
   )

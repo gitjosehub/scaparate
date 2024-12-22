@@ -62,7 +62,7 @@ const ProveedorRutas = ({ children }) => {
               localidad (codLocalidad, codProvL, nombreLocalidad, 
               provincia (codProvincia, nombreProvincia))
               `);
-        console.log(data);
+        // console.log(data);
         // Controlamos si ha habido error o no.
         if (error) {
           setErrores(error); 
@@ -111,7 +111,7 @@ const ProveedorRutas = ({ children }) => {
                   `)
                   .eq("codRuta", id);
             error ? setErrores(error) : setRuta(data[0]);
-            console.log(data[0]);
+            // console.log(data[0]);
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
@@ -135,8 +135,8 @@ const ProveedorRutas = ({ children }) => {
                 distancia: ruta.distancia,
                 desnivel: ruta.desnivel,
                 imagen: ruta.imagen,
-                // codUsuR: usuario_id,
-                codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
+                codUsuR: usuario_id,
+                // codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
                 codLocalR: ruta.codLocalR,
                 codProvR: ruta.codProvR
               },
@@ -164,7 +164,7 @@ const ProveedorRutas = ({ children }) => {
 
     // Función asíncrona para editar/actualizar una ruta en la BDatos.
     const editarRuta = async () => {
-      console.log(ruta.codRuta);
+      // console.log(ruta.codRuta);
         try {
           setCargando(true);
           // Consulta a la base de datos para actualizar tabla ruta.
@@ -176,8 +176,8 @@ const ProveedorRutas = ({ children }) => {
               dificultad: ruta.dificultad,
               distancia: ruta.distancia,
               desnivel: ruta.desnivel,
-              // codUsuR: usuario_id,
-              codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
+              codUsuR: usuario_id,
+              // codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
               codLocalR: ruta.codLocalR,
               codProvR: ruta.codProvR,
               imagen: ruta.imagen
@@ -241,7 +241,7 @@ const ProveedorRutas = ({ children }) => {
           .from("provincia")
           .select("*")
           .order("nombreProvincia", { ascending: true });
-      console.log(data);
+      // console.log(data);
       // Controlamos si ha habido error o no.
       error ? setErrores(error) : setProvincias(data);
       } catch (errorConexion) {
@@ -259,7 +259,7 @@ const ProveedorRutas = ({ children }) => {
           .from("localidad")
           .select("*")
           .order("nombreLocalidad", { ascending: true });
-      console.log(data);
+      // console.log(data);
       // Controlamos si ha habido error o no.
       error ? setErrores(error) : setLocalidades(data);
       } catch (errorConexion) {
@@ -302,21 +302,21 @@ const ProveedorRutas = ({ children }) => {
               const provinciaSeleccionada = provincias.find(
                   (provincia) => provincia.codProvincia === value
               );
-              console.log(`provinciaSeleccionada es: `, provinciaSeleccionada);
+              // console.log(`provinciaSeleccionada es: `, provinciaSeleccionada);
               nuevaProvincia = provinciaSeleccionada ? provinciaSeleccionada.nombreProvincia : "";
           }
           if (name === "codLocalR") {
             const localidadSeleccionada = localidades.find(
                 (localidad) => localidad.codLocalidad === value
             );
-            console.log(`localidadSeleccionada es: `, localidadSeleccionada);
+            // console.log(`localidadSeleccionada es: `, localidadSeleccionada);
             nuevaLocalidad = localidadSeleccionada ? localidadSeleccionada.nombreLocalidad : "";
           }
           // Peculiaridad para imagenesruta (tipo file no utiliza value).
           if (name === "imagenesruta") {
             if (files && files.length > 0) {
               const nombreArchivo = files[0].name; 
-              console.log(`Archivo seleccionado: ${nombreArchivo}`);
+              // console.log(`Archivo seleccionado: ${nombreArchivo}`);
               // Actualiza el estado ruta (solo para tipo file).
               return {
                   ...prevRuta,
@@ -337,9 +337,9 @@ const ProveedorRutas = ({ children }) => {
           };
       });
   
-      console.log(`actualizando ruta ...`);
-      console.log(ruta);
-      console.log(localidades);
+      // console.log(`actualizando ruta ...`);
+      // console.log(ruta);
+      // console.log(localidades);
     };
 
 

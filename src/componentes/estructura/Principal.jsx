@@ -6,7 +6,7 @@ const Principal = () => {
     return (
         <React.Fragment>
             {/* Aquí es donde cargará el contenido según el enrutador. */}
-            <main>
+            <main className="p-3">
                 <Enrutador />
             </main>
             

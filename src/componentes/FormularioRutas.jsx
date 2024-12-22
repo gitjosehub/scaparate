@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 
-const FormularioRutas = () => {
+const FormularioRutas = ({ accion }) => {
 
     // Desestructuración del contexto.
     const { ruta, 
@@ -42,6 +42,9 @@ const FormularioRutas = () => {
     }, [ruta.codProvR, localidades]);
 
 
+
+    // Validar formulario con componente de react-bootstrap no se 
+    // como funciona todavia, de momento nada de nada.
     const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
@@ -54,9 +57,13 @@ const FormularioRutas = () => {
     setValidated(true);
   };
 
+
+
     return (
         <React.Fragment>
             <h4>Formulario rutas.</h4>
+            {/* Formulario controlado. Mismos nombres (name) que en la base de datos
+                y utilizamos el evento onChange para actualizar el valor de sus campos. */}
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row>
                     {/* Columna izquierda */}
@@ -210,24 +217,23 @@ const FormularioRutas = () => {
                     <Row className="justify-content-end mt-1">
                     <Col xs="auto">
                         {/* Botón del formulario. */}
-                        <Button variant="primary" type="submit"
+                        <Button variant="outline-success" type="submit"
                             onClick={(evento) => {
+                                // Evitamos el comportamiento por defecto para no recargar la página.
                                 evento.preventDefault();
-                                // editarRuta();
-                                // eliminarRuta(ruta.codRuta);
-                                // crearRuta("1e9a4f36-fcb5-4a34-a11d-73cea10d7569");
+                                // Validamos el formulario antes de realizar la acción (crear o editar).
                                 // if (validarFormulario(evento)) {
-                                //   if (accion === "crear") {
-                                //     crearRuta(usuario.id);
-                                //     navegar("../");
-                                //   } else {
-                                //     editarRuta();
-                                //     navegar("../");
-                                //   }
+                                  if (accion === "crear") {
+                                    // crearRuta(usuario.id);
+                                    crearRuta("1e9a4f36-fcb5-4a34-a11d-73cea10d7569");
+                                    navegar("../");
+                                  } else {
+                                    editarRuta();
+                                    navegar("../");
+                                  }
                                 // }
-                                console.log("Y ahora toca crear o actualizar.");
                             }}
-                        >Crear o Editar
+                        >{accion} ruta
                         </Button>
                     </Col>
                 </Row>

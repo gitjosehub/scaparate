@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import ListadoRuta from "./ListadoRuta.jsx";
 
@@ -10,7 +11,7 @@ import Button from 'react-bootstrap/Button';
 const ListadoRutas = () => {
     // Desestructuración de los contextos que recibimos por el hook.
     const { rutas, obtenerListadoRutas, inicializarRuta } = useContextoRutas();
-    console.log(`Hay rutas: ${rutas.length}`);
+    // console.log(`Hay rutas: ${rutas.length}`);
     // Función a realizar en la carga del componente. Para actualizar las rutas del usuario.
     useEffect(() => {
         obtenerListadoRutas();
@@ -20,15 +21,17 @@ const ListadoRutas = () => {
 
     return (
         <React.Fragment>
+            {/* Indicar al enrutador el link para que conecte con outlet de la subruta. */}
+            <Link to="crearuta">
             {/* Boton para crear una nueva ruta */}
-            <Button variant="primary" 
+            <Button variant="outline-success" 
                 onClick={(evento) => {
                     inicializarRuta();
                     // inicializarErroresFormulario();
                 }}
-            >
-                Nueva Ruta
+            >Crear Ruta
             </Button>
+            </Link>
             {/* Mapeamos el estado rutas (array de objetos ruta). */}
             {rutas.length ? (
                 <Row>
