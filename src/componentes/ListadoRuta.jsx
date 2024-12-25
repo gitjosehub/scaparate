@@ -12,12 +12,12 @@ import Card from 'react-bootstrap/Card';
 const ListadoRuta = (props) => {
     // Desestructuración de props.
     const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia, descripcion, fechaCreacion, imagen } = props.datosRuta;
-    console.log(props.datosRuta);
+    // console.log(props.datosRuta);
     // Desestructuración de los contextos recibidos a través del hook.
-    const { ruta, obtenerRuta } = useContextoRutas();
+    const { ruta, obtenerRuta, cerrarMostrando, obtenerListadoComentarios } = useContextoRutas();
     // console.log(imagen);
     const { usuario } = useContextoUsuarios();
-    console.log(usuario);
+    // console.log(usuario);
 
     return (
         <React.Fragment>
@@ -39,7 +39,9 @@ const ListadoRuta = (props) => {
                                 mensajes de error formulario por si los hubiera */ }
                             // inicializarErroresFormulario();
                             obtenerRuta(evento.target.id);
-                            // cerrarMostrando(true);
+                            cerrarMostrando(true);
+                            // esto es nuevo con comentariios.
+                            obtenerListadoComentarios(evento.target.id);
                             }
                         }
                         className="text-success"
@@ -57,7 +59,19 @@ const ListadoRuta = (props) => {
                     >editar
                     </Card.Link>
 
-                    <Card.Link as={Link} to="ruta1">comentar</Card.Link>
+                    <Card.Link as={Link} to="comentaruta"
+                        id={codRuta}
+                        onClick={(evento) => {
+                            { /* Obtenemos la ruta e inicializamos
+                                mensajes de error formulario por si los hubiera */ }
+                            // inicializarErroresFormulario();
+                            obtenerRuta(evento.target.id);
+                            // esto es nuevo con comentariios.
+                            obtenerListadoComentarios(evento.target.id);
+                        }}
+                        className="text-success"
+                    >comentar
+                    </Card.Link>
 
                     <Card.Link as={Link} to="eliminaruta"
                         id={codRuta}

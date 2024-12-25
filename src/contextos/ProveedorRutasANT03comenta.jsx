@@ -86,8 +86,6 @@ const ProveedorRutas = ({ children }) => {
             provincia: elemento.localidad.provincia.nombreProvincia,
           }));
           setRutas(simplificaRutas);
-          // console.log('listado de rutas:');
-          // console.log(simplificaRutas);
         }
         // error ? setErrores(error) : setRutas(data);
         } catch (errorConexion) {
@@ -155,7 +153,7 @@ const ProveedorRutas = ({ children }) => {
           } else {
             console.log("pasa por error");
             setErrores(error);
-            // setErrores(errori);
+            setErrores(errori);
           }
         } catch (errorConexion) {
             setErrores(errorConexion);
@@ -198,7 +196,7 @@ const ProveedorRutas = ({ children }) => {
             setRuta(valorInicialRuta);
           } else {
             setErrores(error);
-            // setErrores(errori);
+            setErrores(errori);
           }
           
         } catch (errorConexion) {
@@ -236,136 +234,113 @@ const ProveedorRutas = ({ children }) => {
         }
     };
 
-    // Función asíncrona para conseguir los comentarios de las rutas desde Supabase.
-    // CREO QUE NO NECESITO TENER LOS COMENTARIOS DE TODAS LAS RUTAS.
-    // const obtenerListadoComentarios = async () => {
-    //   try {
-    //     setCargando(true);
-    //     // Consulta a la base de datos de supabase.
-      
-    //     const { data, error } = await supabaseConexion
-    //     .from("ruta")
-    //     .select(`
-    //       codRuta,
-    //       conversaruta (
-    //         codUsuCR,
-    //         comentaruta (
-    //           codComenta,
-    //           comentario,
-    //           tipoComenta,
-    //           fecha
-    //         )
-    //       )
-    //     `);
-
-    //     // FORMA DE HACERLO CON RUTAS AHORA.
-    //     // console.log('data o error:');
-    //     // console.log(data, error);
-    //     if (error) {
-    //       setErrores(error); 
-    //       console.log('tenemos error nene');
-    //       console.log(error);
-    //     } else {
-    //       // Antes de pasarlo al estado, simplificamos y nos quedamos con 
-    //       // la info que nos interesa, aplanando la estructura del objeto.
-    //       console.log('ahora viene el mapeo para simplificar');
-    //       // rutas.map((rutaAnterior) => {
-    //       // const simplificaComentarios = data.map((elemento) => {
-    //       //   return {codRuta: elemento.codRuta};
-    //       //   });
-    //       const simplificaComentarios = data.map(elemento => ({
-    //         codRuta: elemento.codRuta,
-    //         comentarios: (elemento.conversaruta || []).map(subelemento => ({
-    //           codUsuCR: subelemento.codUsuCR,
-    //           codComenta: subelemento.comentaruta.codComenta,
-    //           comentario: subelemento.comentaruta.comentario,
-    //           tipoComenta: subelemento.comentaruta.tipoComenta,
-    //           fecha: subelemento.comentaruta.fecha
-    //         }))
-    //       }));
-    //       setComentariosRutas(simplificaComentarios);
-    //       console.log('tenemos simplificado:');
-    //       console.log(simplificaComentarios);
-    //     }
-    //   } catch (errorConexion) {
-    //     setErrores(errorConexion);
-    //   } finally {
-    //     setCargando(false);
-    //   }
-    // };
-
-    // Función asíncrona para conseguir los comentarios de una ruta. 
-    const obtenerListadoComentarios = async (id) => {
-      console.log('valor id en funcion de comentarios');
-      console.log(id);
-      // let id = "42f3097c-cbc5-44c4-9362-c951ded41b95";
+    // Función asíncrona para conseguir las rutas desde Supabase.
+    const obtenerListadoComentarios = async () => {
       try {
-        setCargando(true);
-        console.log('entra en el try de la funcion');
-        // Consulta a la base de datos de supabase.
-      
-        const { data, error } = await supabaseConexion
-        .from("conversaruta")
-        .select(`
-          codUsuCR,
-          comentaruta (
-            codComenta,
-            comentario,
-            tipoComenta,
-            fecha
-          )
-        `)
-        .eq('codRutaCR', id);
+      setCargando(true);
+      // Consulta a la base de datos de supabase.
+      // ESTA FUNCIONA BIEN.
+  //     const { data, error } = await supabaseConexion
+  // .from("ruta")
+  // .select(`
+  //   codRuta,
+  //   conversaruta (
+  //     codUsuCR,
+  //     codComentaCR
+  //   )
+  // `);
+  // Funciona bien con el cambio de clave primaria en conversaruta.
+  // const { data, error } = await supabaseConexion
+  // .from("ruta")
+  // .select(`
+  //   codRuta,
+  //   conversaruta (
+  //     codUsuCR,
+  //     codComentaCR,
+  //     comentaruta (
+  //       comentario,
+  //       tipoComenta,
+  //       fecha
+  //     )
+  //   )
+  // `);
+  const { data, error } = await supabaseConexion
+  .from("ruta")
+  .select(`
+    codRuta,
+    conversaruta (
+      codUsuCR,
+      comentaruta (
+        codComenta,
+        comentario,
+        tipoComenta,
+        fecha
+      )
+    )
+  `);
+      // Vamos a probar con la definitiva.
+      // const { data, error } = await supabaseConexion
+      //   .from("ruta")
+      //   .select(`
+      //     codRuta,
+      //     comentarios:conversaruta (
+      //       codUsuCR,
+      //       codComentaCR,
+      //       comentario:comentaruta.comentario,
+      //       tipoComentario:comentaruta.tipoComenta,
+      //       fecha:comentaruta.fecha
+      //     )
+      //   `);
+        // .order("fecha", { foreignTable: "comentaruta", ascending: false });
+            
+      // console.log(data);
+      // Controlamos si ha habido error o no.
 
-        // const { data, error } = await supabaseConexion
-        // .from("ruta")
-        // .select(`
-        //   conversaruta (
-        //     comentaruta (
-        //       codComenta,
-        //       comentario,
-        //       tipoComenta,
-        //       fecha
-        //     )
-        //   )
-        // `)
-        // .eq('codRuta', id);
+      // FORMA DE HACERLO CON RUTAS ANTES.
+      // error ? setErrores(error) : setComentariosRutas(data);
+      // console.log(data, error);
 
-        // FORMA DE HACERLO CON RUTAS AHORA.
-        console.log('data o error:');
-        console.log(data, error);
-        // Comprobamos si ha habido error o no en la consulta.
-        if (error) {
-          setErrores(error); 
-          console.log('tenemos error nene');
-          console.log(error);
-        } else {
-          // Antes de pasarlo al estado, simplificamos y nos quedamos con 
-          // la info que nos interesa, aplanando la estructura del objeto.
-          // Ademas los ordenamos por la fecha de forma ascendente.
-          console.log('ahora viene el mapeo para simplificar');
-          
-          const simplificaComentarios = data.map(elemento => ({        
-              codUsuario: elemento.codUsuCR,
-              codComenta: elemento.comentaruta.codComenta,
-              comentario: elemento.comentaruta.comentario,
-              tipoComenta: elemento.comentaruta.tipoComenta,
-              fecha: elemento.comentaruta.fecha,
+      // FORMA DE HACERLO CON RUTAS AHORA.
+      console.log('data o error:');
+      console.log(data, error);
+      if (error) {
+        setErrores(error); 
+        console.log('tenemos error nene');
+        console.log(error);
+      } else {
+        // const transformedData = data.map(ruta => ({
+        //   codRuta: ruta.codRuta,
+        //   comentarios: ruta.conversaruta.map(conversa => ({
+        //     codUsuCR: conversa.codUsuCR,
+        //     codComenta: conversa.comentaruta.codComenta,
+        //     comentario: conversa.comentaruta.comentario,
+        //     tipoComenta: conversa.comentaruta.tipoComenta,
+        //     fecha: conversa.comentaruta.fecha
+        //   }))
+        // }));
+
+        // Antes de pasarlo al estado, simplificamos y nos quedamos con 
+        // la info que nos interesa, aplanando la estructura del objeto.
+        const simplificaComentarios = data.map(elemento => ({
+          codRuta: elemento.codRuta,
+          comentarios: elemento.conversaruta.map(subelemento => ({
+            codUsuCR: subelemento.comentaruta.codComenta,
+            codComenta: subelemento.comentaruta.codComenta,
+            comentario: subelemento.comentaruta.comentario,
+            tipoComenta: subelemento.comentaruta.tipoComenta,
+            fecha: subelemento.comentaruta.fecha
           }))
-          .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-          setComentariosRutas(simplificaComentarios);
-          console.log('tenemos simplificado:');
-          console.log(simplificaComentarios);
-          // console.log(comentariosRutas);
-        }
+        }));
+        setComentarios(simplificaComentarios);
+        console.log('tenemos simplificado:');
+        console.log(simplificaComentarios);
+      }
       } catch (errorConexion) {
         setErrores(errorConexion);
-        console.log('entra en el catch de la funcion');
       } finally {
         setCargando(false);
-        console.log('esta en el finally de la funcion');
       }
-    };
+  };
 
     // Función asíncrona para conseguir las provincias de la base de datos.
     const obtenerProvincias = async () => {
@@ -510,8 +485,8 @@ const ProveedorRutas = ({ children }) => {
         obtenerProvincias();
         obtenerLocalidades();
         // obtenerRuta('42f3097c-cbc5-44c4-9362-c951ded41b95');
-        // console.log('llamada a obtenerListadoComentarios');
-        // obtenerListadoComentarios();
+        console.log('llamada a obtenerListadoComentarios');
+        obtenerListadoComentarios();
     }, []);
 
     // Objeto con la información a exportar del contexto.
@@ -525,7 +500,6 @@ const ProveedorRutas = ({ children }) => {
         provincias,
         localidades,
         obtenerListadoComentarios,
-        comentariosRutas,
         crearRuta,
         editarRuta,
         eliminarRuta,

@@ -12,7 +12,9 @@ import Rutas from "../../../paginas/Rutas.jsx";
 import Eventos from "../../../paginas/Eventos.jsx";
 import Comunidad from "../../../paginas/Comunidad.jsx";
 import FormularioRutas from "../../FormularioRutas.jsx";
+import MostrarRuta from "../../MostrarRuta.jsx";
 import Error from "../../../paginas/Error.jsx";
+import ListadoComentarios from "../../ListadoComentarios.jsx";
 
 const Enrutador = () => {
     return (
@@ -21,9 +23,10 @@ const Enrutador = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="rutas" element={<Rutas />}>
-                    {/* <Route path="veruta" element={<MostrarRuta />} /> */}
+                    <Route path="veruta" element={<MostrarRuta />} />
                     <Route path="crearuta" element={<FormularioRutas accion="crear" />} />
                     <Route path="editaruta" element={<FormularioRutas accion="editar" />} />
+                    <Route path="comentaruta" element={<ListadoComentarios />} />
                     {/* <Route path="eliminaruta" element={<ConfirmarEliminacionRuta />} /> */}
                 </Route>
                 <Route path="eventos" element={<Eventos />} />
