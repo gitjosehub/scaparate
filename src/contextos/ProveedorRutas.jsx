@@ -31,6 +31,13 @@ const ProveedorRutas = ({ children }) => {
       imagen: "",
       // imagenesruta: "", // antes [] para varias imagenes.
     };
+    const valorInicialComentario = {
+      codUsuario: "",
+      codComenta: "",
+      fecha: "",
+      comentario: "",
+      tipoComenta: "",
+    }
     // const valorInicialProvincia = {
     //   codProvincia: "",
     //   nombreProvincia: "",
@@ -43,6 +50,7 @@ const ProveedorRutas = ({ children }) => {
     const [ruta, setRuta] = useState(valorInicialRuta);
     const [rutas, setRutas] = useState(valorInicialArray);
     const [comentariosRutas, setComentariosRutas] = useState(valorInicialArray);
+    const [comentarioRuta, setComentarioRuta] = useState(valorInicialComentario);
     const [eliminandoRuta, setEliminandoRuta] = useState(valorInicialBooleanoFalse);
     const [mostrandoRuta, setMostrandoRuta] = useState(valorInicialBooleanoFalse);
     const [erroresFormulario, setErroresFormulario] = useState(valorInicialArray);
@@ -126,7 +134,7 @@ const ProveedorRutas = ({ children }) => {
     const crearRuta = async (usuario_id) => {
         try {
           setCargando(true);
-          // Consula a la base de datos.
+          // Consulta a la base de datos.
           const { data, error } = await supabaseConexion
             .from("ruta")
             .insert([
@@ -296,14 +304,12 @@ const ProveedorRutas = ({ children }) => {
 
     // Función asíncrona para conseguir los comentarios de una ruta. 
     const obtenerListadoComentarios = async (id) => {
-      console.log('valor id en funcion de comentarios');
-      console.log(id);
+      // console.log('valor id en funcion de comentarios');
+      // console.log(id);
       // let id = "42f3097c-cbc5-44c4-9362-c951ded41b95";
       try {
         setCargando(true);
-        console.log('entra en el try de la funcion');
         // Consulta a la base de datos de supabase.
-      
         const { data, error } = await supabaseConexion
         .from("conversaruta")
         .select(`
@@ -332,8 +338,8 @@ const ProveedorRutas = ({ children }) => {
         // .eq('codRuta', id);
 
         // FORMA DE HACERLO CON RUTAS AHORA.
-        console.log('data o error:');
-        console.log(data, error);
+        // console.log('data o error:');
+        // console.log(data, error);
         // Comprobamos si ha habido error o no en la consulta.
         if (error) {
           setErrores(error); 
@@ -360,12 +366,47 @@ const ProveedorRutas = ({ children }) => {
         }
       } catch (errorConexion) {
         setErrores(errorConexion);
-        console.log('entra en el catch de la funcion');
       } finally {
         setCargando(false);
-        console.log('esta en el finally de la funcion');
       }
     };
+
+    // Función asíncrona para crear una nuevo comentario de ruta en BDatos.
+    const crearComentario = async (usuario_id) => {
+      try {
+        setCargando(true);
+        // Consulta a la base de datos.
+        const { data, error } = await supabaseConexion
+          .from("comentaruta")
+          .insert([
+            {
+              comentario: comentarioRuta.comentario,
+              tipoComenta: "publico"
+              // descripcion: ruta.descripcion,
+              // codUsuR: usuario_id,
+            },
+          ])
+          .select();
+        // Controlamos el posible error en la inserción del registro.
+        if (!error) {
+          console.log("no ha habido error.");
+
+          // Inicializamos el estado comentarioRuta.
+          setComentarioRuta(valorInicialComentario);
+          // Actualizamos el estado comentariosRutas (array de comentarios), añadiendo el nuevo.
+          setComentariosRutas([...comentariosRutas, comentarioRuta]);
+        } else {
+          console.log("pasa por error");
+          setErrores(error);
+          // setErrores(errori);
+        }
+      } catch (errorConexion) {
+          setErrores(errorConexion);
+      } finally {
+          setCargando(false);
+          obtenerListadoComentarios();
+      }
+  };
 
     // Función asíncrona para conseguir las provincias de la base de datos.
     const obtenerProvincias = async () => {
@@ -476,6 +517,12 @@ const ProveedorRutas = ({ children }) => {
       // console.log(localidades);
     };
 
+    // Función para actualizar los datos del campo de formulario de comentarios.
+    const actualizarDatoFormularioComenta = (evento) => {
+      const { name, value } = evento.target;
+      // Se asignan al estado, que es un objeto clave-valor.
+      setComentarioRuta({ ...comentarioRuta, [name]: value });
+    };
 
 
 
@@ -526,6 +573,7 @@ const ProveedorRutas = ({ children }) => {
         localidades,
         obtenerListadoComentarios,
         comentariosRutas,
+        comentarioRuta,
         crearRuta,
         editarRuta,
         eliminarRuta,
@@ -534,7 +582,9 @@ const ProveedorRutas = ({ children }) => {
         inicializarRuta,
         mostrandoRuta,
         cerrarMostrando,
+        crearComentario,
         actualizarDatoFormulario,
+        actualizarDatoFormularioComenta,
         // validarFormulario,
         inicializarErroresFormulario,
         erroresFormulario,

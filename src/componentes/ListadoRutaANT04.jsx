@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // he quitado: , { useEffect }
+import React from "react"; // he quitado: , { useEffect }
 import { Link } from "react-router-dom";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
@@ -19,9 +19,6 @@ const ListadoRuta = (props) => {
     // console.log(imagen);
     const { usuario } = useContextoUsuarios();
     // console.log(usuario);
-
-    // Estado local para confirmar eliminacion.
-    const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
 
     return (
         <React.Fragment>
@@ -84,18 +81,15 @@ const ListadoRuta = (props) => {
                         // inicializarErroresFormulario();
                         obtenerRuta(evento.target.id);
                         { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        setConfirmandoEliminar(true);
+                        confirmarEliminacion(true);
                         }}
                         className="text-success"
                     >eliminar
                     </Card.Link>
                 </Card.Body>
             </Card>
-            {confirmandoEliminar && (
-                <ConfirmarEliminacionRuta 
-                    confirmandoEliminar={confirmandoEliminar}
-                    setConfirmandoEliminar={setConfirmandoEliminar} />
+            {eliminandoRuta && (
+                <ConfirmarEliminacionRuta />
             )}
             </section>
         </React.Fragment>

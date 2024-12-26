@@ -14,6 +14,7 @@ import Comunidad from "../../../paginas/Comunidad.jsx";
 import FormularioRutas from "../../FormularioRutas.jsx";
 import MostrarRuta from "../../MostrarRuta.jsx";
 import Error from "../../../paginas/Error.jsx";
+import ConfirmarEliminacionRuta from "../../ConfirmarEliminacionRuta.jsx";
 import ListadoComentarios from "../../ListadoComentarios.jsx";
 
 const Enrutador = () => {
@@ -26,8 +27,9 @@ const Enrutador = () => {
                     <Route path="veruta" element={<MostrarRuta />} />
                     <Route path="crearuta" element={<FormularioRutas accion="crear" />} />
                     <Route path="editaruta" element={<FormularioRutas accion="editar" />} />
-                    <Route path="comentaruta" element={<ListadoComentarios />} />
+                    {/* <Route path="comentaruta" element={<ListadoComentarios />} /> */}
                     {/* <Route path="eliminaruta" element={<ConfirmarEliminacionRuta />} /> */}
+                    <Route path="eliminaruta" element={<React.Fragment />} />
                 </Route>
                 <Route path="eventos" element={<Eventos />} />
                 <Route path="comunidad" element={<Comunidad />} />
