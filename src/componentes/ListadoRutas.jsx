@@ -16,7 +16,7 @@ const ListadoRutas = () => {
     useEffect(() => {
         obtenerListadoRutas();
       }, []);
-    
+    console.log('entrando en ListadoRutas');
     
 
     return (

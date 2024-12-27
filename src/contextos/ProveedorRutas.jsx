@@ -94,8 +94,8 @@ const ProveedorRutas = ({ children }) => {
             provincia: elemento.localidad.provincia.nombreProvincia,
           }));
           setRutas(simplificaRutas);
-          // console.log('listado de rutas:');
-          // console.log(simplificaRutas);
+          console.log('obtenerListadoRutas ylistado de rutas:');
+          console.log(simplificaRutas);
         }
         // error ? setErrores(error) : setRutas(data);
         } catch (errorConexion) {
@@ -121,8 +121,30 @@ const ProveedorRutas = ({ children }) => {
                     )
                   `)
                   .eq("codRuta", id);
-            error ? setErrores(error) : setRuta(data[0]);
-            // console.log(data[0]);
+            // error ? setErrores(error) : setRuta(data[0]);
+            if (error) {
+              setErrores(error)
+            } else {
+              // Simplificamos el objeto y lo pasamos al estado.
+              const simplificaRuta = {
+                codRuta: data[0].codRuta,
+                fechaCreacion: data[0].fechaCreacion,
+                titulo: data[0].titulo,
+                descripcion: data[0].descripcion,
+                dificultad: data[0].dificultad,
+                distancia: data[0].distancia,
+                desnivel: data[0].desnivel,
+                imagen: data[0].imagen,
+                codUsuR: data[0].codUsuR,
+                codLocalR: data[0].codLocalR,
+                codProvR: data[0].codProvR,
+                localidad: data[0].localidad.nombreLocalidad,
+                provincia: data[0].localidad.provincia.nombreProvincia,
+              };
+              setRuta(simplificaRuta);
+            }
+            console.log('en obtenerRuta y ...');
+            console.log(data[0]);
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
@@ -160,6 +182,8 @@ const ProveedorRutas = ({ children }) => {
             setRuta(valorInicialRuta);
             // Actualizamos el estado rutas (array de objetos ruta), añadiendo la nueva ruta.
             setRutas([...rutas, ruta]);
+            console.log('ruta añadida y ...');
+            console.log(rutas);
           } else {
             console.log("pasa por error");
             setErrores(error);
@@ -175,7 +199,8 @@ const ProveedorRutas = ({ children }) => {
 
     // Función asíncrona para editar/actualizar una ruta en la BDatos.
     const editarRuta = async () => {
-      // console.log(ruta.codRuta);
+      console.log('entrando en editarRuta.');
+      console.log(ruta);
         try {
           setCargando(true);
           // Consulta a la base de datos para actualizar tabla ruta.
@@ -187,7 +212,8 @@ const ProveedorRutas = ({ children }) => {
               dificultad: ruta.dificultad,
               distancia: ruta.distancia,
               desnivel: ruta.desnivel,
-              codUsuR: usuario_id,
+              // codUsuR: usuario_id,
+              codUsuR: ruta.codUsuR,
               // codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
               codLocalR: ruta.codLocalR,
               codProvR: ruta.codProvR,
@@ -203,6 +229,7 @@ const ProveedorRutas = ({ children }) => {
                 : rutaAnterior;
             });
             setRutas(rutasEditadas);
+            console.log(rutasEditadas);
             setRuta(valorInicialRuta);
           } else {
             setErrores(error);
@@ -213,6 +240,7 @@ const ProveedorRutas = ({ children }) => {
             setErrores(errorConexion);
         } finally {
             setCargando(false);
+            console.log('saliendo de editarRuta');
         }
     };
 

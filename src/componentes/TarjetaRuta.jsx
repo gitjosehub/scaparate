@@ -11,7 +11,8 @@ const TarjetaRuta = () => {
     const { ruta, 
         mostrandoRuta, 
         cerrarMostrando } = useContextoRutas();
-    // console.log(ruta);
+    console.log('en TarjetaRuta ...');
+    console.log(ruta);
     return (
         <React.Fragment>
             {/* { mostrandoRuta && ( */}
@@ -20,10 +21,11 @@ const TarjetaRuta = () => {
                 <Card.Body>
                 <Card.Title>{ruta.titulo}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{formatearFecha(ruta.fechaCreacion)}</Card.Subtitle>
+                <Card.Text>{ruta.codUsuR} falta saber nick o email.</Card.Text>
                 <Card.Text>{ruta.dificultad}</Card.Text>
                 <Card.Text>{ruta.desnivel} m - {ruta.distancia} Km</Card.Text>
+                <Card.Text>{ruta.localidad} - {ruta.provincia}</Card.Text>
                 <Card.Text>{ruta.descripcion}</Card.Text>
-                <Card.Text>falta: localidad, provincia y creador ruta.</Card.Text>
                 <Card.Footer className="text-muted">
                     <Button variant="outline-success"
                         onClick={
