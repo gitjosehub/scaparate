@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import useContextoRutas from "../hooks/useContextoRutas";
 import { useNavigate } from "react-router-dom";
 
+import "./FormularioRutas.css";
+
 // Importación elementos de react-bootstrap.
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -9,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 
-const FormularioRutas = ({ accion }) => {
+const FormularioRutas = ({accion}) => {
 
     // Desestructuración del contexto.
     const { ruta, 
@@ -61,7 +63,11 @@ const FormularioRutas = ({ accion }) => {
 
     return (
         <React.Fragment>
-            <h4>Formulario rutas.</h4>
+            
+            <section className="position-absolute top-0 start-0 w-100 h-100">
+            <article className="position-absolute top-0 start-0 w-100 h-100 bg-white opacity-50"></article>
+            <article className="position-absolute bg-white shadow p-2" style={{ width: '90%', height: 'auto', left: '50%', transform: 'translateX(-50%)' }}>
+            <h4>{accion} ruta.</h4>
             {/* Formulario controlado. Mismos nombres (name) que en la base de datos
                 y utilizamos el evento onChange para actualizar el valor de sus campos. */}
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -240,6 +246,8 @@ const FormularioRutas = ({ accion }) => {
                     </Col>
                 </Row>
             </Form>
+            </article>
+            </section>
 
         </React.Fragment>
     );

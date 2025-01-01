@@ -12,9 +12,12 @@ const MostrarRuta = () => {
     return (
         <React.Fragment>
             { mostrandoRuta && (
-                <section>
-                <TarjetaRuta />
-                <ListadoComentarios />
+                <section className="position-absolute top-0 start-0 w-100 h-100">
+                    <article className="position-absolute top-0 start-0 w-100 h-100 bg-white opacity-50"></article>
+                    <article className="position-absolute top-0 start-50 translate-middle-x w-50 h-100 bg-white shadow p-2 z-index-1">
+                        <TarjetaRuta />
+                        <ListadoComentarios />
+                    </article>
                 </section>
             )}
         </React.Fragment>

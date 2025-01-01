@@ -37,7 +37,12 @@ const ProveedorRutas = ({ children }) => {
       fecha: "",
       comentario: "",
       tipoComenta: "",
-    }
+    };
+    const valorInicialFiltroRuta = {
+      titulo: "",
+      distancia: "",
+      dificultad: "",
+    };
     // const valorInicialProvincia = {
     //   codProvincia: "",
     //   nombreProvincia: "",
@@ -51,6 +56,7 @@ const ProveedorRutas = ({ children }) => {
     const [rutas, setRutas] = useState(valorInicialArray);
     const [comentariosRutas, setComentariosRutas] = useState(valorInicialArray);
     const [comentarioRuta, setComentarioRuta] = useState(valorInicialComentario);
+    const [filtroRuta, setFiltroRuta] = useState(valorInicialFiltroRuta);
     const [eliminandoRuta, setEliminandoRuta] = useState(valorInicialBooleanoFalse);
     const [mostrandoRuta, setMostrandoRuta] = useState(valorInicialBooleanoFalse);
     const [erroresFormulario, setErroresFormulario] = useState(valorInicialArray);
@@ -434,7 +440,41 @@ const ProveedorRutas = ({ children }) => {
           setCargando(false);
           obtenerListadoComentarios();
       }
-  };
+    };
+
+    // Función asíncrona para filtrar rutas.
+    const filtrarRuta = async (filtros) => {
+      console.log('en filtrarRuta, el objeto es ...');
+      console.log(filtros);
+      try {
+        console.log('entrando en try de filtrarRuta');
+        setCargando(true);
+        // Vamos a ir construyendo la consulta segun los filtros.
+        let consulta = supabaseConexion.from("ruta").select("*");
+        // Condicionamos a que tenga valor en el objeto para ir completando la consulta.
+        if (filtros.titulo) {
+          consulta = consulta.ilike("titulo", `%${filtros.titulo}%`);
+        }
+        if (filtros.dificultad) {
+          consulta = consulta.lt("dificultad", filtros.dificultad);
+        }
+        if (filtros.distancia) {
+          consulta = consulta.lte("distancia", filtros.distancia);
+        }
+        console.log('consulta de filtrado es ...');
+        console.log(consulta);
+        // Realizamos la consulta a la base de datos.
+        const { data, error } = await consulta;
+        // Controlamos posible error en la consulta.
+        // error ? setErrores(error) : setRutas(data);
+        console.log('¿¿¿ tengo que simplicar otra vez las rutas ???');
+        console.log(data);
+      } catch (errorConexion) {
+        setErrores(errorConexion);
+      } finally {
+        setCargando(false);
+      }
+    };
 
     // Función asíncrona para conseguir las provincias de la base de datos.
     const obtenerProvincias = async () => {
@@ -552,6 +592,20 @@ const ProveedorRutas = ({ children }) => {
       setComentarioRuta({ ...comentarioRuta, [name]: value });
     };
 
+    // Función para actualizar los datos del campo del formulario de filtrado de rutas.
+    const actualizarDatoFormularioFiltrar = (evento) => {
+      const { name, value } = evento.target;
+      // Se asignan al estado, que es un objeto clave-valor.
+      setFiltroRuta({ ...filtroRuta, [name]: value });
+      console.log(filtroRuta);
+    };
+
+    const actualizarDatoFormularioBORRAR = (evento) => {
+      const { name, value } = evento.target;
+      // Se asignan al estado, que es un objeto clave-valor.
+      setRuta({ ...ruta, [name]: value });
+    };
+
 
 
     // **************** FALTAN FUNCIONES PARA VALIDAR FORMULARIOS *************
@@ -609,10 +663,13 @@ const ProveedorRutas = ({ children }) => {
         eliminandoRuta,
         inicializarRuta,
         mostrandoRuta,
+        filtroRuta,
+        filtrarRuta,
         cerrarMostrando,
         crearComentario,
         actualizarDatoFormulario,
         actualizarDatoFormularioComenta,
+        actualizarDatoFormularioFiltrar,
         // validarFormulario,
         inicializarErroresFormulario,
         erroresFormulario,

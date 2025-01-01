@@ -27,7 +27,8 @@ const TarjetaRuta = () => {
                 <Card.Text>{ruta.localidad} - {ruta.provincia}</Card.Text>
                 <Card.Text>{ruta.descripcion}</Card.Text>
                 <Card.Footer className="text-muted">
-                    <Button variant="outline-success"
+                    <article className="d-flex justify-content-end">
+                    <Button variant="outline-secondary"
                         onClick={
                             (evento) => {
                                 cerrarMostrando(false);
@@ -35,6 +36,7 @@ const TarjetaRuta = () => {
                     >
                     Cerrar
                     </Button>
+                    </article>
                 </Card.Footer>
                 </Card.Body>
             </Card>

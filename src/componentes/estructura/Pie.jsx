@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import Logo from "../../assets/img/scapa100x40.png";
+import Logo from "../../assets/img/scapaGrisobscuro.png";
 
 
 const Pie = () => {

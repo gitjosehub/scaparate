@@ -36,8 +36,7 @@ const ListadoRutas = () => {
             </section>
             {/* Mapeamos el estado rutas (array de objetos ruta). */}
             {rutas.length ? (
-                <section className="d-flex justify-content-center">
-                <Row className="w-100">
+                <Row className="justify-content-center">
                     {rutas.map((valor, indice, array) => {
                         
                         return (
@@ -48,7 +47,6 @@ const ListadoRutas = () => {
                         
                     })}
                 </Row>
-                </section>
             ) : (
                 <React.Fragment>
                     <p>No se han encontrado rutas.</p>
