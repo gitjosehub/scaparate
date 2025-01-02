@@ -12,3 +12,25 @@ const formatearFecha = (cadenaFecha) => {
 };
 
 export { formatearFecha };
+
+// Función para simplificar estructura del estado-objeto rutas.
+const simplificarRutas = (datos) => {
+    const simplificaRutas = datos.map(elemento => ({
+        codRuta: elemento.codRuta,
+        fechaCreacion: elemento.fechaCreacion,
+        titulo: elemento.titulo,
+        descripcion: elemento.descripcion,
+        dificultad: elemento.dificultad,
+        distancia: elemento.distancia,
+        desnivel: elemento.desnivel,
+        imagen: elemento.imagen,
+        codUsuR: elemento.codUsuR,
+        codLocalR: elemento.codLocalR,
+        codProvR: elemento.codProvR,
+        localidad: elemento.localidad.nombreLocalidad,
+        provincia: elemento.localidad.provincia.nombreProvincia,
+    }));
+    return simplificaRutas;
+};
+
+export { simplificarRutas };

@@ -8,19 +8,20 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-const ListadoRutas = () => {
+const ListadoRutas = ({ listadoRutas, listadoCompleto }) => {
     // Desestructuración de los contextos que recibimos por el hook.
     const { rutas, obtenerListadoRutas, inicializarRuta } = useContextoRutas();
     // console.log(`Hay rutas: ${rutas.length}`);
     // Función a realizar en la carga del componente. Para actualizar las rutas del usuario.
-    useEffect(() => {
-        obtenerListadoRutas();
-      }, []);
-    console.log('entrando en ListadoRutas');
+    // useEffect(() => {
+    //     obtenerListadoRutas();
+    //   }, []);
+    // console.log('entrando en ListadoRutas');
     
 
     return (
         <React.Fragment>
+            {listadoCompleto && (
             <section className="d-flex justify-content-between mb-4">
             {/* Indicar al enrutador el link para que conecte con outlet de la subruta. */}
             <Link to="crearuta">
@@ -34,16 +35,19 @@ const ListadoRutas = () => {
             </Button>
             </Link>
             </section>
+            )}
             {/* Mapeamos el estado rutas (array de objetos ruta). */}
-            {rutas.length ? (
+            {listadoRutas.length ? (
                 <section className="d-flex justify-content-center">
                 <Row className="w-100">
-                    {rutas.map((valor, indice, array) => {
+                    {listadoRutas.map((valor, indice, array) => {
+                        
                         return (
-                            <Col key={indice} xs={12} sm={6} md={4} lg={3} className="d-flex justify-content-center mb-4">
+                            <Col key={indice} xs={12} sm={6} md={4} lg={3} className="mb-4">
                             <ListadoRuta key={valor.codRuta} datosRuta={valor} />
                             </Col>
-                        ); 
+                        );
+                        
                     })}
                 </Row>
                 </section>

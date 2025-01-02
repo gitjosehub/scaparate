@@ -86,6 +86,54 @@ const ControlSesion = () => {
                       }}
                     />
                   </Form.Group>
+                  <Form.Group className="mb-3" controlId="nombre">
+                    <Form.Label>Nombre</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="nombre"
+                      // id="nombre" Se quita por el controId del Form.Group.
+                      placeholder="introduce tu nombre"
+                      onChange={(evento) => {
+                        actualizarDatoFormulario(evento);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="nick">
+                    <Form.Label>Nick</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="nick"
+                      // id="nick" Se quita por el controId del Form.Group.
+                      placeholder="introduce un seudónimo"
+                      onChange={(evento) => {
+                        actualizarDatoFormulario(evento);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="dni">
+                    <Form.Label>D.N.I.</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="dni"
+                      // id="dni" Se quita por el controId del Form.Group.
+                      placeholder="introduce tu dni"
+                      onChange={(evento) => {
+                        actualizarDatoFormulario(evento);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="imagen">
+                    <Form.Label>Nombre</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="imagen"
+                      // id="imagen" Se quita por el controId del Form.Group.
+                      placeholder="introduce nombre imagen avatar"
+                      onChange={(evento) => {
+                        actualizarDatoFormulario(evento);
+                      }}
+                    />
+                  </Form.Group>
                 </Form>
                 <p>
                   ¿ Ya estas registrado ? Inicia sesion

@@ -15,6 +15,8 @@ const BuscadorRutas = () => {
     const { filtrarRuta, 
         actualizarDatoFormularioFiltrar,
         filtroRuta,
+        inicializarFiltroRuta,
+        obtenerListadoRutas,
         validarFormulario,
         erroresFormulario,
         provincias,
@@ -50,7 +52,7 @@ const BuscadorRutas = () => {
                             <Row className="mb-3">
                             <Col>
                             <Form.Group controlId="exampleForm.ControlInput1">
-                                <Form.Label>Filtrar en título que contenga</Form.Label>
+                                <Form.Label>Filtrar título que contenga</Form.Label>
                                 <Form.Control type="text" placeholder="buscar en título" size="sm" required autoFocus 
                                 name = "titulo"
                                 value = {filtroRuta.titulo || ""}
@@ -65,7 +67,7 @@ const BuscadorRutas = () => {
                             <Row className="mb-3">
                             <Col xs={6}>
                             <Form.Group controlId="exampleForm.ControlInput2">
-                                <Form.Label>Filtrar por dificultad menor de ...</Form.Label>
+                                <Form.Label>Dificultad inferior a</Form.Label>
                                 <Form.Control type="number" placeholder="0" size="sm" min="0" max="5" step="0.1" required 
                                 name = "dificultad"
                                 value = {filtroRuta.dificultad || ""}
@@ -78,7 +80,7 @@ const BuscadorRutas = () => {
                             </Col>
                             <Col xs={6}>
                             <Form.Group controlId="exampleForm.ControlInput3">
-                                <Form.Label>Filtrar por distancia menor de ...</Form.Label>
+                                <Form.Label>Distancia inferior a </Form.Label>
                                 <Form.Control type="number" placeholder="0" size="sm" min="0" step="0.5" 
                                 name = "distancia"
                                 value = {filtroRuta.distancia || ""}
@@ -91,6 +93,20 @@ const BuscadorRutas = () => {
                             </Row>
                             <Row className="justify-content-end mt-1">
                             <Col xs="auto">
+                            <Button variant="outline-secondary" type="submit"
+                            onClick={(evento) => {
+                                // Evitamos el comportamiento por defecto para no recargar la página.
+                                evento.preventDefault();
+                                // Validamos el formulario antes de realizar la acción (crear o editar).
+                                // if (validarFormulario(evento)) {
+                                    inicializarFiltroRuta();
+                                    obtenerListadoRutas();
+                                // }
+                            }}
+                            >Limpiar filtros
+                            </Button>
+                            </Col>
+                            <Col xs="auto">
                             <Button variant="outline-success" type="submit"
                                 onClick={(evento) => {
                                     // Evitamos el comportamiento por defecto para no recargar la página.
@@ -100,7 +116,7 @@ const BuscadorRutas = () => {
                                         filtrarRuta(filtroRuta);
                                     // }
                                 }}
-                            >buscar
+                            >Buscar rutas
                             </Button>
                             </Col>
                             </Row>

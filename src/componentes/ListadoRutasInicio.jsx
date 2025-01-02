@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useContextoRutas from "../hooks/useContextoRutas.js";
-import ListadoRuta from "./ListadoRuta.jsx";
+import ListadoRutaInicio from "./ListadoRutaInicio.jsx";
 
 // import { Row, Col } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
@@ -10,40 +10,30 @@ import Button from 'react-bootstrap/Button';
 
 const ListadoRutas = () => {
     // Desestructuración de los contextos que recibimos por el hook.
-    const { rutas, obtenerListadoRutas, inicializarRuta } = useContextoRutas();
+    const { rutasInicio, obtenerListadoRutasInicio, inicializarRuta } = useContextoRutas();
     // console.log(`Hay rutas: ${rutas.length}`);
     // Función a realizar en la carga del componente. Para actualizar las rutas del usuario.
     useEffect(() => {
-        obtenerListadoRutas();
+        obtenerListadoRutasInicio();
       }, []);
     console.log('entrando en ListadoRutas');
     
 
     return (
         <React.Fragment>
-            <section className="d-flex justify-content-between mb-4">
-            {/* Indicar al enrutador el link para que conecte con outlet de la subruta. */}
-            <Link to="crearuta">
-            {/* Boton para crear una nueva ruta */}
-            <Button variant="outline-success" 
-                onClick={(evento) => {
-                    inicializarRuta();
-                    // inicializarErroresFormulario();
-                }}
-            >Crear Ruta
-            </Button>
-            </Link>
-            </section>
-            {/* Mapeamos el estado rutas (array de objetos ruta). */}
-            {rutas.length ? (
+            
+            {/* Mapeamos el estado rutasInicio (array de objetos ruta). */}
+            {rutasInicio.length ? (
                 <section className="d-flex justify-content-center">
                 <Row className="w-100">
-                    {rutas.map((valor, indice, array) => {
+                    {rutasInicio.map((valor, indice, array) => {
+                        
                         return (
-                            <Col key={indice} xs={12} sm={6} md={4} lg={3} className="d-flex justify-content-center mb-4">
-                            <ListadoRuta key={valor.codRuta} datosRuta={valor} />
+                            <Col key={indice} xs={12} sm={6} className="d-flex justify-content-center mb-4">
+                            <ListadoRutaInicio key={valor.codRuta} datosRuta={valor} />
                             </Col>
-                        ); 
+                        );
+                        
                     })}
                 </Row>
                 </section>

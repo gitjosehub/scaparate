@@ -18,11 +18,6 @@ const ProveedorUsuarios = ({ children }) => {
     const valorInicialSesion = {
         email: "",
         password: "",
-        codUsuario: "",
-        nick: "",
-        nombre: "",
-        dni: "",
-        imagen: "",
     };
 
     // Creación de estados.
@@ -52,29 +47,10 @@ const ProveedorUsuarios = ({ children }) => {
             });
             // Cambiamos estado usuario con datos del objeto data.user.
             setUsuario(data.user);
-            // console.log(data.user);
             // Controlamos el posible error del método signUp.
             if (!error) {
                 // Cambiamos el estado de sesionIniciada (porque no hay mail de confirmación de cuenta).
                 setSesionIniciada(true);
-                // Realizamos insert en tabla usuario (para completar datos del usuario).
-                console.log(datosSesion);
-                const { error: errorUsuario } = await supabaseConexion
-                .from('usuario')
-                .insert({
-                    codUsuario: data.user.id, 
-                    nick: datosSesion.nick,
-                    nombre: datosSesion.nombre,
-                    dni: datosSesion.dni,
-                    imagen: datosSesion.imagen,
-                });
-                if (errorUsuario) {
-                    console.log('sale por error de insert');
-                    setErrorUsuario(errorUsuario);
-                } else {
-                    console.log('debes de ver a ...');
-                    console.log(data.user.id);
-                }
             } else {
                 setErrorUsuario(error);
             }

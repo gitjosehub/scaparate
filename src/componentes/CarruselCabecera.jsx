@@ -44,7 +44,7 @@ const CarruselCabecera = () => {
                     {/* <ExampleCarouselImage text="Third slide" /> */}
                     <Carousel.Caption>
                     <h3>Embárcate con nosotros</h3>
-                    <p>El destino lo escribes tú, en tu camino por la ruta que te está esperando.</p>
+                    <p>El destino lo escribes tú, caminando por la ruta que te está espera.</p>
                     </Carousel.Caption>
                 </Carousel.Item>
             </Carousel>

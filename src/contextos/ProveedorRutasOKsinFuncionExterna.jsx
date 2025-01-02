@@ -4,9 +4,6 @@ import React, { useState, useEffect, createContext } from "react";
 // Importamos el objeto que nos proporciona conexión a los servicios de supabase.
 import { supabaseConexion } from "../config/supabase.js";
 
-// Importar función externa que simplifica estructura de estado rutas.
-import { simplificarRutas } from "../bibliotecas/funciones.js";
-
 // Creamos el contexto fuera de la función y por tanto con ámbito global.
 const ContextoRutas = createContext();
 
@@ -57,7 +54,6 @@ const ProveedorRutas = ({ children }) => {
     // Creación de estados.
     const [ruta, setRuta] = useState(valorInicialRuta);
     const [rutas, setRutas] = useState(valorInicialArray);
-    const [rutasInicio, setRutasInicio] = useState(valorInicialArray);
     const [comentariosRutas, setComentariosRutas] = useState(valorInicialArray);
     const [comentarioRuta, setComentarioRuta] = useState(valorInicialComentario);
     const [filtroRuta, setFiltroRuta] = useState(valorInicialFiltroRuta);
@@ -80,8 +76,7 @@ const ProveedorRutas = ({ children }) => {
               *,
               localidad (codLocalidad, codProvL, nombreLocalidad, 
               provincia (codProvincia, nombreProvincia))
-              `)
-              .eq("activa", true);
+              `);
         // console.log(data);
         // Controlamos si ha habido error o no.
         if (error) {
@@ -89,23 +84,21 @@ const ProveedorRutas = ({ children }) => {
         } else {
           // Antes de pasarlo al estado, simplificamos y nos quedamos con 
           // la info que nos interesa, aplanando la estructura del objeto.
-          // const simplificaRutas = data.map(elemento => ({
-          //   codRuta: elemento.codRuta,
-          //   fechaCreacion: elemento.fechaCreacion,
-          //   titulo: elemento.titulo,
-          //   descripcion: elemento.descripcion,
-          //   dificultad: elemento.dificultad,
-          //   distancia: elemento.distancia,
-          //   desnivel: elemento.desnivel,
-          //   imagen: elemento.imagen,
-          //   codUsuR: elemento.codUsuR,
-          //   codLocalR: elemento.codLocalR,
-          //   codProvR: elemento.codProvR,
-          //   localidad: elemento.localidad.nombreLocalidad,
-          //   provincia: elemento.localidad.provincia.nombreProvincia,
-          // }));
-          // LLamada a la función externa para simplificar estructura.
-          const simplificaRutas = simplificarRutas(data);
+          const simplificaRutas = data.map(elemento => ({
+            codRuta: elemento.codRuta,
+            fechaCreacion: elemento.fechaCreacion,
+            titulo: elemento.titulo,
+            descripcion: elemento.descripcion,
+            dificultad: elemento.dificultad,
+            distancia: elemento.distancia,
+            desnivel: elemento.desnivel,
+            imagen: elemento.imagen,
+            codUsuR: elemento.codUsuR,
+            codLocalR: elemento.codLocalR,
+            codProvR: elemento.codProvR,
+            localidad: elemento.localidad.nombreLocalidad,
+            provincia: elemento.localidad.provincia.nombreProvincia,
+          }));
           setRutas(simplificaRutas);
           console.log('obtenerListadoRutas ylistado de rutas:');
           console.log(simplificaRutas);
@@ -285,40 +278,6 @@ const ProveedorRutas = ({ children }) => {
         }
     };
 
-    // Función asíncrona para conseguir las 4 rutas de Inicio o Home.
-    const obtenerListadoRutasInicio = async () => {
-      try {
-      setCargando(true);
-      // Consulta a la base de datos de supabase.
-      const { data, error } = await supabaseConexion
-          .from("ruta")
-          .select(`
-            *,
-            localidad (codLocalidad, codProvL, nombreLocalidad, 
-            provincia (codProvincia, nombreProvincia))
-            `)
-            .eq("activa", true)
-            .order("fechaCreacion", { ascending: false })
-            .limit(4);
-      // console.log(data);
-      // Controlamos si ha habido error o no.
-      if (error) {
-        setErrores(error); 
-      } else {
-        // LLamada a la función externa para simplificar estructura.
-        const simplificaRutas = simplificarRutas(data);
-        setRutasInicio(simplificaRutas);
-        console.log('rutas de inicio o home:');
-        console.log(simplificaRutas);
-      }
-      // error ? setErrores(error) : setRutas(data);
-      } catch (errorConexion) {
-        setErrores(errorConexion);
-      } finally {
-        setCargando(false);
-      }
-  };
-
     // Función asíncrona para conseguir los comentarios de las rutas desde Supabase.
     // CREO QUE NO NECESITO TENER LOS COMENTARIOS DE TODAS LAS RUTAS.
     // const obtenerListadoComentarios = async () => {
@@ -491,7 +450,7 @@ const ProveedorRutas = ({ children }) => {
         console.log('entrando en try de filtrarRuta');
         setCargando(true);
         // Vamos a ir construyendo la consulta segun los filtros.
-        let consulta = supabaseConexion.from("ruta").select(`*,localidad (codLocalidad, codProvL, nombreLocalidad, provincia (codProvincia, nombreProvincia))`);
+        let consulta = supabaseConexion.from("ruta").select("*");
         // Condicionamos a que tenga valor en el objeto para ir completando la consulta.
         if (filtros.titulo) {
           consulta = consulta.ilike("titulo", `%${filtros.titulo}%`);
@@ -508,18 +467,8 @@ const ProveedorRutas = ({ children }) => {
         const { data, error } = await consulta;
         // Controlamos posible error en la consulta.
         // error ? setErrores(error) : setRutas(data);
-        console.log('¿¿¿ rutas simplificadas, funciona ???');
+        console.log('¿¿¿ tengo que simplicar otra vez las rutas ???');
         console.log(data);
-        if (error) {
-          setErrores(error);
-          console.log('paso por error amigo');
-        } else {
-          console.log('llamando a la funcion externa');
-          const simplificaRutas = simplificarRutas(data);
-          console.log(simplificaRutas);
-          setRutas(simplificaRutas);
-        }
-        
       } catch (errorConexion) {
         setErrores(errorConexion);
       } finally {
@@ -651,6 +600,11 @@ const ProveedorRutas = ({ children }) => {
       console.log(filtroRuta);
     };
 
+    const actualizarDatoFormularioBORRAR = (evento) => {
+      const { name, value } = evento.target;
+      // Se asignan al estado, que es un objeto clave-valor.
+      setRuta({ ...ruta, [name]: value });
+    };
 
 
 
@@ -662,11 +616,6 @@ const ProveedorRutas = ({ children }) => {
     // Función para inicializar el estado ruta fuera del contexto.
     const inicializarRuta = () => {
         setRuta(valorInicialRuta);
-    };
-
-    // Función para inicializar el estado ruta fuera del contexto.
-    const inicializarFiltroRuta = () => {
-      setFiltroRuta(valorInicialFiltroRuta);
     };
 
     // Función para controlar el estado de confirmar eliminación ruta fuera del contexto.
@@ -687,7 +636,6 @@ const ProveedorRutas = ({ children }) => {
     // Funciones a realizar en la carga del componente.
     useEffect(() => {
         obtenerListadoRutas();
-        obtenerListadoRutasInicio();
         obtenerProvincias();
         obtenerLocalidades();
         // obtenerRuta('42f3097c-cbc5-44c4-9362-c951ded41b95');
@@ -700,11 +648,9 @@ const ProveedorRutas = ({ children }) => {
         obtenerProvincias, // igual no porque lo hace en el useEffect ???
         obtenerLocalidades,
         obtenerListadoRutas,
-        obtenerListadoRutasInicio,
         obtenerRuta,
         ruta,
         rutas,
-        rutasInicio,
         provincias,
         localidades,
         obtenerListadoComentarios,
@@ -716,7 +662,6 @@ const ProveedorRutas = ({ children }) => {
         confirmarEliminacion,
         eliminandoRuta,
         inicializarRuta,
-        inicializarFiltroRuta,
         mostrandoRuta,
         filtroRuta,
         filtrarRuta,
