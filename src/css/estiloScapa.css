@@ -1,0 +1,91 @@
+main {
+    background-color: #fdfdfd; 
+    color: #495057;
+}
+
+/* Estilo de los enlaces dentro del Navbar */
+.navbar .nav-link {
+    color: #495057; 
+    font-size: 1rem; 
+    font-family: 'Verdana', sans-serif;
+}
+
+/* Cambiar el color cuando el ratón pasa por encima */
+.navbar .nav-link:hover {
+    color: #139408; 
+}
+
+/* Estilo cuando el enlace está seleccionado (activo) */
+.navbar .nav-link.active {
+    color: #139408; 
+}
+
+/* Estilos de los elementos dentro de NavDropdown */
+.navbar .dropdown-item {
+    font-family: var(--bs-font-sans-serif); 
+    font-size: 1rem; 
+    font-weight: 400; 
+}
+
+/* Estilo para el elemento activo y estado focus*/
+.navbar .dropdown-item:focus,
+.navbar .dropdown-item.active {
+    color: #fff; 
+    background-color: #139408; 
+}
+
+
+.titulo-pagina {
+    color: #444444;
+    font-size: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.subtitulo-pagina {
+    color: #495057;
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: .5rem;
+}
+
+.a-de-scapa {
+    color: #139408;
+    font-size: 3.5rem;
+}
+
+.subtitulo2-pagina {
+    color: #222;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: .5rem;
+    text-align: center;
+}
+
+.img-avatar {
+    width: 30px;         
+    height: 30px;        
+    object-fit: cover;   
+    border-radius: 50%;  
+    margin-right: 8px;   
+}
+
+.no-encontrado {
+    color: #500;
+    font-size: .75rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.scroll-comenta {
+    height: 26%; 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+    border: 1px solid #eee; 
+    border-width: 0.5px; 
+    border-radius: 4px;
+    padding: 0.5rem; 
+}

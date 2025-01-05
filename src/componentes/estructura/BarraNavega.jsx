@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -18,29 +18,35 @@ const BarraNavega = () => {
                     {/* <Navbar expand="lg" className="bg-body-tertiary"> */}
                     <Navbar expand="lg" className="bg-body-tertiary">
                         <Container>
-                            {/* <Navbar.Brand href="#home"> */}
-                            <Navbar.Brand as={Link} to="/">
-                            <img src={Logo} alt="scapa" className="img-logo"/>
+                            <Navbar.Brand as={NavLink} to="/">
+                                <img src={Logo} alt="scapa" className="img-logo"/>
                             </Navbar.Brand>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav className="me-auto">
-                                {/* <Nav.Link href="#rutas">Rutas</Nav.Link> */}
-                                <Nav.Link as={Link} to="rutas">Rutas</Nav.Link>
-                                {/* <Nav.Link href="#eventos">Eventos</Nav.Link> */}
-                                <Nav.Link as={Link} to="/eventos">Eventos</Nav.Link>
-                                <NavDropdown title="Comunidad" id="basic-nav-dropdown">
-                                {/* <NavDropdown.Item href="#seguidores">Seguidores</NavDropdown.Item> */}
-                                <NavDropdown.Item as={Link} to="/seguidores">Seguidores</NavDropdown.Item>
-                                {/* <NavDropdown.Item href="#comunidadRutas">Rutas</NavDropdown.Item> */}
-                                <NavDropdown.Item as={Link} to="/comunidadRutas">Rutas</NavDropdown.Item>
-                                {/* <NavDropdown.Item href="#comunidadEventos">Eventos</NavDropdown.Item> */}
-                                <NavDropdown.Item as={Link} to="/comunidadEventos">Eventos</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                {/* <NavDropdown.Item href="#comunidadComentarios">Comentarios</NavDropdown.Item> */}
-                                <NavDropdown.Item as={Link} to="/comunidadComentarios">Comentarios</NavDropdown.Item>
-                                </NavDropdown>
-                            </Nav>
+                                <Nav className="me-auto">
+                                    {/* Eliminar 'exact' y utilizar 'className' con función para manejar la clase activa */}
+                                    <NavLink to="/rutas" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                        Rutas
+                                    </NavLink>
+                                    <NavLink to="/eventos" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                        Eventos
+                                    </NavLink>
+                                    <NavDropdown title="Comunidad" id="basic-nav-dropdown">
+                                        <NavDropdown.Item as={NavLink} to="/comunidad" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                            Seguidores
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item as={NavLink} to="/comunidadRutas" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                            Rutas
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item as={NavLink} to="/comunidadEventos" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                            Eventos
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item as={NavLink} to="/comunidadComentarios" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                            Comentarios
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
+                                </Nav>
                             </Navbar.Collapse>
                         </Container>
                     </Navbar>

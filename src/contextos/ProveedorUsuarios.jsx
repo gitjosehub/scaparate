@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import { supabaseConexion } from "../config/supabase.js";
 import { useNavigate } from "react-router-dom";
+import { use } from "react";
 
 const ContextoUsuarios = createContext();
 
@@ -24,11 +25,19 @@ const ProveedorUsuarios = ({ children }) => {
         dni: "",
         imagen: "",
     };
+    const valorInicialRegistrado = {
+        codUsuario: "",
+        nick: "",
+        nombre: "",
+        dni: "",
+        imagen: "",
+    };
 
     // Creación de estados.
     const [sesionIniciada, setSesionIniciada] = useState(valorInicialFalse);
     const [datosSesion, setDatosSesion] = useState(valorInicialSesion);
     const [usuario, setUsuario] = useState(valorInicialUsuario);
+    const [registrados, setRegistrados] = useState(valorInicialArray);
     const [errorUsuario, setErrorUsuario] = useState(valorInicialCadena);
     const [errores, setErrores] = useState(valorInicialCadena);
     const [erroresFormularioIniciar, setErroresFormularioIniciar] = useState(valorInicialArray);
@@ -50,15 +59,26 @@ const ProveedorUsuarios = ({ children }) => {
                 emailRedirectTo: "http://localhost:5173/",
                 },
             });
-            // Cambiamos estado usuario con datos del objeto data.user.
-            setUsuario(data.user);
-            // console.log(data.user);
+            // Cambiamos estado usuario con datos del objeto data.user y le 
+            // añadimos el nick y la imagen para completar información del usuario.
+            const usuarioInicial = data.user;
+            const usuarioCompleto = {
+                ...usuarioInicial,
+                nick: datosSesion.nick,
+                imagen: datosSesion.imagen,
+            }
+            // Actualizamos estado usuario.
+            setUsuario(usuarioCompleto);
+            // setUsuario(data.user);
+            console.log('en crearCuenta AHORA QUE TENGO EN USUARIO:');
+            // console.log('data.user');
+            console.log(usuarioCompleto);
             // Controlamos el posible error del método signUp.
             if (!error) {
                 // Cambiamos el estado de sesionIniciada (porque no hay mail de confirmación de cuenta).
                 setSesionIniciada(true);
                 // Realizamos insert en tabla usuario (para completar datos del usuario).
-                console.log(datosSesion);
+                // console.log(datosSesion);
                 const { error: errorUsuario } = await supabaseConexion
                 .from('usuario')
                 .insert({
@@ -87,6 +107,7 @@ const ProveedorUsuarios = ({ children }) => {
 
     // Función asíncrona para que el usuario inicie sesión.
     const iniciarSesion = async () => {
+        console.log('entrando en iniciarSesion');
         // Inicializar valores de estados antes de iniciar la nueva sesión.
         setUsuario(valorInicialUsuario);
         setDatosSesion(valorInicialSesion);
@@ -94,7 +115,7 @@ const ProveedorUsuarios = ({ children }) => {
         // Utilizando método signInWithPassword de auth para iniciar sesión.
         try {
             setCargando(true);
-            const { data, error } = await supabaseConexion.auth.signInWithPassword({
+            const { data: userData, error } = await supabaseConexion.auth.signInWithPassword({
                 email: datosSesion.email,
                 password: datosSesion.password,
                 options: {
@@ -107,8 +128,44 @@ const ProveedorUsuarios = ({ children }) => {
             if (error) {
                 setErrorUsuario(error.message);
             } else {
-                // Obtenemos los datos del usuario para nuestro estado.
-                setUsuario(data.user);
+                // Obtenemos los datos del usuario para nuestro estado,
+                // añadiendo información de la tabla usuario.
+                // setUsuario(userData.user);
+                console.log('a por la segunda consulta ...');
+                const usuarioInicial = userData.user;
+                const idUsuario = usuarioInicial.id;
+                console.log(`idUsuario es: ${idUsuario}`);
+                
+                // console.log('esto es data.user');
+                // console.log(data.user);
+                //           setUsuario(usuarioCompleto);
+                // Consulta a la tabla usuario para obtener información adicional.
+                const { data: usuarioData, error2 } = await supabaseConexion
+                .from("usuario")
+                .select("*")
+                .eq("codUsuario", idUsuario);
+                console.log('realizando segunda consulta');
+                // Controlamos posible error en la consulta.
+                if (error2) {
+                    setErrorUsuario(error2.message);
+                    console.log('errando en segunda consulta');
+                } else {
+                    console.log('no hay error en segunda consulta');
+                    console.log(usuarioData);
+                    console.log(usuarioData[0].nick);
+                    console.log(usuarioData[0].imagen);
+                    // Guardamos toda la información completa del usuario.
+                    const usuarioCompleto = {
+                        ...usuarioInicial,
+                        nick: usuarioData[0].nick,
+                        imagen: usuarioData[0].imagen,
+                    }
+                    // Actualizamos estado usuario.
+                    setUsuario(usuarioCompleto);
+                    console.log('AHORA QUE TENGO EN USUARIO:');
+                    console.log(usuarioCompleto);
+                    // console.log(usuario);
+                }
             }
         } catch (error) {
             setErrorUsuario(error.message);
@@ -131,6 +188,72 @@ const ProveedorUsuarios = ({ children }) => {
             setErrorUsuario(error.message);
         } finally {
             setCargando(false);
+        }
+    };
+
+    // Función asíncrona para conseguir listado usuarios o registrados desde Supabase.
+    const obtenerListadoRegistrados = async (id) => {
+        console.log('entrando en obtListReg: usuario.id y despues parametro id');
+        // console.log(usuario.id);
+        // console.log(id);
+        try {
+        setCargando(true);
+        // Consulta a la base de datos de supabase.
+        const { data, error } = await supabaseConexion
+            .from("usuario")
+            .select(`*`);
+
+//         const { data, error } = await supabaseConexion
+//   .from('usuario')
+//   .select('*')
+//   .order('codUsuario');
+
+// const { data, error } = await supabaseConexion
+// .from('usuario')
+// .select(`
+//   *,
+//   seguidor (
+//     codUsuP,
+//     codUsuS,
+//     estado
+//   )
+// `)
+// .leftJoin('seguidor', 'seguidor.codUsuP = usuario.codUsuario')
+// .order('usuario.codUsuario');
+
+            // Nueva consulta
+//             const { data, error } = await supabaseConexion
+//   .from('usuario')
+//   .select(`
+//     *,
+//     seguidor (
+//       codUsuP,
+//       codUsuS,
+//       estado
+//     )
+//   `)
+//   .leftJoin('seguidor', `
+//     seguidor.codUsuP = usuario.codUsuario AND seguidor.codUsuS = ${id} 
+//     OR seguidor.codUsuS = usuario.codUsuario AND seguidor.codUsuP = ${id}
+//   `)
+//   .order('usuario.codUsuario');
+        console.log('el data de la consulta es:');
+        console.log(data);
+        // Controlamos si ha habido error o no.
+        if (error) {
+          setErrores(error); 
+          console.log('error en obtListReg');
+        } else {
+          // Actualizamos el estado registrados.
+          setRegistrados(data);
+          console.log('obtenerListadoRegistrados:');
+          console.log(data);
+        }
+        // error ? setErrores(error) : setRutas(data);
+        } catch (errorConexion) {
+          setErrores(errorConexion);
+        } finally {
+          setCargando(false);
         }
     };
 
@@ -164,6 +287,8 @@ const ProveedorUsuarios = ({ children }) => {
                     navegar("/");
                     // Cambiamos el estado de sesionIniciada.
                     setSesionIniciada(true);
+                    // DEBERIA DE TENER YA REGISTRADOS, EL ESTADO ????
+                    obtenerListadoRegistrados();
                 } else {
                     // Utilizamos el hook navegar para dirigirlo hacia login.
                     // navegar("login");
@@ -184,6 +309,8 @@ const ProveedorUsuarios = ({ children }) => {
         crearCuenta,
         iniciarSesion,
         cerrarSesion,
+        obtenerListadoRegistrados,
+        registrados,
         actualizarDatoFormulario,
         // validarFormulario,
         // erroresFormularioIniciar,

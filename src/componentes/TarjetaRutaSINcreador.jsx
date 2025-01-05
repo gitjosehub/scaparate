@@ -1,6 +1,5 @@
 import React from "react";
 import useContextoRutas from "../hooks/useContextoRutas.js";
-import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
 import { formatearFecha } from "../bibliotecas/funciones.js";
 
 import Card from 'react-bootstrap/Card';
@@ -10,7 +9,6 @@ const TarjetaRuta = () => {
 
     // Desestructuración de los contextos recibidos a través del hook.
     const { ruta, mostrandoRuta, cerrarMostrando } = useContextoRutas();
-    const { obtenerListadoRegistrados, registrados } = useContextoUsuarios();
     // console.log('en TarjetaRuta ...');
     // console.log(ruta);
     return (

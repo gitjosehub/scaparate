@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 import ProveedorRutas from './contextos/ProveedorRutas.jsx';
 import ProveedorUsuarios from './contextos/ProveedorUsuarios.jsx';
+import './css/estiloScapa.css';
 // import './App.css';
 
 function App() {

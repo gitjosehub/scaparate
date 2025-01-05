@@ -9,33 +9,38 @@ const Pie = () => {
         <React.Fragment>
             <footer className="mt-5">
                 {/* Franja más amplia */}
+                
+                {/* <section className="container">
+                    <section className="row d">
+                        <section className="col-12 col-md-3 mb-3">
+                            <article>logotipo</article>
+                        </section>
+                        <section className="col-12 col-md-9 mb-3 d-flex flex-row">
+                            <article>rutas</article>
+                            <article>eventos</article>
+                            <article>comunidad</article>
+                        </section>
+                    </section>
+                </section> */}
+                
+
+
                 {/* Primera fila con las columnas principales */}
                 <section className="py-4 bg-secondary">
                 <section className="container">
                     <section className="row align-items-center">
                     {/* Columna del logo */}
-                    <article className="col-12 col-md-6 mb-3 mb-md-0 d-flex flex-column align-items-center align-items-md-start position-relative">
-                        {/* <img src={Logo} alt="Logo scapa" className="img-fluid mb-3" style={{ maxWidth: "150px" }} />
+                    <article className="col-12 col-md-6 mb-3 mb-md-0 d-flex flex-column align-items-center align-items-md-start">
+                        <img src={Logo} alt="Logo scapa" className="img-fluid mb-3" style={{ maxWidth: "150px" }} />
                         <p className="text-light fs-6 text-center text-md-start">
                         info@scapa.com
                         <br />
                         +34 600 600 600
-                        </p> */}
-                        <div className="border-end border-light d-none d-md-block" style={{ paddingRight: "40px" }}>
-      <img src={Logo} alt="Logo scapa" className="img-fluid mb-3" style={{ maxWidth: "150px" }} />
-      <p className="text-light fs-6 text-center text-md-start">
-        info@scapa.com
-        <br />
-        +34 600 600 600
-      </p>
-    </div>
-
-                        {/* Línea blanca en horizontal solo en pantallas pequeñas */}
-                        <div className="d-md-none border-top border-light w-100 mt-3"></div>
+                        </p>
                     </article>
 
                     {/* Contenedor para las otras columnas, alineado a la derecha */}
-                    <section className="col-12 col-md-6 d-flex flex-nowrap justify-content-center justify-content-md-end gap-3 gap-md-4">
+                    <section className="col-12 col-md-6 d-flex flex-nowrap justify-content-center justify-content-md-end gap-3">
                         {/* Rutas */}
                         <article className="col-auto">
                         <h5 className="text-light fw-bold fs-6 text-start">Rutas</h5>

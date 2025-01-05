@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // he quitado: , { useEffect }
+import React, { useState, useEffect } from "react"; // he quitado: , { useEffect }
 import { Link } from "react-router-dom";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
@@ -17,8 +17,22 @@ const ListadoRuta = (props) => {
     // Desestructuración de los contextos recibidos a través del hook.
     const { ruta, obtenerRuta, cerrarMostrando, confirmarEliminacion, eliminandoRuta, obtenerListadoComentarios } = useContextoRutas();
     // console.log(imagen);
-    const { usuario } = useContextoUsuarios();
+    const { usuario, obtenerListadoRegistrados, registrados } = useContextoUsuarios();
     // console.log(usuario);
+    // console.log('llega a ListadoRuta y registrados:');
+    // console.log(registrados);
+
+    // Esto no se hace aqui, solo para probar ahora. ?????!!!!!!
+    useEffect(() => {
+        obtenerListadoRegistrados();
+          }, []);
+
+    // Conseguir los datos del autor de la ruta, con codUsuR y el estado registrados.
+    const autorRuta = registrados.filter((usuarioAnterior) => {
+        return usuarioAnterior.codUsuario === codUsuR;
+    });
+    // console.log(titulo);
+    // console.log(autorRuta[0].nick);
 
     // Estado local para confirmar eliminacion.
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
@@ -32,8 +46,8 @@ const ListadoRuta = (props) => {
                 <Card.Img variant="top" src={`http://localhost:5173/src/assets/img/${imagen}`} />
                 {/* <Card.Img variant="top" src={`/assets/img/${imagen}`} /> */}
                 <Card.Body>
-                    <Card.Title>{usuario.email}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">{localidad} - {provincia}</Card.Subtitle>
+                    <Card.Title>{localidad} - {provincia}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">creada por {autorRuta[0].nick}</Card.Subtitle>
                     <Card.Text>
                     {formatearFecha(fechaCreacion)}
                     </Card.Text>

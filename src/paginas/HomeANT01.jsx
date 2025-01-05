@@ -12,11 +12,11 @@ const Home = () => {
 
     return (
         <React.Fragment>
-            <Row className="justify-content-center">
+            <Row className="mb-5 justify-content-center">
                 <Col className="text-center">
-                <h1 className="titulo-pagina">
-                    Bienvenidos/as a scap<span className="a-de-scapa">a</span>.
-                </h1>
+                <h4 style={{ color: '#444444', fontSize: '3rem', marginTop: '1.5rem', marginBottom: '1rem' }}>
+                    Bienvenidos/as a scap<span style={{ color: '#139408', fontSize: '3.5rem' }}>a</span>.
+                </h4>
                 </Col>
             </Row>
             {/* <Row>
@@ -29,7 +29,7 @@ const Home = () => {
             </Row> */}
             <Row className="g-1">
                 <Col xs={12} sm={6} className="rounded-2 p-3 ms-auto" style={{ border: '2px solid #139408' }}>
-                <h3 className="text-center subtitulo-pagina">Últimas Rutas disponibles</h3>
+                <h5 className="text-center mb-5 display-6" style={{ color: '#343a40' }}>Últimas Rutas disponibles</h5>
                 <ListadoRutasInicio />
                 </Col>
                 <Col xs={12} sm={6} className="bg-dark text-white p-3 rounded-2 me-auto" style={{ fontFamily: "Verdana, sans-serif", display: "flex", flexDirection: "column", justifyContent: "center" }}>

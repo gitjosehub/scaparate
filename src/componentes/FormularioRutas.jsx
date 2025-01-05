@@ -106,7 +106,7 @@ const FormularioRutas = ({accion}) => {
                             </Col>
                             <Col>
                                 <Form.Group controlId="exampleForm.ControlInput3">
-                                    <Form.Label>Distancia</Form.Label>
+                                    <Form.Label>Distancia (Km)</Form.Label>
                                     <Form.Control type="number" placeholder="0" size="sm" min="0" step="0.5" 
                                     name = "distancia"
                                     value = {ruta.distancia || ""}
@@ -118,7 +118,7 @@ const FormularioRutas = ({accion}) => {
                             </Col>
                             <Col>
                                 <Form.Group controlId="exampleForm.ControlInput3">
-                                    <Form.Label>Desnivel</Form.Label>
+                                    <Form.Label>Desnivel (m)</Form.Label>
                                     <Form.Control type="number" placeholder="0" size="sm" min="0" step="0.5" 
                                     name = "desnivel"
                                     value = {ruta.desnivel || ""}

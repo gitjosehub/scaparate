@@ -388,10 +388,22 @@ const ProveedorRutas = ({ children }) => {
       try {
         setCargando(true);
         // Consulta a la base de datos de supabase.
+        // const { data, error } = await supabaseConexion
+        // .from("conversaruta")
+        // .select(`
+        //   codUsuCR,
+        //   comentaruta (
+        //     codComenta,
+        //     comentario,
+        //     tipoComenta,
+        //     fecha
+        //   )
+        // `)
+        // .eq('codRutaCR', id);
+
         const { data, error } = await supabaseConexion
         .from("conversaruta")
         .select(`
-          codRutaCR,
           codUsuCR,
           comentaruta (
             codComenta,
@@ -402,6 +414,24 @@ const ProveedorRutas = ({ children }) => {
           usuario!inner (*)
         `)
         .eq('codRutaCR', id);
+
+        // const { data, error } = await supabaseConexion
+        // .from("ruta")
+        // .select(`
+        //   conversaruta (
+        //     comentaruta (
+        //       codComenta,
+        //       comentario,
+        //       tipoComenta,
+        //       fecha
+        //     )
+        //   )
+        // `)
+        // .eq('codRuta', id);
+
+        // FORMA DE HACERLO CON RUTAS AHORA.
+        // console.log('data o error:');
+        // console.log(data, error);
         // Comprobamos si ha habido error o no en la consulta.
         if (error) {
           setErrores(error); 
@@ -410,7 +440,7 @@ const ProveedorRutas = ({ children }) => {
         } else {
           // Antes de pasarlo al estado, simplificamos y nos quedamos con 
           // la info que nos interesa, aplanando la estructura del objeto.
-          // Ademas los ordenamos por la fecha de forma descendente.
+          // Ademas los ordenamos por la fecha de forma ascendente.
           // console.log('ahora viene el mapeo para simplificar');
           // console.log(data);
           
@@ -423,7 +453,7 @@ const ProveedorRutas = ({ children }) => {
               nickUsuario: elemento.usuario.nick,
               imgUsuario: elemento.usuario.imagen,
           }))
-          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+          .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
           setComentariosRutas(simplificaComentarios);
           console.log('tenemos simplificado:');
           console.log(simplificaComentarios);
@@ -496,35 +526,7 @@ const ProveedorRutas = ({ children }) => {
           setErrores(errorConexion);
       } finally {
           setCargando(false);
-          // obtenerListadoComentarios();
-      }
-    };
-
-    const eliminarComentario = async (id) => {
-      try {
-        console.log(`entrando en eliminarComentario con id: ${id}`);
-        setCargando(true);
-        const { error } = await supabaseConexion
-          .from("comentaruta")
-          .delete()
-          .eq("codComenta", id);
-        // Controlamos si ha habido error en el delete.
-        if (!error) {
-          // Actualizar el estado comentariosRutas para quitar el eliminado.el método filter del estado comentariosRutas.
-          console.log('no ha habido error');
-          const comentariosEditados = comentariosRutas.filter((comentarioAnterior) => {
-            return comentarioAnterior.codComenta !== id;
-          });
-          setComentariosRutas(comentariosEditados);
-          setComentarioRuta(valorInicialComentario);
-          console.log(comentariosEditados);
-        } else {
-          setErrores(error);
-        }
-      } catch (errorConexion) {
-          setErrores(errorConexion);
-      } finally {
-          setCargando(false);
+          obtenerListadoComentarios();
       }
     };
 
@@ -767,7 +769,6 @@ const ProveedorRutas = ({ children }) => {
         filtrarRuta,
         cerrarMostrando,
         crearComentario,
-        eliminarComentario,
         actualizarDatoFormulario,
         actualizarDatoFormularioComenta,
         actualizarDatoFormularioFiltrar,

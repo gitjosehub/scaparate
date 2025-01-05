@@ -4,6 +4,8 @@ import { Outlet } from "react-router-dom";
 import ListadoRutas from "../componentes/ListadoRutas.jsx";
 import BuscadorRutas from "../componentes/BuscadorRutas.jsx";
 
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const Rutas = () => {
 
@@ -12,11 +14,18 @@ const Rutas = () => {
 
     return (
         <React.Fragment>
-            <h4>Rutas de scapa.</h4>
+            <Row className="justify-content-center">
+                <Col className="text-center">
+                <h1 className="titulo-pagina">
+                    Rutas scap<span className="a-de-scapa">a</span>.
+                </h1>
+                </Col>
+            </Row>
+            {/* <h4>Rutas de scapa.</h4> */}
             <section className="w-50 mx-auto">
                 <BuscadorRutas />
             </section>
-            <section className="position-relative">
+            <section className="position-relative mt-3">
                 {/* <ListadoRutas listadoRutas={rutas} listadoCompleto={true}/> */}
                 <ListadoRutas />
                 {/* Recibimos el contenido de las 'subrutas' de nuestras Rutas de senderismo. */}

@@ -16,7 +16,7 @@ const ListadoRutas = () => {
     useEffect(() => {
         obtenerListadoRutasInicio();
       }, []);
-    console.log('entrando en ListadoRutas');
+    // console.log('entrando en ListadoRutas');
     
 
     return (
@@ -39,7 +39,7 @@ const ListadoRutas = () => {
                 </section>
             ) : (
                 <React.Fragment>
-                    <p>No se han encontrado rutas.</p>
+                    <p className="no-encontrado">No se han encontrado rutas.</p>
                 </React.Fragment>
             )
             }
