@@ -9,25 +9,39 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Card from 'react-bootstrap/Card';
 import ConfirmarEliminacionRuta from "./ConfirmarEliminacionRuta.jsx";
 import ConfirmarActivacionRuta from "./ConfirmarActivacionRuta.jsx";
+import ConfirmarParticipacionRuta from "./ConfirmarParticipacionRuta.jsx";
 
 
 const ListadoRuta = (props) => {
     // Desestructuración de props.
     const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia, descripcion, fechaCreacion, imagen, activa } = props.datosRuta;
-    console.log(`en listado la ruta ${titulo} esta activa? ${activa}`);
+    // console.log(`en listado la ruta ${titulo} esta activa? ${activa}`);
     // console.log(props.datosRuta);
     // Desestructuración de los contextos recibidos a través del hook.
-    const { ruta, obtenerRuta, cambiarRuta, cerrarMostrando, confirmarEliminacion, eliminandoRuta, activarRuta, obtenerListadoComentarios, contadorComentarios } = useContextoRutas();
+    const { ruta, obtenerRuta, 
+            cambiarRuta, cerrarMostrando, 
+            confirmarEliminacion, eliminandoRuta, 
+            activarRuta, obtenerListadoComentarios, 
+            contadorComentarios, 
+            participacionRutas } = useContextoRutas();
     // console.log(imagen);
-    const { usuario, obtenerListadoRegistrados, registrados } = useContextoUsuarios();
+    const { usuario, registrados } = useContextoUsuarios();
     // console.log(usuario);
     // console.log('llega a ListadoRuta y registrados:');
     // console.log(registrados);
-
+    // console.log(`participacion ${titulo}`)
+    // console.log(participacionRutas);
     // Esto no se hace aqui, solo para probar ahora. ?????!!!!!!
     useEffect(() => {
-        obtenerListadoRegistrados();
+        // obtenerListadoRegistrados();
           }, []);
+    
+    // Saber si el usuario participa en la ruta o no.
+    const participa = participacionRutas.some(
+        (participacion) => participacion.codUsuPR === usuario.id && participacion.codRutaPR === codRuta
+    );
+    console.log(`en ${titulo} participa? ${participa}`);
+    console.log(usuario.id);
 
     // Conseguir los datos del autor de la ruta, con codUsuR y el estado registrados.
     const autorRuta = registrados.filter((usuarioAnterior) => {
@@ -57,6 +71,8 @@ const ListadoRuta = (props) => {
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
     // Estado local para confirmar activación.
     const [confirmandoActivar, setConfirmandoActivar] = useState(false);
+    // Estado local para confirmar participación.
+    const [confirmandoParticipar, setConfirmandoParticipar] = useState(false);
 
     return (
         <React.Fragment>
@@ -111,7 +127,24 @@ const ListadoRuta = (props) => {
                     }
                     >ver
                     </Button>
-                    <Button variant="outline-success" style={{ flex: 1 }}>participar</Button>
+                    {!participa && (
+                        <Button variant="outline-success" style={{ flex: 1 }}
+                        as={Link} to="participaruta"
+                        id={codRuta}
+                        onClick={(evento) => {
+                            { /* Obtenemos la ruta  */ }
+                            // inicializarErroresFormulario();
+                            // cambiarRuta(evento.target.id, false);
+                            obtenerRuta(evento.target.id);
+                            setConfirmandoParticipar(true);
+                            console.log('hola participante');
+                            { /* Activamos el estado para confirmar eliminación. */ }
+                            // confirmarEliminacion(true);
+                            // setConfirmandoEliminar(true);
+                        }}
+                        >participar
+                        </Button>
+                    )}
                 </ButtonGroup>
                 <ButtonGroup size="sm" style={{ width: "100%" }}>
                 {activa ? (
@@ -184,6 +217,11 @@ const ListadoRuta = (props) => {
                 <ConfirmarActivacionRuta 
                     confirmandoActivar={confirmandoActivar}
                     setConfirmandoActivar={setConfirmandoActivar} />
+            )}
+            {confirmandoParticipar && (
+                <ConfirmarParticipacionRuta 
+                confirmandoParticipar={confirmandoParticipar}
+                    setConfirmandoParticipar={setConfirmandoParticipar} />
             )}
             </section>
         </React.Fragment>

@@ -1,7 +1,7 @@
 import React from "react";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import { useNavigate } from "react-router-dom";
-import "./ConfirmarEliminacionRuta.css";
+// import "./ConfirmarEliminacionRuta.css";
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';

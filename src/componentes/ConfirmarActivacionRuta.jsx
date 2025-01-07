@@ -19,7 +19,7 @@ const ConfirmarActivacionRuta = ({ confirmandoEliminar, setConfirmandoActivar })
 
     // Hook para trabajar con las rutas de router-dom de React.
     const navegar = useNavigate();
-    console.log(`activa viene cambiada y es ${ruta.activa}`);
+    // console.log(`activa viene cambiada y es ${ruta.activa}`);
 
     return (
         <React.Fragment>
@@ -28,7 +28,7 @@ const ConfirmarActivacionRuta = ({ confirmandoEliminar, setConfirmandoActivar })
                 <Card.Body>
                     <p className="eliminar-ruta">¿Estás seguro de que deseas {ruta.activa ? "activar" : "desactivar"} {ruta.titulo}?</p>
                     <article className="d-flex justify-content-between">
-                        <Button variant="outline-danger" size="sm"
+                        <Button variant={ruta.activa ? "outline-success" : "outline-danger"} size="sm"
                             onClick={
                                 (evento) => {
                                     // eliminarRuta(ruta.codRuta);

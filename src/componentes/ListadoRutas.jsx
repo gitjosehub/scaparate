@@ -15,6 +15,7 @@ const ListadoRutas = () => {
     // Función a realizar en la carga del componente. Para actualizar las rutas del usuario.
     useEffect(() => {
         obtenerListadoRutas();
+        // obtenerListadoRegistrados();
       }, []);
     // console.log('entrando en ListadoRutas');
     

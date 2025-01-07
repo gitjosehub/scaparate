@@ -50,6 +50,11 @@ const ProveedorRutas = ({ children }) => {
       distancia: "",
       dificultad: "",
     };
+    const valorInicialParticipar = {
+      codUsuPR: "",
+      codRutaPR: "",
+      valoracion: "",
+    }
     // const valorInicialProvincia = {
     //   codProvincia: "",
     //   nombreProvincia: "",
@@ -66,6 +71,8 @@ const ProveedorRutas = ({ children }) => {
     const [comentarioRuta, setComentarioRuta] = useState(valorInicialComentario);
     const [contadorComentarios, setContadorComentarios] = useState(valorInicialArray);
     const [filtroRuta, setFiltroRuta] = useState(valorInicialFiltroRuta);
+    const [participacionRuta, setParticipacionRuta] = useState(valorInicialParticipar);
+    const [participacionRutas, setParticipacionRutas] = useState(valorInicialArray);
     const [eliminandoRuta, setEliminandoRuta] = useState(valorInicialBooleanoFalse);
     const [activandoRuta, setActivandoRuta] = useState(valorInicialBooleanoFalse);
     const [mostrandoRuta, setMostrandoRuta] = useState(valorInicialBooleanoFalse);
@@ -126,54 +133,54 @@ const ProveedorRutas = ({ children }) => {
 
     // Función asíncrona para conseguir una determinada ruta de Supabase.
     const obtenerRuta = async (id) => {
-      console.log(`entrando en obtenerRuta, ${id}`);
+      // console.log(`entrando en obtenerRuta, ${id}`);
         // Inicializar el estado error.
-        setErrores(valorInicialCadena);
-        try {
-            setCargando(true);
-            // Consulta sobre la base de datos.
-            const { data, error } = await supabaseConexion
-                  .from("ruta")
-                  .select(`
-                    *,
-                    localidad (codLocalidad, codProvL, nombreLocalidad, 
-                      provincia (codProvincia, nombreProvincia)
-                    )
-                  `)
-                  .eq("codRuta", id);
-            // error ? setErrores(error) : setRuta(data[0]);
-            if (error) {
-              setErrores(error)
-            } else {
-              console.log(data[0]);
-              // Simplificamos el objeto y lo pasamos al estado.
-              const simplificaRuta = {
-                codRuta: data[0].codRuta,
-                fechaCreacion: data[0].fechaCreacion,
-                titulo: data[0].titulo,
-                descripcion: data[0].descripcion,
-                dificultad: data[0].dificultad,
-                distancia: data[0].distancia,
-                desnivel: data[0].desnivel,
-                imagen: data[0].imagen,
-                activa: data[0].activa,
-                codUsuR: data[0].codUsuR,
-                codLocalR: data[0].codLocalR,
-                codProvR: data[0].codProvR,
-                localidad: data[0].localidad.nombreLocalidad,
-                provincia: data[0].localidad.provincia.nombreProvincia,
-              };
-              setRuta(simplificaRuta);
-              console.log(simplificaRuta);
-            }
-            // console.log('en obtenerRuta y ...');
+      setErrores(valorInicialCadena);
+      try {
+          setCargando(true);
+          // Consulta sobre la base de datos.
+          const { data, error } = await supabaseConexion
+                .from("ruta")
+                .select(`
+                  *,
+                  localidad (codLocalidad, codProvL, nombreLocalidad, 
+                    provincia (codProvincia, nombreProvincia)
+                  )
+                `)
+                .eq("codRuta", id);
+          // error ? setErrores(error) : setRuta(data[0]);
+          if (error) {
+            setErrores(error)
+          } else {
             // console.log(data[0]);
-        } catch (errorConexion) {
-            setErrores(errorConexion);
-        } finally {
-            setCargando(false);
-            console.log('saliendo de obtenerRuta');
-        }
+            // Simplificamos el objeto y lo pasamos al estado.
+            const simplificaRuta = {
+              codRuta: data[0].codRuta,
+              fechaCreacion: data[0].fechaCreacion,
+              titulo: data[0].titulo,
+              descripcion: data[0].descripcion,
+              dificultad: data[0].dificultad,
+              distancia: data[0].distancia,
+              desnivel: data[0].desnivel,
+              imagen: data[0].imagen,
+              activa: data[0].activa,
+              codUsuR: data[0].codUsuR,
+              codLocalR: data[0].codLocalR,
+              codProvR: data[0].codProvR,
+              localidad: data[0].localidad.nombreLocalidad,
+              provincia: data[0].localidad.provincia.nombreProvincia,
+            };
+            setRuta(simplificaRuta);
+            // console.log(simplificaRuta);
+          }
+          // console.log('en obtenerRuta y ...');
+          // console.log(data[0]);
+      } catch (errorConexion) {
+          setErrores(errorConexion);
+      } finally {
+          setCargando(false);
+          console.log('saliendo de obtenerRuta');
+      }
     };
 
     // Función asíncrona para crear una nueva ruta en BDatos de Supabase.
@@ -479,6 +486,73 @@ const ProveedorRutas = ({ children }) => {
             console.log('saliendo de cambiarRuta');
         }
     };
+
+    // Función asíncrona para crear una nueva ruta en BDatos de Supabase.
+    const crearParticipacion = async (idUsu) => {
+      try {
+        setCargando(true);
+        console.log('tenemos datos ...');
+        console.log(`usuario: ${idUsu} codRuta: ${ruta.codRuta} valor: ${participacionRuta.valoracion}`);
+        // Consulta a la base de datos.
+        const { data, error } = await supabaseConexion
+          .from("participaruta")
+          .insert([
+            {
+              codUsuPR: idUsu,
+              codRutaPR: ruta.codRuta,
+              // titulo: ruta.titulo,
+              valoracion: participacionRuta.valoracion
+            },
+          ])
+          .select();
+        // Controlamos el posible error en la inserción del registro.
+        if (!error) {
+          console.log("no ha habido error, se ha creado registro.");
+          console.log(data);
+          // Actualizamos el estado participacionRutas con la nueva.
+          setParticipacionRutas([...participacionRutas, participacionRuta]);
+          // console.log('ruta añadida y ...');
+          // console.log(rutas);
+        } else {
+          console.log("pasa por error");
+          setErrores(error);
+          // setErrores(errori);
+        }
+      } catch (errorConexion) {
+          setErrores(errorConexion);
+      } finally {
+          setCargando(false);
+          obtenerListadoParticipacion();
+      }
+    };
+
+    // Función asíncrona para conseguir las rutas desde Supabase.
+    const obtenerListadoParticipacion = async () => {
+      try {
+        setCargando(true);
+        const idUsu="7b75624a-4002-479a-b463-1e82f39d74c0";
+        // Consulta a la base de datos de supabase.
+        const { data, error } = await supabaseConexion
+          .from("participaruta")
+          .select(`
+            *`)
+          .eq("codUsuPR", idUsu);
+        // console.log(data);
+        // Controlamos si ha habido error o no.
+        if (error) {
+          setErrores(error); 
+        } else {
+          // Actualizamos el estado correspondiente.
+          setParticipacionRutas(data);
+          console.log('listado de participacion ...');
+          console.log(data);
+        };
+      } catch (errorConexion) {
+        setErrores(errorConexion);
+      } finally {
+        setCargando(false);
+      }
+  };
 
     // Función asíncrona para conseguir las 4 rutas de Inicio o Home.
     const obtenerListadoRutasInicio = async () => {
@@ -919,6 +993,13 @@ const ProveedorRutas = ({ children }) => {
       console.log(filtroRuta);
     };
 
+    // Función para actualizar los datos del campo del formulario de participar en ruta.
+    const actualizarDatoFormularioParticipar = (evento) => {
+      const { name, value } = evento.target;
+      // Se asignan al estado, que es un objeto clave-valor.
+      setParticipacionRuta({ ...participacionRuta, [name]: value });
+      console.log(participacionRuta);
+    };
 
 
 
@@ -964,6 +1045,7 @@ const ProveedorRutas = ({ children }) => {
         obtenerProvincias();
         obtenerLocalidades();
         contarComentariosRutas();
+        obtenerListadoParticipacion();
         // obtenerRuta('42f3097c-cbc5-44c4-9362-c951ded41b95');
         // console.log('llamada a obtenerListadoComentarios');
         // obtenerListadoComentarios();
@@ -994,6 +1076,10 @@ const ProveedorRutas = ({ children }) => {
         desactivarRuta,
         confirmarEliminacion,
         confirmarActivacion,
+        crearParticipacion,
+        obtenerListadoParticipacion,
+        participacionRuta,
+        participacionRutas,
         eliminandoRuta,
         activandoRuta,
         inicializarRuta,
@@ -1007,6 +1093,7 @@ const ProveedorRutas = ({ children }) => {
         actualizarDatoFormulario,
         actualizarDatoFormularioComenta,
         actualizarDatoFormularioFiltrar,
+        actualizarDatoFormularioParticipar,
         // validarFormulario,
         inicializarErroresFormulario,
         erroresFormulario,

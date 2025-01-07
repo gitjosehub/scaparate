@@ -192,7 +192,7 @@ const ProveedorUsuarios = ({ children }) => {
     };
 
     // Función asíncrona para conseguir listado usuarios o registrados desde Supabase.
-    const obtenerListadoRegistrados = async (id) => {
+    const obtenerListadoRegistrados = async () => {
         console.log('entrando en obtListReg: usuario.id y despues parametro id');
         // console.log(usuario.id);
         // console.log(id);
@@ -237,8 +237,8 @@ const ProveedorUsuarios = ({ children }) => {
 //     OR seguidor.codUsuS = usuario.codUsuario AND seguidor.codUsuP = ${id}
 //   `)
 //   .order('usuario.codUsuario');
-        console.log('el data de la consulta es:');
-        console.log(data);
+        // console.log('el data de la consulta es:');
+        // console.log(data);
         // Controlamos si ha habido error o no.
         if (error) {
           setErrores(error); 
