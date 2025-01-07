@@ -13,8 +13,8 @@ const MostrarRuta = () => {
         <React.Fragment>
             { mostrandoRuta && (
                 <section className="position-absolute top-0 start-0 w-100 h-100">
-                    <article className="position-absolute top-0 start-0 w-100 h-100 bg-white opacity-50"></article>
-                    <article className="position-absolute top-0 start-50 translate-middle-x w-50 h-100 bg-white shadow p-2 z-index-1">
+                    <article className="position-absolute top-0 start-0 w-100 h-100 bg-white opacity-50" style={{ zIndex: 10 }}></article>
+                    <article className="position-absolute top-0 start-50 translate-middle-x w-50 h-100 bg-white shadow p-2" style={{ zIndex: 20 }}>
                         <TarjetaRuta />
                         <ListadoComentarios />
                     </article>

@@ -55,7 +55,7 @@ const ControlSesion = () => {
               // >
               //   Iniciar sesion
               // </Button>
-              <Button variant="outline-success" onClick={() => setShow(true)}>
+              <Button variant="outline-success" size="sm" onClick={() => setShow(true)}>
                 Iniciar sesion
               </Button>
           )}
@@ -105,10 +105,10 @@ const ControlSesion = () => {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="outline-secondary" onClick={handleClose}>
+          <Button variant="outline-secondary" size="sm" onClick={handleClose}>
             Cerrar
           </Button>
-          <Button variant="outline-success" 
+          <Button variant="outline-success" size="sm" 
             onClick={(evento) => {
               evento.preventDefault();
               handleClose;

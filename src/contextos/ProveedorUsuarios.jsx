@@ -246,8 +246,8 @@ const ProveedorUsuarios = ({ children }) => {
         } else {
           // Actualizamos el estado registrados.
           setRegistrados(data);
-          console.log('obtenerListadoRegistrados:');
-          console.log(data);
+        //   console.log('obtenerListadoRegistrados:');
+        //   console.log(data);
         }
         // error ? setErrores(error) : setRutas(data);
         } catch (errorConexion) {

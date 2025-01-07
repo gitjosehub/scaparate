@@ -27,6 +27,7 @@ const Enrutador = () => {
                     <Route path="veruta" element={<MostrarRuta />} />
                     <Route path="crearuta" element={<FormularioRutas accion="crear" />} />
                     <Route path="editaruta" element={<FormularioRutas accion="editar" />} />
+                    <Route path="activaruta" element={<React.Fragment />} />
                     {/* <Route path="comentaruta" element={<ListadoComentarios />} /> */}
                     {/* <Route path="eliminaruta" element={<ConfirmarEliminacionRuta />} /> */}
                     <Route path="eliminaruta" element={<React.Fragment />} />

@@ -32,7 +32,6 @@ const ProveedorRutas = ({ children }) => {
       localidad: "",
       provincia: "",
       imagen: "",
-      activa: false,
       // imagenesruta: "", // antes [] para varias imagenes.
     };
     const valorInicialComentario = {
@@ -67,7 +66,6 @@ const ProveedorRutas = ({ children }) => {
     const [contadorComentarios, setContadorComentarios] = useState(valorInicialArray);
     const [filtroRuta, setFiltroRuta] = useState(valorInicialFiltroRuta);
     const [eliminandoRuta, setEliminandoRuta] = useState(valorInicialBooleanoFalse);
-    const [activandoRuta, setActivandoRuta] = useState(valorInicialBooleanoFalse);
     const [mostrandoRuta, setMostrandoRuta] = useState(valorInicialBooleanoFalse);
     const [erroresFormulario, setErroresFormulario] = useState(valorInicialArray);
     const [errores, setErrores] = useState(valorInicialCadena);
@@ -86,8 +84,8 @@ const ProveedorRutas = ({ children }) => {
               *,
               localidad (codLocalidad, codProvL, nombreLocalidad, 
               provincia (codProvincia, nombreProvincia))
-              `);
-              // .eq("activa", true); lo quito para activar.
+              `)
+              .eq("activa", true);
         // console.log(data);
         // Controlamos si ha habido error o no.
         if (error) {
@@ -126,7 +124,6 @@ const ProveedorRutas = ({ children }) => {
 
     // Función asíncrona para conseguir una determinada ruta de Supabase.
     const obtenerRuta = async (id) => {
-      console.log(`entrando en obtenerRuta, ${id}`);
         // Inicializar el estado error.
         setErrores(valorInicialCadena);
         try {
@@ -145,7 +142,6 @@ const ProveedorRutas = ({ children }) => {
             if (error) {
               setErrores(error)
             } else {
-              console.log(data[0]);
               // Simplificamos el objeto y lo pasamos al estado.
               const simplificaRuta = {
                 codRuta: data[0].codRuta,
@@ -156,7 +152,6 @@ const ProveedorRutas = ({ children }) => {
                 distancia: data[0].distancia,
                 desnivel: data[0].desnivel,
                 imagen: data[0].imagen,
-                activa: data[0].activa,
                 codUsuR: data[0].codUsuR,
                 codLocalR: data[0].codLocalR,
                 codProvR: data[0].codProvR,
@@ -164,7 +159,6 @@ const ProveedorRutas = ({ children }) => {
                 provincia: data[0].localidad.provincia.nombreProvincia,
               };
               setRuta(simplificaRuta);
-              console.log(simplificaRuta);
             }
             // console.log('en obtenerRuta y ...');
             // console.log(data[0]);
@@ -172,7 +166,6 @@ const ProveedorRutas = ({ children }) => {
             setErrores(errorConexion);
         } finally {
             setCargando(false);
-            console.log('saliendo de obtenerRuta');
         }
     };
 
@@ -293,190 +286,6 @@ const ProveedorRutas = ({ children }) => {
             setErrores(errorConexion);
         } finally {
             setCargando(false);
-        }
-    };
-
-    // Función asíncrona para activar (que admin la publique) una ruta en la BDatos.
-    // const activarRuta = async () => {
-    //   console.log('entrando en activarRuta.');
-    //   console.log(`activa es ${ruta.activa}`);
-    //   console.log(ruta.codRuta);
-    //     try {
-    //       setCargando(true);
-    //       // Definimos las variables fuera del if/else.
-    //       let error = null;
-    //       let data = null;
-    //       // Consulta a la base de datos para actualizar la tabla ruta.
-    //       if (ruta.activa) {
-    //         console.log('consulta para desactivar');
-    //           // Si está activa, la desactivamos.
-    //           ({ data, error } = await supabaseConexion
-    //               .from("ruta")
-    //               .update([{ activa: false }])
-    //               .eq("codRuta", ruta.codRuta));
-    //       } else {
-    //         console.log('consulta para activar');
-    //           // Si no está activa, la activamos.
-    //           ({ data, error } = await supabaseConexion
-    //             .from("ruta")
-    //             .update([{ activa: true }])
-    //             .eq("codRuta", ruta.codRuta));
-    //       };
-    //       console.log('valor de error');
-    //       console.log(error);
-
-          
-    //       // Comprobamos si ha habido errores o no.
-    //       if (!error) {
-    //         // Modificamos la ruta en el estado rutas.
-    //         const rutasEditadas = rutas.map((rutaAnterior) => {
-    //           return rutaAnterior.codRuta === ruta.codRuta
-    //             ? ruta
-    //             : rutaAnterior;
-    //         });
-    //         setRutas(rutasEditadas);
-    //         console.log(rutasEditadas);
-    //         setRuta(valorInicialRuta);
-    //         setActivandoRuta(false);
-    //       } else {
-    //         setErrores(error);
-    //         console.log(error);
-    //         // setErrores(errori);
-    //       }
-          
-    //     } catch (errorConexion) {
-    //         setErrores(errorConexion);
-    //     } finally {
-    //         setCargando(false);
-    //         console.log('saliendo de activarRuta');
-    //     }
-    // };
-
-    // Función asíncrona para desactivar (que admin la bloquee) una ruta en la BDatos.
-    const activarRuta = async () => {
-      console.log('entrando en activarRuta.');
-      console.log(`activa ha pasado a ${ruta.activa}`);
-      console.log(ruta.codRuta);
-        try {
-          setCargando(true);
-          // Consulta a la base de datos para actualizar la tabla ruta.
-          const { data, error } = await supabaseConexion
-            .from("ruta")
-            .update([{ activa: true }])
-            .eq("codRuta", ruta.codRuta);
-          // Comprobamos si ha habido errores o no.
-          if (!error) {
-            // Modificamos la ruta en el estado rutas.
-            const rutasEditadas = rutas.map((rutaAnterior) => {
-              return rutaAnterior.codRuta === ruta.codRuta
-                ? ruta
-                : rutaAnterior;
-            });
-            setRutas(rutasEditadas);
-            console.log(rutasEditadas);
-            setRuta(valorInicialRuta);
-            setActivandoRuta(false);
-          } else {
-            setErrores(error);
-            console.log(error);
-            // setErrores(errori);
-          }
-          
-        } catch (errorConexion) {
-            setErrores(errorConexion);
-        } finally {
-            setCargando(false);
-            console.log('saliendo de activarRuta');
-        }
-    };
-
-    // Función asíncrona para desactivar (que admin la bloquee) una ruta en la BDatos.
-    const desactivarRuta = async () => {
-      console.log('entrando en desactivarRuta.');
-      console.log(`activa ha pasado a ${ruta.activa}`);
-      console.log(ruta.codRuta);
-        try {
-          setCargando(true);
-          // Consulta a la base de datos para actualizar la tabla ruta.
-          const { data, error } = await supabaseConexion
-            .from("ruta")
-            .update([{ activa: false }])
-            .eq("codRuta", ruta.codRuta);
-          // Comprobamos si ha habido errores o no.
-          if (!error) {
-            // Modificamos la ruta en el estado rutas.
-            const rutasEditadas = rutas.map((rutaAnterior) => {
-              return rutaAnterior.codRuta === ruta.codRuta
-                ? ruta
-                : rutaAnterior;
-            });
-            setRutas(rutasEditadas);
-            console.log(rutasEditadas);
-            setRuta(valorInicialRuta);
-            setActivandoRuta(false);
-          } else {
-            setErrores(error);
-            console.log(error);
-            // setErrores(errori);
-          }
-          
-        } catch (errorConexion) {
-            setErrores(errorConexion);
-        } finally {
-            setCargando(false);
-            console.log('saliendo de desactivarRuta');
-        }
-    };
-
-    // Función asíncrona para cambiar activa en estado ruta.
-    const cambiarRuta = async (id, activaOno) => {
-      console.log(`entrando en cambiarRuta, ${id}`);
-        // Inicializar el estado error.
-        setErrores(valorInicialCadena);
-        try {
-            setCargando(true);
-            // Consulta sobre la base de datos.
-            const { data, error } = await supabaseConexion
-                  .from("ruta")
-                  .select(`
-                    *,
-                    localidad (codLocalidad, codProvL, nombreLocalidad, 
-                      provincia (codProvincia, nombreProvincia)
-                    )
-                  `)
-                  .eq("codRuta", id);
-            // error ? setErrores(error) : setRuta(data[0]);
-            if (error) {
-              setErrores(error)
-            } else {
-              console.log(data[0]);
-              // Simplificamos el objeto y lo pasamos al estado.
-              const simplificaRuta = {
-                codRuta: data[0].codRuta,
-                fechaCreacion: data[0].fechaCreacion,
-                titulo: data[0].titulo,
-                descripcion: data[0].descripcion,
-                dificultad: data[0].dificultad,
-                distancia: data[0].distancia,
-                desnivel: data[0].desnivel,
-                imagen: data[0].imagen,
-                activa: activaOno,
-                codUsuR: data[0].codUsuR,
-                codLocalR: data[0].codLocalR,
-                codProvR: data[0].codProvR,
-                localidad: data[0].localidad.nombreLocalidad,
-                provincia: data[0].localidad.provincia.nombreProvincia,
-              };
-              setRuta(simplificaRuta);
-              console.log(simplificaRuta);
-            }
-            // console.log('en obtenerRuta y ...');
-            // console.log(data[0]);
-        } catch (errorConexion) {
-            setErrores(errorConexion);
-        } finally {
-            setCargando(false);
-            console.log('saliendo de cambiarRuta');
         }
     };
 
@@ -942,11 +751,6 @@ const ProveedorRutas = ({ children }) => {
       setEliminandoRuta(cambio);
     };
 
-    // Funcion para controlar el estado activar ruta fuera del contexto.
-    const confirmarActivacion = (cambio) => {
-      setActivandoRuta(cambio);
-    }
-
     // Función para controlar el estado de mostrar ruta fuera del contexto.
     const cerrarMostrando = (cambio) => {
       setMostrandoRuta(cambio);
@@ -976,7 +780,6 @@ const ProveedorRutas = ({ children }) => {
         obtenerListadoRutas,
         obtenerListadoRutasInicio,
         obtenerRuta,
-        cambiarRuta,
         ruta,
         rutas,
         rutasInicio,
@@ -990,12 +793,8 @@ const ProveedorRutas = ({ children }) => {
         crearRuta,
         editarRuta,
         eliminarRuta,
-        activarRuta,
-        desactivarRuta,
         confirmarEliminacion,
-        confirmarActivacion,
         eliminandoRuta,
-        activandoRuta,
         inicializarRuta,
         inicializarFiltroRuta,
         mostrandoRuta,

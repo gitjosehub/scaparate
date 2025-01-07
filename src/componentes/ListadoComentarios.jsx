@@ -20,7 +20,8 @@ const ListadoComentarios = () => {
     // console.log('valor y length de comentariosRutas en ListadoComentarios.');
     // console.log(comentariosRutas.length);
     // console.log(comentariosRutas);
-    console.log(comentarioRuta);
+    // console.log(comentarioRuta);
+    
     return (
         <React.Fragment>
             <section className="mt-4">

@@ -223,7 +223,7 @@ const FormularioRutas = ({accion}) => {
                     <Row className="justify-content-end mt-1">
                     <Col xs="auto">
                         {/* Botón del formulario. */}
-                        <Button variant="outline-success" type="submit"
+                        <Button variant="outline-success" type="submit" size="sm"
                             onClick={(evento) => {
                                 // Evitamos el comportamiento por defecto para no recargar la página.
                                 evento.preventDefault();

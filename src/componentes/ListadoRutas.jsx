@@ -25,7 +25,7 @@ const ListadoRutas = () => {
             {/* Indicar al enrutador el link para que conecte con outlet de la subruta. */}
             <Link to="crearuta">
             {/* Boton para crear una nueva ruta */}
-            <Button variant="outline-success" 
+            <Button variant="outline-success" size="sm"
                 onClick={(evento) => {
                     inicializarRuta();
                     // inicializarErroresFormulario();
@@ -49,7 +49,7 @@ const ListadoRutas = () => {
                 </section>
             ) : (
                 <React.Fragment>
-                    <p className="no-encontrado">No se han encontrado rutas.</p>
+                    <article className="no-encontrado">No se han encontrado rutas.</article>
                 </React.Fragment>
             )
             }

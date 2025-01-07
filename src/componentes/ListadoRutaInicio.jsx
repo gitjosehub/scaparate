@@ -32,9 +32,12 @@ const ListadoRuta = (props) => {
                 <Card.Img variant="top" src={`http://localhost:5173/src/assets/img/${imagen}`} />
                 {/* <Card.Img variant="top" src={`/assets/img/${imagen}`} /> */}
                 <Card.Body>
-                    <Card.Title>{titulo}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">{formatearFecha(fechaCreacion)}</Card.Subtitle>
-                    <Card.Text>{localidad} - {provincia}</Card.Text>
+                    <Card.Title className="titulo-ruta-inicio">{titulo}</Card.Title>
+                    <Card.Subtitle className="fecha-ruta">{formatearFecha(fechaCreacion)}</Card.Subtitle>
+                    <Card.Text className="d-flex align-items-center justify-content-center ubicacion-ruta-inicio">
+                    <i className="bi bi-geo me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
+                    <span>{localidad} - {provincia}</span>
+                    </Card.Text>
                 </Card.Body>
             </Card>
             </section>

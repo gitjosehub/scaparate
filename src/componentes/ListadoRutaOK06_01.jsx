@@ -8,16 +8,14 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Card from 'react-bootstrap/Card';
 import ConfirmarEliminacionRuta from "./ConfirmarEliminacionRuta.jsx";
-import ConfirmarActivacionRuta from "./ConfirmarActivacionRuta.jsx";
 
 
 const ListadoRuta = (props) => {
     // Desestructuración de props.
-    const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia, descripcion, fechaCreacion, imagen, activa } = props.datosRuta;
-    console.log(`en listado la ruta ${titulo} esta activa? ${activa}`);
+    const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia, descripcion, fechaCreacion, imagen } = props.datosRuta;
     // console.log(props.datosRuta);
     // Desestructuración de los contextos recibidos a través del hook.
-    const { ruta, obtenerRuta, cambiarRuta, cerrarMostrando, confirmarEliminacion, eliminandoRuta, activarRuta, obtenerListadoComentarios, contadorComentarios } = useContextoRutas();
+    const { ruta, obtenerRuta, cerrarMostrando, confirmarEliminacion, eliminandoRuta, obtenerListadoComentarios, contadorComentarios } = useContextoRutas();
     // console.log(imagen);
     const { usuario, obtenerListadoRegistrados, registrados } = useContextoUsuarios();
     // console.log(usuario);
@@ -48,15 +46,13 @@ const ListadoRuta = (props) => {
     // } else {
     //     totalComenta = cantiComenta[0].contador;
     // }
-    // console.log(totalComenta);
+    console.log(totalComenta);
     // console.log(cantiComentarios[0].contador);
     // console.log(titulo);
     // console.log(autorRuta[0].nick);
 
-    // Estado local para confirmar eliminación.
+    // Estado local para confirmar eliminacion.
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
-    // Estado local para confirmar activación.
-    const [confirmandoActivar, setConfirmandoActivar] = useState(false);
 
     return (
         <React.Fragment>
@@ -92,98 +88,71 @@ const ListadoRuta = (props) => {
                     </article>
                     </section>
                     </section>
-                    {/* </Card.Text> */}    
-                </Card.Body>
-                <ButtonGroup size="sm" style={{ width: "100%" }}>
-                    <Button variant="outline-success" style={{ flex: 1 }}
-                    as={Link} to="veruta"
-                    id={codRuta}
-                    onClick={(evento) => {
-                        // evento.preventDefault();
-                        { /* Obtenemos la ruta e inicializamos mensajes de error formulario 
-                            por si los hubiera, activamos estado para cerrar y obtenemos el
-                            listado de comentarios de la ruta. */ }
-                        // inicializarErroresFormulario();
-                        obtenerRuta(evento.target.id);
-                        cerrarMostrando(true);
-                        obtenerListadoComentarios(evento.target.id);
+                    {/* </Card.Text> */}
+                    <Card.Link as={Link} to="veruta"
+                        id={codRuta}
+                        onClick={(evento) => {
+                            { /* Obtenemos la ruta e inicializamos
+                                mensajes de error formulario por si los hubiera */ }
+                            // inicializarErroresFormulario();
+                            obtenerRuta(evento.target.id);
+                            cerrarMostrando(true);
+                            // esto es nuevo con comentariios.
+                            obtenerListadoComentarios(evento.target.id);
+                            }
                         }
-                    }
+                        className="text-success"
                     >ver
-                    </Button>
-                    <Button variant="outline-success" style={{ flex: 1 }}>participar</Button>
-                </ButtonGroup>
-                <ButtonGroup size="sm" style={{ width: "100%" }}>
-                {activa ? (
-                    <Button variant="outline-danger" style={{ flex: 1 }}
-                    as={Link} to="activaruta"
-                    id={codRuta}
-                    onClick={(evento) => {
-                        { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
-                        cambiarRuta(evento.target.id, false);
-                        setConfirmandoActivar(true);
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
-                    }}
-                    >desactivar
-                    </Button>
-                ) : (
-                    <Button variant="outline-success" style={{ flex: 1 }}
-                    as={Link} to="activaruta"
-                    id={codRuta}
-                    onClick={(evento) => {
-                        { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
-                        cambiarRuta(evento.target.id, true);
-                        setConfirmandoActivar(true);
-                        // activarRuta();
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
-                    }}
-                    >activar
-                    </Button>
-                )}
-                    <Button variant="outline-success" style={{ flex: 1 }}
-                    as={Link} to="editaruta"
-                    id={codRuta}
-                    onClick={(evento) => {
-                        // evento.preventDefault();
-                        { /* Obtenemos la ruta e inicializamos
-                            mensajes de error formulario por si los hubiera */ }
-                        // inicializarErroresFormulario();
-                        obtenerRuta(evento.target.id);
-                    }}
+                    </Card.Link>
+                    <Card.Link as={Link} to="editaruta"
+                        id={codRuta}
+                        onClick={(evento) => {
+                            { /* Obtenemos la ruta e inicializamos
+                                mensajes de error formulario por si los hubiera */ }
+                            // inicializarErroresFormulario();
+                            obtenerRuta(evento.target.id);
+                        }}
+                        className="text-success"
                     >editar
-                    </Button>
-                    <Button variant="outline-danger" style={{ flex: 1 }}
-                    as={Link} to="eliminaruta"
-                    id={codRuta}
-                    onClick={(evento) => {
+                    </Card.Link>
+
+                    {/* <Card.Link as={Link} to="comentaruta"
+                        id={codRuta}
+                        onClick={(evento) => {
+                            
+                            // inicializarErroresFormulario();
+                            obtenerRuta(evento.target.id);
+                            // esto es nuevo con comentariios.
+                            obtenerListadoComentarios(evento.target.id);
+                        }}
+                        className="text-success"
+                    >comentar
+                    </Card.Link> */}
+
+                    <Card.Link as={Link} to="eliminaruta"
+                        id={codRuta}
+                        onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
                         // inicializarErroresFormulario();
                         obtenerRuta(evento.target.id);
                         { /* Activamos el estado para confirmar eliminación. */ }
                         // confirmarEliminacion(true);
                         setConfirmandoEliminar(true);
-                    }}
+                        }}
+                        className="text-success"
                     >eliminar
-                    </Button>
-                </ButtonGroup>
+                    </Card.Link>
+                    <ButtonGroup size="sm" style={{ width: "100%" }}>
+            <Button variant="success" style={{ flex: 1 }}>activar</Button>
+            <Button variant="success" style={{ flex: 1 }}>participar</Button>
+            <Button variant="success" style={{ flex: 1 }}>favorita</Button>
+        </ButtonGroup>
+                </Card.Body>
             </Card>
             {confirmandoEliminar && (
                 <ConfirmarEliminacionRuta 
                     confirmandoEliminar={confirmandoEliminar}
                     setConfirmandoEliminar={setConfirmandoEliminar} />
-            )}
-            {confirmandoActivar && (
-                <ConfirmarActivacionRuta 
-                    confirmandoActivar={confirmandoActivar}
-                    setConfirmandoActivar={setConfirmandoActivar} />
             )}
             </section>
         </React.Fragment>

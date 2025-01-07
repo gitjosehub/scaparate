@@ -8,16 +8,15 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Card from 'react-bootstrap/Card';
 import ConfirmarEliminacionRuta from "./ConfirmarEliminacionRuta.jsx";
-import ConfirmarActivacionRuta from "./ConfirmarActivacionRuta.jsx";
 
 
 const ListadoRuta = (props) => {
     // Desestructuración de props.
     const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia, descripcion, fechaCreacion, imagen, activa } = props.datosRuta;
-    console.log(`en listado la ruta ${titulo} esta activa? ${activa}`);
+    console.log(`la ruta ${titulo} esta activa? ${activa}`);
     // console.log(props.datosRuta);
     // Desestructuración de los contextos recibidos a través del hook.
-    const { ruta, obtenerRuta, cambiarRuta, cerrarMostrando, confirmarEliminacion, eliminandoRuta, activarRuta, obtenerListadoComentarios, contadorComentarios } = useContextoRutas();
+    const { ruta, obtenerRuta, cerrarMostrando, confirmarEliminacion, eliminandoRuta, obtenerListadoComentarios, contadorComentarios } = useContextoRutas();
     // console.log(imagen);
     const { usuario, obtenerListadoRegistrados, registrados } = useContextoUsuarios();
     // console.log(usuario);
@@ -53,10 +52,8 @@ const ListadoRuta = (props) => {
     // console.log(titulo);
     // console.log(autorRuta[0].nick);
 
-    // Estado local para confirmar eliminación.
+    // Estado local para confirmar eliminacion.
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
-    // Estado local para confirmar activación.
-    const [confirmandoActivar, setConfirmandoActivar] = useState(false);
 
     return (
         <React.Fragment>
@@ -114,40 +111,7 @@ const ListadoRuta = (props) => {
                     <Button variant="outline-success" style={{ flex: 1 }}>participar</Button>
                 </ButtonGroup>
                 <ButtonGroup size="sm" style={{ width: "100%" }}>
-                {activa ? (
-                    <Button variant="outline-danger" style={{ flex: 1 }}
-                    as={Link} to="activaruta"
-                    id={codRuta}
-                    onClick={(evento) => {
-                        { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
-                        cambiarRuta(evento.target.id, false);
-                        setConfirmandoActivar(true);
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
-                    }}
-                    >desactivar
-                    </Button>
-                ) : (
-                    <Button variant="outline-success" style={{ flex: 1 }}
-                    as={Link} to="activaruta"
-                    id={codRuta}
-                    onClick={(evento) => {
-                        { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
-                        cambiarRuta(evento.target.id, true);
-                        setConfirmandoActivar(true);
-                        // activarRuta();
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
-                    }}
-                    >activar
-                    </Button>
-                )}
+                    <Button variant="outline-success" style={{ flex: 1 }}>activar</Button>
                     <Button variant="outline-success" style={{ flex: 1 }}
                     as={Link} to="editaruta"
                     id={codRuta}
@@ -179,11 +143,6 @@ const ListadoRuta = (props) => {
                 <ConfirmarEliminacionRuta 
                     confirmandoEliminar={confirmandoEliminar}
                     setConfirmandoEliminar={setConfirmandoEliminar} />
-            )}
-            {confirmandoActivar && (
-                <ConfirmarActivacionRuta 
-                    confirmandoActivar={confirmandoActivar}
-                    setConfirmandoActivar={setConfirmandoActivar} />
             )}
             </section>
         </React.Fragment>

@@ -89,3 +89,195 @@ main {
     border-radius: 4px;
     padding: 0.5rem; 
 }
+
+.eliminar-ruta {
+    color: #444;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.2;
+    /* margin-bottom: .5rem; */
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.confirmacion-eliminar {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* right: 0;
+    bottom: 0; */
+    width: 15rem;
+    /* width: 100%; */
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 0.5rem;
+}
+
+/* Estilos para la tarjeta de rutas. */
+.titulo-ruta {
+    color: #111;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: .1rem;
+    margin-right: 0rem;
+    text-align: center;
+    border-bottom: 1px solid var(--bs-secondary);
+    width: 116%;
+    margin-left: -16px;
+    padding-bottom: 20px;
+}
+
+.titulo-ruta-inicio {
+    color: #111;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: .1rem;
+    margin-right: 0rem;
+    text-align: center;
+    border-bottom: 1px solid var(--bs-secondary);
+    width: 122%;
+    margin-left: -16px;
+    padding-bottom: 20px;
+}
+
+.titulo-ruta-ver {
+    color: #111;
+    font-size: 1.75rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: .1rem;
+    margin-right: 0rem;
+    text-align: center;
+    border-bottom: 1px solid var(--bs-gray-300);
+    width: 106%;
+    margin-left: -16px;
+    padding-bottom: 20px;
+}
+
+.autor-ruta {
+    color: #444;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.2;
+    /* margin-bottom: 1rem; */
+    text-align: center;
+}
+
+.fecha-ruta {
+    color: #888;
+    font-size: .75rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-top: .5rem;
+    text-align: center;
+}
+
+.fecha-ruta-ver {
+    color: #888;
+    font-size: .75rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-top: .5rem;
+    text-align: center;
+}
+
+.ubicacion-ruta {
+    color: #444;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-top: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.ubicacion-ruta-inicio {
+    color: #444;
+    font-size: .85rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-top: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.ubicacion-ruta-ver {
+    color: #222;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.contador-ruta {
+    color: #444;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.contador-ruta-ver {
+    color: #222;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.creado-por-ruta {
+    color: #777;
+    font-size: .75rem;
+    font-style: normal;
+    /* font-weight: 300;
+    line-height: 1.2; */
+    /* margin-bottom: .5rem; */
+    text-align: right;
+}
+
+.descripcion-ruta {
+    color: #444;
+    font-size: 1.20rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.2;
+    /* margin-bottom: .5rem; */
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.info-icono {
+    border: 1px solid #ddd;  /* Borde claro */
+    border-radius: 5px;  /* Bordes redondeados */
+    padding: 5px;
+    margin-bottom: 10px;  
+}
+
+.info-icono h5 {
+    color: #777;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+.info-icono .d-flex {
+    margin-top: 0;  /* Elimina el margen superior del div */
+}
+
+.boton-sin-margen {
+    margin-right: 0;
+}
+
+.contenedor-tarjeta {
+    margin-bottom: 1rem;
+}

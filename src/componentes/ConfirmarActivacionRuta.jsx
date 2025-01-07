@@ -1,36 +1,44 @@
 import React from "react";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import { useNavigate } from "react-router-dom";
-import "./ConfirmarEliminacionRuta.css";
+// import "./ConfirmarEliminacionRuta.css";
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-const ConfirmarEliminacionRuta = ({ confirmandoEliminar, setConfirmandoEliminar }) => {
+const ConfirmarActivacionRuta = ({ confirmandoEliminar, setConfirmandoActivar }) => {
 
     // Deconstrucción del contexto a través del hook, con estados y funciones
     // que necesitamos.
     const { rutas, 
         ruta, 
-        eliminandoRuta, 
+        activandoRuta, 
         confirmarEliminacion,
-        eliminarRuta } = useContextoRutas();
+        activarRuta,
+        desactivarRuta } = useContextoRutas();
 
     // Hook para trabajar con las rutas de router-dom de React.
     const navegar = useNavigate();
+    console.log(`activa viene cambiada y es ${ruta.activa}`);
 
     return (
         <React.Fragment>
             <section className="confirmacion-eliminar">
             <Card className="p-2">
                 <Card.Body>
-                    <p className="eliminar-ruta">¿Estás seguro de que deseas eliminar {ruta.titulo}?</p>
+                    <p className="eliminar-ruta">¿Estás seguro de que deseas {ruta.activa ? "activar" : "desactivar"} {ruta.titulo}?</p>
                     <article className="d-flex justify-content-between">
                         <Button variant="outline-danger" size="sm"
                             onClick={
                                 (evento) => {
-                                    eliminarRuta(ruta.codRuta);
-                                    setConfirmandoEliminar(false);
+                                    // eliminarRuta(ruta.codRuta);
+                                    if (ruta.activa) {
+                                        activarRuta(ruta.codRuta);
+                                    } else {
+                                        desactivarRuta(ruta.codRuta);
+                                    }
+                                    
+                                    setConfirmandoActivar(false);
                                     navegar("/rutas");
                                 }
                             }
@@ -39,7 +47,7 @@ const ConfirmarEliminacionRuta = ({ confirmandoEliminar, setConfirmandoEliminar 
                         <Button variant="outline-secondary" size="sm"
                             onClick={
                                 (evento) => {
-                                    setConfirmandoEliminar(false);
+                                    setConfirmandoActivar(false);
                                     // confirmarEliminacion(false);
                                     navegar("/rutas");
                                 }
@@ -54,4 +62,4 @@ const ConfirmarEliminacionRuta = ({ confirmandoEliminar, setConfirmandoEliminar 
     );
 };
 
-export default ConfirmarEliminacionRuta;
+export default ConfirmarActivacionRuta;

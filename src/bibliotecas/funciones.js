@@ -24,6 +24,7 @@ const simplificarRutas = (datos) => {
         distancia: elemento.distancia,
         desnivel: elemento.desnivel,
         imagen: elemento.imagen,
+        activa: elemento.activa,
         codUsuR: elemento.codUsuR,
         codLocalR: elemento.codLocalR,
         codProvR: elemento.codProvR,
