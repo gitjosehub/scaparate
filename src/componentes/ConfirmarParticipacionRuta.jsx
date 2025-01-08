@@ -1,8 +1,6 @@
 import React from "react";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import { useNavigate } from "react-router-dom";
-// import { Form, useNavigate } from "react-router-dom";
-// import "./ConfirmarEliminacionRuta.css";
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -36,7 +34,6 @@ const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParti
                     {/* Campo númerico para valoración. */}
                     <Form>
                     <Form.Group controlId="exampleForm.ControlInput2">
-                        {/* <Form.Label>Valoración</Form.Label> */}
                         <Form.Control type="number" placeholder="0" size="sm" min="0" max="5" step="0.1" required 
                         name = "valoracion"
                         value = {participacionRuta.valoracion || ""}
@@ -53,9 +50,7 @@ const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParti
                             onClick={
                                 (evento) => {
                                     evento.preventDefault();
-                                    // eliminarRuta(ruta.codRuta);
                                     crearParticipacion(usuario.id);
-                                    
                                     setConfirmandoParticipar(false);
                                     navegar("/rutas");
                                 }
@@ -67,7 +62,6 @@ const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParti
                                 (evento) => {
                                     evento.preventDefault();
                                     setConfirmandoParticipar(false);
-                                    // confirmarEliminacion(false);
                                     navegar("/rutas");
                                 }
                             }

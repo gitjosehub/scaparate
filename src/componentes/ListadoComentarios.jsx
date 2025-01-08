@@ -13,14 +13,6 @@ const ListadoComentarios = () => {
     // Desestructuración de los contextos que recibimos por el hook.
     const { ruta, comentariosRutas, comentarioRuta, actualizarDatoFormularioComenta, crearComentario, obtenerListadoComentarios } = useContextoRutas();
     const { usuario } = useContextoUsuarios();
-    // Función a realizar en la carga del componente y cuando cambie el estado comentariosRutas.
-    // useEffect(() => {
-    //     obtenerListadoComentarios(ruta.codRuta);
-    // }, [comentariosRutas]);
-    // console.log('valor y length de comentariosRutas en ListadoComentarios.');
-    // console.log(comentariosRutas.length);
-    // console.log(comentariosRutas);
-    // console.log(comentarioRuta);
     
     return (
         <React.Fragment>
@@ -47,8 +39,6 @@ const ListadoComentarios = () => {
                         // if (validarFormulario(evento)) {
                             // crearRuta(usuario.id);
                             crearComentario(usuario.id);
-                            // navegar("../");
-                          
                         // }
                     }}
                 >comentar

@@ -13,8 +13,8 @@ const ListadoRegistrados = () => {
     const { usuario, obtenerListadoRegistrados, registrados } = useContextoUsuarios();
     console.log('en ListadoRegistrado esto es usuario');
     console.log(usuario);
-    // De momento lo hacemos aqui en vez en el contexto con sesion iniciada.
     
+    // Acciones a la carga del componente.
     useEffect(() => {
         console.log('usuario.id en el useEffect');
         // console.log(usuario.id);

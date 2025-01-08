@@ -7,28 +7,17 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-// import Button from 'react-bootstrap/Button';
-
 
 const ListadoComentario = (props) => {
 
     // Desestructuración de props.
     const { codComenta, codUsuario, comentario, fecha, tipoComenta, nickUsuario, imgUsuario } = props.datosComenta;
-    // console.log(props.datosComenta);
     // Desestructuración de los contextos recibidos a través del hook.
     const { eliminarComentario } = useContextoRutas();
-    // console.log(imagen);
     const { usuario } = useContextoUsuarios();
-    // console.log(usuario);
 
     return (
         <React.Fragment>
-            {/* <Card>
-                <Card.Body>
-                <Card.Subtitle className="mb-2 text-muted">{codUsuario} - {formatearFecha(fecha)}</Card.Subtitle>
-                {comentario}
-                </Card.Body>
-            </Card> */}
             <Form>
             <InputGroup size="sm" className="mb-3">
                 <InputGroup.Text id="basic-addon1" style={{ width: '20%' }}>

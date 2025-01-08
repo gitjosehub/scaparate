@@ -1,7 +1,6 @@
 import React from "react";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import { useNavigate } from "react-router-dom";
-// import "./ConfirmarEliminacionRuta.css";
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -19,7 +18,6 @@ const ConfirmarActivacionRuta = ({ confirmandoEliminar, setConfirmandoActivar })
 
     // Hook para trabajar con las rutas de router-dom de React.
     const navegar = useNavigate();
-    // console.log(`activa viene cambiada y es ${ruta.activa}`);
 
     return (
         <React.Fragment>
@@ -31,7 +29,6 @@ const ConfirmarActivacionRuta = ({ confirmandoEliminar, setConfirmandoActivar })
                         <Button variant={ruta.activa ? "outline-success" : "outline-danger"} size="sm"
                             onClick={
                                 (evento) => {
-                                    // eliminarRuta(ruta.codRuta);
                                     if (ruta.activa) {
                                         activarRuta(ruta.codRuta);
                                     } else {
@@ -48,7 +45,6 @@ const ConfirmarActivacionRuta = ({ confirmandoEliminar, setConfirmandoActivar })
                             onClick={
                                 (evento) => {
                                     setConfirmandoActivar(false);
-                                    // confirmarEliminacion(false);
                                     navegar("/rutas");
                                 }
                             }

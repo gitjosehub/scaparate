@@ -40,6 +40,7 @@ const ProveedorUsuarios = ({ children }) => {
     const [registrados, setRegistrados] = useState(valorInicialArray);
     const [errorUsuario, setErrorUsuario] = useState(valorInicialCadena);
     const [errores, setErrores] = useState(valorInicialCadena);
+    const [erroresFormuSesion, setErroresFormuSesion] = useState(valorInicialArray);
     const [erroresFormularioIniciar, setErroresFormularioIniciar] = useState(valorInicialArray);
     const [erroresFormularioCrear, setErroresFormularioCrear] = useState(valorInicialArray);
     const [cargando, setCargando] = useState(valorInicialFalse);
@@ -264,9 +265,117 @@ const ProveedorUsuarios = ({ children }) => {
         setDatosSesion({ ...datosSesion, [name]: value });
     };
 
+    // Función para inicializar el estado erroresFormuSesion fuera del contexto.
+    const inicializarErroresFormuSesion = () => {
+        setErroresFormuSesion(valorInicialArray);
+    };
 
+    // Función para validar elemento input de formulario rutas.
+    // Recibe por parámetro un elemento del formulario.
+    // Retorna un array con los errores del elemento si los ha habido.
+    const validarInputFormulario = (elemento) => {
+        // Desestructuración del elemento.
+        const { name, value } = elemento;
+        // Array para guardar los errores del elemento del formulario.
+        let listaErroresElemento = [];
+        // Comprobación para correo electrónico.
+        if (name === "email") {
+          if (!value.includes('@') || !value.includes('.') || value.length < 10) {
+            listaErroresElemento = [
+              ...listaErroresElemento,
+              "El correo electrónico no es correcto.",
+            ];
+          }
+        }
+        // Comprobación para contraseñas.
+        if (name === "password" || name === "repitePassword") {
+          if (value.length < 6) {
+            listaErroresElemento = [
+              ...listaErroresElemento,
+              "La contraseña no es adecuada.",
+            ];
+          }
+        }
+        // Comprobación para el nombre.
+        if (name === "nombre") {
+            // Expresión regular para validar que el nombre solo contenga letras y espacios
+            const regexNombre = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+          
+            // Comprobar que el nombre tiene al menos 2 caracteres y solo contiene letras y espacios
+            if (value.length < 2 || value.length > 50) {
+              listaErroresElemento = [
+                ...listaErroresElemento,
+                "El nombre debe tener entre 2 y 50 caracteres.",
+              ];
+            } else if (!regexNombre.test(value)) {
+              listaErroresElemento = [
+                ...listaErroresElemento,
+                "El nombre solo debe contener letras y espacios.",
+              ];
+            }
+        }
+        // Comprobación para el nick.
+        if (name === "nick") {
+            // Expresión regular para validar que el nick solo contenga letras, números, guiones y puntos
+            const regexNick = /^[A-Za-z0-9_-]{2,10}$/;
+          
+            // Comprobar que el nick tiene entre 2 y 10 caracteres
+            if (value.length < 2 || value.length > 10) {
+              listaErroresElemento = [
+                ...listaErroresElemento,
+                "El nick debe tener entre 2 y 10 caracteres.",
+              ];
+            } else if (!regexNick.test(value)) {
+              listaErroresElemento = [
+                ...listaErroresElemento,
+                "El nick solo puede contener letras, números, guiones y puntos.",
+              ];
+            }
+        }
+        // Comprobación para dni.
+        if (name === "dni") {
+            const regexDni = /^[0-9]{8}[A-Za-z]$/; // Expresión regular para validar el formato de DNI español
+            if (!regexDni.test(value)) {
+              listaErroresElemento = [
+                ...listaErroresElemento,
+                "El DNI no es válido. Debe contener 8 dígitos seguidos de una letra.",
+              ];
+            }
+          }
+        // Retorna el listado con los posibles errores del elemento.
+        return listaErroresElemento;
+      };
 
-    // ******** FALTAN FUNCIONES PARA VALIDAR FORMULARIO DE LOGIN. *********
+    // Función para validar el formulario de login.
+    // Recibe por parámetro el evento que la ha llamado con el que
+    // accederemos al formulario en cuestión.
+    // Retorna un valor booleano dependiendo de si ha habido errores.
+    const validarFormulario = (evento) => {
+        // Accedemos al elemento form.
+        console.log('entrando en validarformulario');
+        console.log(evento.target.parentNode.parentNode);
+        const formulario = evento.target.parentNode.parentNode;
+        // Creamos un array para los posibles errores del formulario.
+        let listaErrores = [];
+        // Recorremos el formulario comprobando cada elemento del mismo.
+        for (let i = 0; i < formulario.elements.length - 2; i++) {
+            console.log(formulario.elements[i]);
+          let elementoErrores = validarInputFormulario(formulario.elements[i]);
+          // Añadimos al listado general los posibles errores de cada elemento.
+          listaErrores = [...listaErrores, ...elementoErrores];
+        }
+        // Comprobar que contraseña y repite coinciden.
+        if (formulario.name ==="crearCuenta") {
+            if (formulario.elements['password'].value !== formulario.elements['repitePassword'].value) {
+                listaErrores = [...listaErrores, "La contraseñas no coinciden."];
+            }
+        }
+        // Modificamos el estado que se encarga de los errores.
+        setErroresFormuSesion(listaErrores);
+        console.log(listaErrores);
+        // Retorna true o false según haya habido errores o no.
+        return listaErrores.length === 0;
+      };
 
 
 
@@ -312,7 +421,9 @@ const ProveedorUsuarios = ({ children }) => {
         obtenerListadoRegistrados,
         registrados,
         actualizarDatoFormulario,
-        // validarFormulario,
+        validarFormulario,
+        erroresFormuSesion,
+        inicializarErroresFormuSesion,
         // erroresFormularioIniciar,
         // erroresFormularioCrear,
         // setSesionIniciada,

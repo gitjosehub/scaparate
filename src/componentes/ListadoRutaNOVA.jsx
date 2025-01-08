@@ -66,9 +66,10 @@ const ListadoRuta = (props) => {
     // console.log(cantiComentarios[0].contador);
     // console.log(titulo);
     // console.log(autorRuta[0].nick);
-    console.log(usuario.id);
-    console.log(codUsuR);
-    console.log('---------------------------');
+    // console.log(usuario.id);
+    // console.log(codUsuR);
+    // console.log('---------------------------');
+    console.log(usuario.role);
 
     // Estado local para confirmar eliminación.
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
@@ -150,40 +151,38 @@ const ListadoRuta = (props) => {
                     )}
                 </ButtonGroup>
                 <ButtonGroup size="sm" style={{ width: "100%" }}>
-                {activa ? (
-                    <Button variant="outline-danger" style={{ flex: 1 }}
-                    as={Link} to="activaruta"
-                    id={codRuta}
-                    onClick={(evento) => {
-                        { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
-                        cambiarRuta(evento.target.id, false);
-                        setConfirmandoActivar(true);
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
-                    }}
-                    >desactivar
-                    </Button>
-                ) : (
-                    <Button variant="outline-success" style={{ flex: 1 }}
-                    as={Link} to="activaruta"
-                    id={codRuta}
-                    onClick={(evento) => {
-                        { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
-                        cambiarRuta(evento.target.id, true);
-                        setConfirmandoActivar(true);
-                        // activarRuta();
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
-                    }}
-                    >activar
-                    </Button>
-                )}
+                
+
+                {usuario.role === 'rol_admin' && activa && (
+    // activa ? (
+        // <Button variant="outline-danger" style={{ flex: 1 }}
+        //     as={Link} to="activaruta"
+        //     id={codRuta}
+        //     onClick={(evento) => {
+        //         { /* Obtenemos la ruta */ }
+        //         cambiarRuta(evento.target.id, false);
+        //         setConfirmandoActivar(true);
+        //     }}
+        // >
+        //     desactivar
+        // </Button>
+    // ) : (
+        <Button variant="outline-success" style={{ flex: 1 }}
+            as={Link} to="activaruta"
+            id={codRuta}
+            onClick={(evento) => {
+                { /* Obtenemos la ruta */ }
+                cambiarRuta(evento.target.id, true);
+                setConfirmandoActivar(true);
+            }}
+        >
+            activar
+        </Button>
+    // )
+)}
+
+
+
                     {usuario.id === codUsuR && (
                     <>
                     <Button variant="outline-success" style={{ flex: 1 }}

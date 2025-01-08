@@ -7,7 +7,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-// import Logo from "../../assets/img/scapa100x40.png";
 import Logo from "../../assets/img/scapaFondogris.png";
 
 const BarraNavega = () => {
@@ -19,7 +18,6 @@ const BarraNavega = () => {
         <React.Fragment>
             <section>
                 <article>
-                    {/* <Navbar expand="lg" className="bg-body-tertiary"> */}
                     <Navbar expand="lg" className="bg-body-tertiary">
                         <Container>
                             <Navbar.Brand as={NavLink} to="/">
@@ -30,7 +28,6 @@ const BarraNavega = () => {
                             {sesionIniciada && (
                                 <Nav className="me-auto">
                                     {/* Eliminar 'exact' y utilizar 'className' con función para manejar la clase activa */}
-                                    
                                     <NavLink to="/rutas" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
                                         Rutas
                                     </NavLink>
@@ -38,14 +35,14 @@ const BarraNavega = () => {
                                         Eventos
                                     </NavLink>
                                     <NavDropdown title="Comunidad" id="basic-nav-dropdown">
-                                        <NavDropdown.Item as={NavLink} to="/comunidad" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                        <NavDropdown.Item as={NavLink} to="/comunidadSeguidores" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
                                             Seguidores
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item as={NavLink} to="/comunidadRutas" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
-                                            Rutas
+                                        <NavDropdown.Item as={NavLink} to="/comunidadEnEspera" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                            En espera
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item as={NavLink} to="/comunidadEventos" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
-                                            Eventos
+                                        <NavDropdown.Item as={NavLink} to="/comunidadUsuarios" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
+                                            Usuarios
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item as={NavLink} to="/comunidadComentarios" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>

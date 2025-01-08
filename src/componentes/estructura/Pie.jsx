@@ -15,20 +15,14 @@ const Pie = () => {
                     <section className="row align-items-center">
                     {/* Columna del logo */}
                     <article className="col-12 col-md-6 mb-3 mb-md-0 d-flex flex-column align-items-center align-items-md-start position-relative">
-                        {/* <img src={Logo} alt="Logo scapa" className="img-fluid mb-3" style={{ maxWidth: "150px" }} />
-                        <p className="text-light fs-6 text-center text-md-start">
-                        info@scapa.com
-                        <br />
-                        +34 600 600 600
-                        </p> */}
                         <div className="border-end border-light d-none d-md-block" style={{ paddingRight: "40px" }}>
-      <img src={Logo} alt="Logo scapa" className="img-fluid mb-3" style={{ maxWidth: "150px" }} />
-      <p className="text-light fs-6 text-center text-md-start">
-        info@scapa.com
-        <br />
-        +34 600 600 600
-      </p>
-    </div>
+                            <img src={Logo} alt="Logo scapa" className="img-fluid mb-3" style={{ maxWidth: "150px" }} />
+                            <p className="text-light fs-6 text-center text-md-start">
+                                info@scapa.com
+                                <br />
+                                +34 600 600 600
+                            </p>
+                        </div>
 
                         {/* Línea blanca en horizontal solo en pantallas pequeñas */}
                         <div className="d-md-none border-top border-light w-100 mt-3"></div>

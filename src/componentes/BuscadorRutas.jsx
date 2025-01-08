@@ -23,7 +23,7 @@ const BuscadorRutas = () => {
         localidades } = useContextoRutas();
 
     // Validar formulario con componente de react-bootstrap no se 
-        // como funciona todavia, de momento nada de nada.
+    // como funciona todavia, de momento nada de nada.
         const [validated, setValidated] = useState(false);
     
       const handleSubmit = (event) => {

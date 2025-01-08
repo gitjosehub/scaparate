@@ -3,18 +3,15 @@ import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import { useNavigate } from "react-router-dom";
 
-import "./FormularioRutas.css";
-
 // Importación elementos de react-bootstrap.
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-
 const FormularioRutas = ({accion}) => {
 
-    // Desestructuración del contexto.
+    // Desestructuración de los contextos.
     const { ruta, 
         actualizarDatoFormulario,
         crearRuta,
@@ -51,17 +48,15 @@ const FormularioRutas = ({accion}) => {
     // como funciona todavia, de momento nada de nada.
     const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    const handleSubmit = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        }
 
-    setValidated(true);
-  };
-
-
+        setValidated(true);
+    };
 
     return (
         <React.Fragment>
@@ -178,18 +173,6 @@ const FormularioRutas = ({accion}) => {
                             </Col>
                         </Row>
                         <Row className="mb-3">
-                            {/*  ANTERIOR: Elemento tipo fichero para imagen. */}
-                            {/* <Col>
-                            <Form.Group controlId="formFileSm" className="mb-3">
-                                <Form.Label>Imagen</Form.Label>
-                                <Form.Control type="file" size="sm" 
-                                name="imagenesruta"
-                                onChange={(evento) => {
-                                    actualizarDatoFormulario(evento);
-                                }}
-                                />
-                            </Form.Group>         
-                            </Col> */}
                             {/*  Elemento tipo text para imagen. */}
                             <Col>
                             <Form.Group controlId="exampleForm.ControlInput1">
@@ -232,7 +215,6 @@ const FormularioRutas = ({accion}) => {
                                 // Validamos el formulario antes de realizar la acción (crear o editar).
                                 // if (validarFormulario(evento)) {
                                   if (accion === "crear") {
-                                    // crearRuta(usuario.id);
                                     crearRuta(usuario.id);
                                     navegar("../");
                                   } else {

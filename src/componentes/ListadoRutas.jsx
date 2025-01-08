@@ -4,7 +4,6 @@ import useContextoRutas from "../hooks/useContextoRutas.js";
 import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
 import ListadoRuta from "./ListadoRuta.jsx";
 
-// import { Row, Col } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -13,17 +12,12 @@ const ListadoRutas = () => {
     // Desestructuración de los contextos que recibimos por el hook.
     const { rutas, obtenerListadoRutas, inicializarRuta, obtenerListadoParticipacion } = useContextoRutas();
     const { usuario } = useContextoUsuarios();
-    // console.log(`Hay rutas: ${rutas.length}`);
+
     // Función a realizar en la carga del componente. Para actualizar las rutas del usuario.
     useEffect(() => {
-        // obtenerListadoRutas();
-        // console.log(`USUARIOOOOOOOOOO: ${usuario.id}`);
         obtenerListadoParticipacion(usuario.id);
-        // obtenerListadoRegistrados();
       }, []);
-    // console.log('entrando en ListadoRutas');
     
-
     return (
         <React.Fragment>
             <section className="d-flex justify-content-between mb-4">

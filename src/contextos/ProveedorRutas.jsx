@@ -1005,12 +1005,71 @@ const ProveedorRutas = ({ children }) => {
       console.log(participacionRuta);
     };
 
+    // Función para validar elemento input de formulario rutas.
+    // Recibe por parámetro un elemento del formulario.
+    // Retorna un array con los errores del elemento si los ha habido.
+    const validarInputFormulario = (elemento) => {
+      // Desestructuración del elemento.
+      const { name, value } = elemento;
+      // Array para guardar los errores del elemento del formulario.
+      let listaErroresElemento = [];
+      // Comprobación para nombre de la ruta.
+      if (name === "nombre_ruta") {
+        if (!value.length) {
+          listaErroresElemento = [
+            ...listaErroresElemento,
+            "El nombre es obligatorio.",
+          ];
+        }
+      }
+      // Comprobación para localidad de la ruta.
+      if (name === "localidad") {
+        if (!value.length) {
+          listaErroresElemento = [
+            ...listaErroresElemento,
+            "La localidad es obligatoria.",
+          ];
+        }
+      }
+      // Comprobación para la distancia de la ruta.
+      if (name === "distancia") {
+        if (value === undefined || isNaN(value) || value < 0 || !value.length) {
+          listaErroresElemento = [
+            ...listaErroresElemento,
+            "Distancia es obligatoria y debe ser un número mayor de 0.",
+          ];
+        }
+      }
+      // Comprobación para la dificultad de la ruta.
+      if (name === "dificultad") {
+        if (value === undefined || isNaN(value) || value < 0 || value > 10 || !value.length) {
+          listaErroresElemento = [
+            ...listaErroresElemento,
+            "Dificultad es obligatoria y debe ser un número entre 0 y 10.",
+          ];
+        }
+      }
+      // Comprobación de imagen ruta.
+      if (name === "img_ruta") {
+        if (value.length > 0) {
+          const regex = /^[a-zA-Z].*\.(jpg|png)$/;
+          if (!regex.test(value)) {
+            listaErroresElemento = [
+              ...listaErroresElemento,
+              "La imagen debe comenzar por una letra y terminar por .jpg o .png",
+            ];
+          }
+          /* listaErroresElemento = [
+            ...listaErroresElemento,
+            "Imagen debe comenzar por una letra y terminar por .jpg o .png",
+          ]; */
+        }
+      }
+      // Retorna el listado con los posibles errores del elemento.
+      return listaErroresElemento;
+    };
 
-
-    // **************** FALTAN FUNCIONES PARA VALIDAR FORMULARIOS *************
-
-
-
+    
 
     // Función para inicializar el estado ruta fuera del contexto.
     const inicializarRuta = () => {
@@ -1041,6 +1100,8 @@ const ProveedorRutas = ({ children }) => {
     const inicializarErroresFormulario = () => {
         setErroresFormulario(valorInicialArray);
     };
+
+    
 
     // Funciones a realizar en la carga del componente.
     useEffect(() => {

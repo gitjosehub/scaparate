@@ -1,14 +1,10 @@
 import React from "react";
-// import useContextoRutas from "../hooks/useContextoRutas.js";
 import ListadoRutasInicio from "../componentes/ListadoRutasInicio.jsx";
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const Home = () => {
-
-    // Desestructuración del contexto que recibimos por el hook.
-    // const { rutasInicio } = useContextoRutas();
 
     return (
         <React.Fragment>
@@ -19,14 +15,6 @@ const Home = () => {
                 </h1>
                 </Col>
             </Row>
-            {/* <Row>
-            <Col xs={12} sm={6}>
-            <h5 className="text-center mb-4">Últimas Rutas</h5>
-            </Col>
-            <Col>
-            <h5 className="text-center mb-4"></h5>
-            </Col>
-            </Row> */}
             <Row className="g-1">
                 <Col xs={12} sm={6} className="rounded-2 p-3 ms-auto" style={{ border: '2px solid #139408' }}>
                 <h3 className="text-center subtitulo-pagina">Últimas Rutas disponibles</h3>
@@ -43,10 +31,6 @@ const Home = () => {
                 </ul>
                 </Col>
             </Row>
-            
-            {/* <ListadoRutas listadoRutas={rutasInicio} listadoCompleto={false}/> */}
-            {/* <FormularioRutas /> */}
-            {/* <ListadoRutas /> */}
         </React.Fragment>
     );
 }

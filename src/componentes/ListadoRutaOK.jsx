@@ -66,9 +66,6 @@ const ListadoRuta = (props) => {
     // console.log(cantiComentarios[0].contador);
     // console.log(titulo);
     // console.log(autorRuta[0].nick);
-    console.log(usuario.id);
-    console.log(codUsuR);
-    console.log('---------------------------');
 
     // Estado local para confirmar eliminación.
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
@@ -184,8 +181,6 @@ const ListadoRuta = (props) => {
                     >activar
                     </Button>
                 )}
-                    {usuario.id === codUsuR && (
-                    <>
                     <Button variant="outline-success" style={{ flex: 1 }}
                     as={Link} to="editaruta"
                     id={codRuta}
@@ -211,8 +206,6 @@ const ListadoRuta = (props) => {
                     }}
                     >eliminar
                     </Button>
-                    </>
-                    )}
                 </ButtonGroup>
             </Card>
             {confirmandoEliminar && (
