@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink, Link } from 'react-router-dom';
+import useContextoUsuarios from "../../hooks/useContextoUsuarios.js";
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -10,6 +11,9 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Logo from "../../assets/img/scapaFondogris.png";
 
 const BarraNavega = () => {
+
+    // Desestructuración del contexto.
+    const { sesionIniciada } = useContextoUsuarios();
 
     return (
         <React.Fragment>
@@ -23,8 +27,10 @@ const BarraNavega = () => {
                             </Navbar.Brand>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">
+                            {sesionIniciada && (
                                 <Nav className="me-auto">
                                     {/* Eliminar 'exact' y utilizar 'className' con función para manejar la clase activa */}
+                                    
                                     <NavLink to="/rutas" className={({ isActive }) => { return isActive ? "nav-link active" : "nav-link"; }}>
                                         Rutas
                                     </NavLink>
@@ -46,7 +52,9 @@ const BarraNavega = () => {
                                             Comentarios
                                         </NavDropdown.Item>
                                     </NavDropdown>
+                                    
                                 </Nav>
+                                )}
                             </Navbar.Collapse>
                         </Container>
                     </Navbar>

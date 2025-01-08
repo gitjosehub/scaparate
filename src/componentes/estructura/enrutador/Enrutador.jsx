@@ -14,6 +14,7 @@ import Comunidad from "../../../paginas/Comunidad.jsx";
 import FormularioRutas from "../../FormularioRutas.jsx";
 import MostrarRuta from "../../MostrarRuta.jsx";
 import Error from "../../../paginas/Error.jsx";
+import ProtegerNavegacion from "../../ProtegerNavegacion.jsx";
 import ConfirmarEliminacionRuta from "../../ConfirmarEliminacionRuta.jsx";
 import ListadoComentarios from "../../ListadoComentarios.jsx";
 

@@ -284,7 +284,7 @@ const ProveedorUsuarios = ({ children }) => {
                 // de la aplicación y modificamos el estado sesionIniciada.
                 if (session) {
                     // Con el hook navegar lo redirigimos hacia la parte privada.
-                    navegar("/");
+                    // navegar("/");
                     // Cambiamos el estado de sesionIniciada.
                     setSesionIniciada(true);
                     // DEBERIA DE TENER YA REGISTRADOS, EL ESTADO ????

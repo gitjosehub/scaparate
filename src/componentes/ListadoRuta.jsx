@@ -40,8 +40,8 @@ const ListadoRuta = (props) => {
     const participa = participacionRutas.some(
         (participacion) => participacion.codUsuPR === usuario.id && participacion.codRutaPR === codRuta
     );
-    console.log(`en ${titulo} participa? ${participa}`);
-    console.log(usuario.id);
+    // console.log(`en ${titulo} participa? ${participa}`);
+    // console.log(usuario.id);
 
     // Conseguir los datos del autor de la ruta, con codUsuR y el estado registrados.
     const autorRuta = registrados.filter((usuarioAnterior) => {

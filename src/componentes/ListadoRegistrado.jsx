@@ -21,17 +21,17 @@ const ListadoRegistrado = (props) => {
             </Toast.Header>
             <Toast.Body className="p-0">
             <ButtonGroup aria-label="Acciones" className="w-100">
-              <Button variant="outline-success" className="flex-fill"
+              <Button variant="outline-success" className="flex-fill" size="sm"
                 as={Link}
                 onClick={pasar}
               >Solicitar
               </Button>
-              <Button variant="outline-success" className="flex-fill"
+              <Button variant="outline-success" className="flex-fill" size="sm"
                 as={Link}
                 onClick={pasar}
               >Admitir
               </Button>
-              <Button variant="outline-danger" className="flex-fill"
+              <Button variant="outline-danger" className="flex-fill" size="sm"
                 as={Link}
                 onClick={pasar}
               >Denegar

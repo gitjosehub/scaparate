@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import useContextoRutas from "../hooks/useContextoRutas";
+import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
+import useContextoRutas from "../hooks/useContextoRutas.js";
 import { useNavigate } from "react-router-dom";
 
 import "./FormularioRutas.css";
@@ -23,6 +24,7 @@ const FormularioRutas = ({accion}) => {
         erroresFormulario,
         provincias,
         localidades } = useContextoRutas();
+    const { usuario } = useContextoUsuarios();
 
     // Hook para trabajar con las rutas de router-dom de React.
     const navegar = useNavigate();
@@ -231,7 +233,7 @@ const FormularioRutas = ({accion}) => {
                                 // if (validarFormulario(evento)) {
                                   if (accion === "crear") {
                                     // crearRuta(usuario.id);
-                                    crearRuta("7b75624a-4002-479a-b463-1e82f39d74c0");
+                                    crearRuta(usuario.id);
                                     navegar("../");
                                   } else {
                                     editarRuta();

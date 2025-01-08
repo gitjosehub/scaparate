@@ -33,7 +33,7 @@ const ControlSesion = () => {
     return (
         <React.Fragment>
           { sesionIniciada ? (
-              <Button variant="outline-success" 
+              <Button variant="outline-success" size="sm"
                 onClick={(evento) => {
                   evento.preventDefault();
                   setShow(true);
@@ -67,7 +67,7 @@ const ControlSesion = () => {
         dialogClassName="modal-60w"
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title id="example-custom-modal-styling-title">
             Iniciar sesion
           </Modal.Title>

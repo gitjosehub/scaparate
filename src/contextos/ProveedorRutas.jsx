@@ -128,6 +128,8 @@ const ProveedorRutas = ({ children }) => {
           setErrores(errorConexion);
         } finally {
           setCargando(false);
+          // console.log(`PERO AQUI SI QUE ESTAS:`);
+          // obtenerListadoParticipacion();
         }
     };
 
@@ -522,15 +524,17 @@ const ProveedorRutas = ({ children }) => {
           setErrores(errorConexion);
       } finally {
           setCargando(false);
-          obtenerListadoParticipacion();
+          setParticipacionRuta(valorInicialParticipar);
+          obtenerListadoParticipacion(idUsu);
       }
     };
 
     // Función asíncrona para conseguir las rutas desde Supabase.
-    const obtenerListadoParticipacion = async () => {
+    const obtenerListadoParticipacion = async (idUsu) => {
       try {
         setCargando(true);
-        const idUsu="7b75624a-4002-479a-b463-1e82f39d74c0";
+        console.log(`el MENDAAAAAAAA ES ${idUsu}`);
+        // const idUsu="7b75624a-4002-479a-b463-1e82f39d74c0";
         // Consulta a la base de datos de supabase.
         const { data, error } = await supabaseConexion
           .from("participaruta")
@@ -1045,7 +1049,8 @@ const ProveedorRutas = ({ children }) => {
         obtenerProvincias();
         obtenerLocalidades();
         contarComentariosRutas();
-        obtenerListadoParticipacion();
+        // console.log(`TE NECESITO: ${usuario.id}`);
+        // obtenerListadoParticipacion();
         // obtenerRuta('42f3097c-cbc5-44c4-9362-c951ded41b95');
         // console.log('llamada a obtenerListadoComentarios');
         // obtenerListadoComentarios();

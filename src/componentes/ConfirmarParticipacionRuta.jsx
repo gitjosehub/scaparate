@@ -7,10 +7,11 @@ import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
 
 const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParticipar }) => {
 
-    // Deconstrucción del contexto a través del hook, con estados y funciones
+    // Deconstrucción de los contextos a través del hook, con estados y funciones
     // que necesitamos.
     const { rutas, 
         ruta, 
@@ -21,6 +22,7 @@ const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParti
         participacionRuta,
         crearParticipacion,
         actualizarDatoFormularioParticipar } = useContextoRutas();
+    const { usuario } = useContextoUsuarios();
 
     // Hook para trabajar con las rutas de router-dom de React.
     const navegar = useNavigate();
@@ -52,7 +54,7 @@ const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParti
                                 (evento) => {
                                     evento.preventDefault();
                                     // eliminarRuta(ruta.codRuta);
-                                    crearParticipacion("7b75624a-4002-479a-b463-1e82f39d74c0");
+                                    crearParticipacion(usuario.id);
                                     
                                     setConfirmandoParticipar(false);
                                     navegar("/rutas");
