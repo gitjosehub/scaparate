@@ -10,7 +10,7 @@ const TarjetaRuta = () => {
 
     // Desestructuración de los contextos recibidos a través del hook.
     const { ruta, mostrandoRuta, cerrarMostrando } = useContextoRutas();
-    const { obtenerListadoRegistrados, registrados } = useContextoUsuarios();
+    const { registrados } = useContextoUsuarios();
 
     // Conseguir los datos del autor de la ruta, con codUsuR y el estado registrados.
     const autorRuta = registrados.filter((usuarioAnterior) => {

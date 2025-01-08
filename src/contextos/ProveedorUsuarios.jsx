@@ -1,7 +1,6 @@
 import React, { useState, useEffect, createContext } from "react";
 import { supabaseConexion } from "../config/supabase.js";
 import { useNavigate } from "react-router-dom";
-import { use } from "react";
 
 const ContextoUsuarios = createContext();
 
@@ -41,8 +40,6 @@ const ProveedorUsuarios = ({ children }) => {
     const [errorUsuario, setErrorUsuario] = useState(valorInicialCadena);
     const [errores, setErrores] = useState(valorInicialCadena);
     const [erroresFormuSesion, setErroresFormuSesion] = useState(valorInicialArray);
-    const [erroresFormularioIniciar, setErroresFormularioIniciar] = useState(valorInicialArray);
-    const [erroresFormularioCrear, setErroresFormularioCrear] = useState(valorInicialArray);
     const [cargando, setCargando] = useState(valorInicialFalse);
 
     // Función asíncrona para crear una cuenta de usuario (método signUp de auth).
@@ -70,16 +67,11 @@ const ProveedorUsuarios = ({ children }) => {
             }
             // Actualizamos estado usuario.
             setUsuario(usuarioCompleto);
-            // setUsuario(data.user);
-            console.log('en crearCuenta AHORA QUE TENGO EN USUARIO:');
-            // console.log('data.user');
-            console.log(usuarioCompleto);
             // Controlamos el posible error del método signUp.
             if (!error) {
                 // Cambiamos el estado de sesionIniciada (porque no hay mail de confirmación de cuenta).
                 setSesionIniciada(true);
                 // Realizamos insert en tabla usuario (para completar datos del usuario).
-                // console.log(datosSesion);
                 const { error: errorUsuario } = await supabaseConexion
                 .from('usuario')
                 .insert({
@@ -90,12 +82,8 @@ const ProveedorUsuarios = ({ children }) => {
                     imagen: datosSesion.imagen,
                 });
                 if (errorUsuario) {
-                    console.log('sale por error de insert');
                     setErrorUsuario(errorUsuario);
-                } else {
-                    console.log('debes de ver a ...');
-                    console.log(data.user.id);
-                }
+                } 
             } else {
                 setErrorUsuario(error);
             }
@@ -108,7 +96,6 @@ const ProveedorUsuarios = ({ children }) => {
 
     // Función asíncrona para que el usuario inicie sesión.
     const iniciarSesion = async () => {
-        console.log('entrando en iniciarSesion');
         // Inicializar valores de estados antes de iniciar la nueva sesión.
         setUsuario(valorInicialUsuario);
         setDatosSesion(valorInicialSesion);
@@ -123,38 +110,23 @@ const ProveedorUsuarios = ({ children }) => {
                         emailRedirectTo: 'http://localhost:5173/',
                         },
             });
-            // Comprobar el objeto que nos devuelve la consulta.
-            // console.log(data);
             // Comprobamos posible error en la consulta con el método signInWithPassword.
             if (error) {
                 setErrorUsuario(error.message);
             } else {
                 // Obtenemos los datos del usuario para nuestro estado,
                 // añadiendo información de la tabla usuario.
-                // setUsuario(userData.user);
-                console.log('a por la segunda consulta ...');
                 const usuarioInicial = userData.user;
                 const idUsuario = usuarioInicial.id;
-                console.log(`idUsuario es: ${idUsuario}`);
-                
-                // console.log('esto es data.user');
-                // console.log(data.user);
-                //           setUsuario(usuarioCompleto);
                 // Consulta a la tabla usuario para obtener información adicional.
                 const { data: usuarioData, error2 } = await supabaseConexion
                 .from("usuario")
                 .select("*")
                 .eq("codUsuario", idUsuario);
-                console.log('realizando segunda consulta');
                 // Controlamos posible error en la consulta.
                 if (error2) {
                     setErrorUsuario(error2.message);
-                    console.log('errando en segunda consulta');
                 } else {
-                    console.log('no hay error en segunda consulta');
-                    console.log(usuarioData);
-                    console.log(usuarioData[0].nick);
-                    console.log(usuarioData[0].imagen);
                     // Guardamos toda la información completa del usuario.
                     const usuarioCompleto = {
                         ...usuarioInicial,
@@ -163,9 +135,6 @@ const ProveedorUsuarios = ({ children }) => {
                     }
                     // Actualizamos estado usuario.
                     setUsuario(usuarioCompleto);
-                    console.log('AHORA QUE TENGO EN USUARIO:');
-                    console.log(usuarioCompleto);
-                    // console.log(usuario);
                 }
             }
         } catch (error) {
@@ -180,7 +149,6 @@ const ProveedorUsuarios = ({ children }) => {
         try {
             await supabaseConexion.auth.signOut();
             // Redirigimos a la ruta de la parte pública.
-            // navegar("login");
             // Modificamos el estado sesionIniciada.
             setSesionIniciada(false);
             setUsuario(valorInicialUsuario);
@@ -194,63 +162,19 @@ const ProveedorUsuarios = ({ children }) => {
 
     // Función asíncrona para conseguir listado usuarios o registrados desde Supabase.
     const obtenerListadoRegistrados = async () => {
-        console.log('entrando en obtListReg: usuario.id y despues parametro id');
-        // console.log(usuario.id);
-        // console.log(id);
         try {
-        setCargando(true);
-        // Consulta a la base de datos de supabase.
-        const { data, error } = await supabaseConexion
-            .from("usuario")
-            .select(`*`);
-
-//         const { data, error } = await supabaseConexion
-//   .from('usuario')
-//   .select('*')
-//   .order('codUsuario');
-
-// const { data, error } = await supabaseConexion
-// .from('usuario')
-// .select(`
-//   *,
-//   seguidor (
-//     codUsuP,
-//     codUsuS,
-//     estado
-//   )
-// `)
-// .leftJoin('seguidor', 'seguidor.codUsuP = usuario.codUsuario')
-// .order('usuario.codUsuario');
-
-            // Nueva consulta
-//             const { data, error } = await supabaseConexion
-//   .from('usuario')
-//   .select(`
-//     *,
-//     seguidor (
-//       codUsuP,
-//       codUsuS,
-//       estado
-//     )
-//   `)
-//   .leftJoin('seguidor', `
-//     seguidor.codUsuP = usuario.codUsuario AND seguidor.codUsuS = ${id} 
-//     OR seguidor.codUsuS = usuario.codUsuario AND seguidor.codUsuP = ${id}
-//   `)
-//   .order('usuario.codUsuario');
-        // console.log('el data de la consulta es:');
-        // console.log(data);
-        // Controlamos si ha habido error o no.
-        if (error) {
-          setErrores(error); 
-          console.log('error en obtListReg');
-        } else {
-          // Actualizamos el estado registrados.
-          setRegistrados(data);
-        //   console.log('obtenerListadoRegistrados:');
-        //   console.log(data);
-        }
-        // error ? setErrores(error) : setRutas(data);
+          setCargando(true);
+          // Consulta a la base de datos de supabase.
+          const { data, error } = await supabaseConexion
+              .from("usuario")
+              .select(`*`);
+          // Controlamos si ha habido error o no.
+          if (error) {
+            setErrores(error); 
+          } else {
+            // Actualizamos el estado registrados.
+            setRegistrados(data);
+          };
         } catch (errorConexion) {
           setErrores(errorConexion);
         } finally {
@@ -352,14 +276,11 @@ const ProveedorUsuarios = ({ children }) => {
     // Retorna un valor booleano dependiendo de si ha habido errores.
     const validarFormulario = (evento) => {
         // Accedemos al elemento form.
-        console.log('entrando en validarformulario');
-        console.log(evento.target.parentNode.parentNode);
         const formulario = evento.target.parentNode.parentNode;
         // Creamos un array para los posibles errores del formulario.
         let listaErrores = [];
         // Recorremos el formulario comprobando cada elemento del mismo.
         for (let i = 0; i < formulario.elements.length - 2; i++) {
-            console.log(formulario.elements[i]);
           let elementoErrores = validarInputFormulario(formulario.elements[i]);
           // Añadimos al listado general los posibles errores de cada elemento.
           listaErrores = [...listaErrores, ...elementoErrores];
@@ -372,7 +293,6 @@ const ProveedorUsuarios = ({ children }) => {
         }
         // Modificamos el estado que se encarga de los errores.
         setErroresFormuSesion(listaErrores);
-        console.log(listaErrores);
         // Retorna true o false según haya habido errores o no.
         return listaErrores.length === 0;
       };
@@ -392,15 +312,12 @@ const ProveedorUsuarios = ({ children }) => {
                 // Dependiendo de si hay o no sesión redirigimos al usuario a una parte u otra
                 // de la aplicación y modificamos el estado sesionIniciada.
                 if (session) {
-                    // Con el hook navegar lo redirigimos hacia la parte privada.
-                    // navegar("/");
                     // Cambiamos el estado de sesionIniciada.
                     setSesionIniciada(true);
-                    // DEBERIA DE TENER YA REGISTRADOS, EL ESTADO ????
+                    // Obtenemos listado de usuarios registrados.
                     obtenerListadoRegistrados();
                 } else {
-                    // Utilizamos el hook navegar para dirigirlo hacia login.
-                    // navegar("login");
+                    // Utilizamos el hook navegar para dirigirlo hacia inicio.
                     navegar("/");
                     // No hay sesión, por tanto modificamos el estado de sesionIniciada.
                     setSesionIniciada(false);
@@ -410,11 +327,9 @@ const ProveedorUsuarios = ({ children }) => {
             }
         );
     }, []);
-    // console.log(`sesionIniciada ${sesionIniciada}`);
     // Objeto con los estados y funciones para exportar del contexto.
     const datosAExportar = {
         sesionIniciada,
-        // datosSesion,
         crearCuenta,
         iniciarSesion,
         cerrarSesion,
@@ -424,9 +339,6 @@ const ProveedorUsuarios = ({ children }) => {
         validarFormulario,
         erroresFormuSesion,
         inicializarErroresFormuSesion,
-        // erroresFormularioIniciar,
-        // erroresFormularioCrear,
-        // setSesionIniciada,
         usuario,
     };
     return (

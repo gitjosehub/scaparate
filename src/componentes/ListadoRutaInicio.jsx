@@ -1,7 +1,4 @@
-import React, { useState } from "react"; // he quitado: , { useEffect }
-import { Link } from "react-router-dom";
-import useContextoRutas from "../hooks/useContextoRutas.js";
-import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
+import React, { useState } from "react"; 
 import { formatearFecha } from "../bibliotecas/funciones.js";
 
 import Card from 'react-bootstrap/Card';
@@ -9,15 +6,7 @@ import Card from 'react-bootstrap/Card';
 
 const ListadoRuta = (props) => {
     // Desestructuración de props.
-    const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia, descripcion, fechaCreacion, imagen } = props.datosRuta;
-
-    // Desestructuración de los contextos recibidos a través del hook.
-    const { ruta, obtenerRuta, cerrarMostrando, confirmarEliminacion, eliminandoRuta, obtenerListadoComentarios } = useContextoRutas();
-
-    const { usuario } = useContextoUsuarios();
-
-    // Estado local para confirmar eliminacion.
-    const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
+    const { codRuta, titulo, localidad, provincia, fechaCreacion, imagen } = props.datosRuta;
 
     return (
         <React.Fragment>

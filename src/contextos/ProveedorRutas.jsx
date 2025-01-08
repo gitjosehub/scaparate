@@ -54,15 +54,8 @@ const ProveedorRutas = ({ children }) => {
       codUsuPR: "",
       codRutaPR: "",
       valoracion: "",
-    }
-    // const valorInicialProvincia = {
-    //   codProvincia: "",
-    //   nombreProvincia: "",
-    // };
-    // const valorInicialLocalidad = {
-    //   codLocalidad: "",
-    //   nombreLocalidad: "",
-    // };
+    };
+
     // Creación de estados.
     const [ruta, setRuta] = useState(valorInicialRuta);
     const [rutas, setRutas] = useState(valorInicialArray);
@@ -95,47 +88,25 @@ const ProveedorRutas = ({ children }) => {
               provincia (codProvincia, nombreProvincia))
               `);
               // .eq("activa", true); lo quito para activar.
-        // console.log(data);
         // Controlamos si ha habido error o no.
         if (error) {
           setErrores(error); 
         } else {
           // Antes de pasarlo al estado, simplificamos y nos quedamos con 
           // la info que nos interesa, aplanando la estructura del objeto.
-          // const simplificaRutas = data.map(elemento => ({
-          //   codRuta: elemento.codRuta,
-          //   fechaCreacion: elemento.fechaCreacion,
-          //   titulo: elemento.titulo,
-          //   descripcion: elemento.descripcion,
-          //   dificultad: elemento.dificultad,
-          //   distancia: elemento.distancia,
-          //   desnivel: elemento.desnivel,
-          //   imagen: elemento.imagen,
-          //   codUsuR: elemento.codUsuR,
-          //   codLocalR: elemento.codLocalR,
-          //   codProvR: elemento.codProvR,
-          //   localidad: elemento.localidad.nombreLocalidad,
-          //   provincia: elemento.localidad.provincia.nombreProvincia,
-          // }));
           // LLamada a la función externa para simplificar estructura.
           const simplificaRutas = simplificarRutas(data);
           setRutas(simplificaRutas);
-          // console.log('obtenerListadoRutas ylistado de rutas:');
-          // console.log(simplificaRutas);
         }
-        // error ? setErrores(error) : setRutas(data);
         } catch (errorConexion) {
           setErrores(errorConexion);
         } finally {
           setCargando(false);
-          // console.log(`PERO AQUI SI QUE ESTAS:`);
-          // obtenerListadoParticipacion();
         }
     };
 
     // Función asíncrona para conseguir una determinada ruta de Supabase.
     const obtenerRuta = async (id) => {
-      // console.log(`entrando en obtenerRuta, ${id}`);
         // Inicializar el estado error.
       setErrores(valorInicialCadena);
       try {
@@ -150,11 +121,9 @@ const ProveedorRutas = ({ children }) => {
                   )
                 `)
                 .eq("codRuta", id);
-          // error ? setErrores(error) : setRuta(data[0]);
           if (error) {
             setErrores(error)
           } else {
-            // console.log(data[0]);
             // Simplificamos el objeto y lo pasamos al estado.
             const simplificaRuta = {
               codRuta: data[0].codRuta,
@@ -173,15 +142,11 @@ const ProveedorRutas = ({ children }) => {
               provincia: data[0].localidad.provincia.nombreProvincia,
             };
             setRuta(simplificaRuta);
-            // console.log(simplificaRuta);
           }
-          // console.log('en obtenerRuta y ...');
-          // console.log(data[0]);
       } catch (errorConexion) {
           setErrores(errorConexion);
       } finally {
           setCargando(false);
-          console.log('saliendo de obtenerRuta');
       }
     };
 
@@ -196,13 +161,11 @@ const ProveedorRutas = ({ children }) => {
               {
                 titulo: ruta.titulo,
                 descripcion: ruta.descripcion,
-                // localidad: ruta.localidad,
                 dificultad: ruta.dificultad,
                 distancia: ruta.distancia,
                 desnivel: ruta.desnivel,
                 imagen: ruta.imagen,
                 codUsuR: usuario_id,
-                // codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
                 codLocalR: ruta.codLocalR,
                 codProvR: ruta.codProvR
               },
@@ -210,17 +173,12 @@ const ProveedorRutas = ({ children }) => {
             .select();
           // Controlamos el posible error en la inserción del registro.
           if (!error) {
-            console.log("no ha habido error.");
             // Inicializamos el estado ruta.
             setRuta(valorInicialRuta);
             // Actualizamos el estado rutas (array de objetos ruta), añadiendo la nueva ruta.
             setRutas([...rutas, ruta]);
-            console.log('ruta añadida y ...');
-            console.log(rutas);
           } else {
-            console.log("pasa por error");
             setErrores(error);
-            // setErrores(errori);
           }
         } catch (errorConexion) {
             setErrores(errorConexion);
@@ -232,8 +190,6 @@ const ProveedorRutas = ({ children }) => {
 
     // Función asíncrona para editar/actualizar una ruta en la BDatos.
     const editarRuta = async () => {
-      console.log('entrando en editarRuta.');
-      console.log(ruta);
         try {
           setCargando(true);
           // Consulta a la base de datos para actualizar tabla ruta.
@@ -245,9 +201,7 @@ const ProveedorRutas = ({ children }) => {
               dificultad: ruta.dificultad,
               distancia: ruta.distancia,
               desnivel: ruta.desnivel,
-              // codUsuR: usuario_id,
               codUsuR: ruta.codUsuR,
-              // codUsuR: "1e9a4f36-fcb5-4a34-a11d-73cea10d7569",
               codLocalR: ruta.codLocalR,
               codProvR: ruta.codProvR,
               imagen: ruta.imagen
@@ -262,18 +216,14 @@ const ProveedorRutas = ({ children }) => {
                 : rutaAnterior;
             });
             setRutas(rutasEditadas);
-            console.log(rutasEditadas);
             setRuta(valorInicialRuta);
           } else {
             setErrores(error);
-            // setErrores(errori);
           }
-          
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
             setCargando(false);
-            console.log('saliendo de editarRuta');
         }
     };
 
@@ -305,67 +255,8 @@ const ProveedorRutas = ({ children }) => {
         }
     };
 
-    // Función asíncrona para activar (que admin la publique) una ruta en la BDatos.
-    // const activarRuta = async () => {
-    //   console.log('entrando en activarRuta.');
-    //   console.log(`activa es ${ruta.activa}`);
-    //   console.log(ruta.codRuta);
-    //     try {
-    //       setCargando(true);
-    //       // Definimos las variables fuera del if/else.
-    //       let error = null;
-    //       let data = null;
-    //       // Consulta a la base de datos para actualizar la tabla ruta.
-    //       if (ruta.activa) {
-    //         console.log('consulta para desactivar');
-    //           // Si está activa, la desactivamos.
-    //           ({ data, error } = await supabaseConexion
-    //               .from("ruta")
-    //               .update([{ activa: false }])
-    //               .eq("codRuta", ruta.codRuta));
-    //       } else {
-    //         console.log('consulta para activar');
-    //           // Si no está activa, la activamos.
-    //           ({ data, error } = await supabaseConexion
-    //             .from("ruta")
-    //             .update([{ activa: true }])
-    //             .eq("codRuta", ruta.codRuta));
-    //       };
-    //       console.log('valor de error');
-    //       console.log(error);
-
-          
-    //       // Comprobamos si ha habido errores o no.
-    //       if (!error) {
-    //         // Modificamos la ruta en el estado rutas.
-    //         const rutasEditadas = rutas.map((rutaAnterior) => {
-    //           return rutaAnterior.codRuta === ruta.codRuta
-    //             ? ruta
-    //             : rutaAnterior;
-    //         });
-    //         setRutas(rutasEditadas);
-    //         console.log(rutasEditadas);
-    //         setRuta(valorInicialRuta);
-    //         setActivandoRuta(false);
-    //       } else {
-    //         setErrores(error);
-    //         console.log(error);
-    //         // setErrores(errori);
-    //       }
-          
-    //     } catch (errorConexion) {
-    //         setErrores(errorConexion);
-    //     } finally {
-    //         setCargando(false);
-    //         console.log('saliendo de activarRuta');
-    //     }
-    // };
-
     // Función asíncrona para desactivar (que admin la bloquee) una ruta en la BDatos.
     const activarRuta = async () => {
-      console.log('entrando en activarRuta.');
-      console.log(`activa ha pasado a ${ruta.activa}`);
-      console.log(ruta.codRuta);
         try {
           setCargando(true);
           // Consulta a la base de datos para actualizar la tabla ruta.
@@ -382,28 +273,20 @@ const ProveedorRutas = ({ children }) => {
                 : rutaAnterior;
             });
             setRutas(rutasEditadas);
-            console.log(rutasEditadas);
             setRuta(valorInicialRuta);
             setActivandoRuta(false);
           } else {
             setErrores(error);
-            console.log(error);
-            // setErrores(errori);
           }
-          
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
             setCargando(false);
-            console.log('saliendo de activarRuta');
         }
     };
 
     // Función asíncrona para desactivar (que admin la bloquee) una ruta en la BDatos.
     const desactivarRuta = async () => {
-      console.log('entrando en desactivarRuta.');
-      console.log(`activa ha pasado a ${ruta.activa}`);
-      console.log(ruta.codRuta);
         try {
           setCargando(true);
           // Consulta a la base de datos para actualizar la tabla ruta.
@@ -420,26 +303,21 @@ const ProveedorRutas = ({ children }) => {
                 : rutaAnterior;
             });
             setRutas(rutasEditadas);
-            console.log(rutasEditadas);
             setRuta(valorInicialRuta);
             setActivandoRuta(false);
           } else {
             setErrores(error);
-            console.log(error);
-            // setErrores(errori);
           }
           
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
             setCargando(false);
-            console.log('saliendo de desactivarRuta');
         }
     };
 
     // Función asíncrona para cambiar activa en estado ruta.
     const cambiarRuta = async (id, activaOno) => {
-      console.log(`entrando en cambiarRuta, ${id}`);
         // Inicializar el estado error.
         setErrores(valorInicialCadena);
         try {
@@ -454,11 +332,9 @@ const ProveedorRutas = ({ children }) => {
                     )
                   `)
                   .eq("codRuta", id);
-            // error ? setErrores(error) : setRuta(data[0]);
             if (error) {
               setErrores(error)
             } else {
-              console.log(data[0]);
               // Simplificamos el objeto y lo pasamos al estado.
               const simplificaRuta = {
                 codRuta: data[0].codRuta,
@@ -477,15 +353,11 @@ const ProveedorRutas = ({ children }) => {
                 provincia: data[0].localidad.provincia.nombreProvincia,
               };
               setRuta(simplificaRuta);
-              console.log(simplificaRuta);
             }
-            // console.log('en obtenerRuta y ...');
-            // console.log(data[0]);
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
             setCargando(false);
-            console.log('saliendo de cambiarRuta');
         }
     };
 
@@ -493,8 +365,6 @@ const ProveedorRutas = ({ children }) => {
     const crearParticipacion = async (idUsu) => {
       try {
         setCargando(true);
-        console.log('tenemos datos ...');
-        console.log(`usuario: ${idUsu} codRuta: ${ruta.codRuta} valor: ${participacionRuta.valoracion}`);
         // Consulta a la base de datos.
         const { data, error } = await supabaseConexion
           .from("participaruta")
@@ -502,23 +372,16 @@ const ProveedorRutas = ({ children }) => {
             {
               codUsuPR: idUsu,
               codRutaPR: ruta.codRuta,
-              // titulo: ruta.titulo,
               valoracion: participacionRuta.valoracion
             },
           ])
           .select();
         // Controlamos el posible error en la inserción del registro.
         if (!error) {
-          console.log("no ha habido error, se ha creado registro.");
-          console.log(data);
           // Actualizamos el estado participacionRutas con la nueva.
           setParticipacionRutas([...participacionRutas, participacionRuta]);
-          // console.log('ruta añadida y ...');
-          // console.log(rutas);
         } else {
-          console.log("pasa por error");
           setErrores(error);
-          // setErrores(errori);
         }
       } catch (errorConexion) {
           setErrores(errorConexion);
@@ -533,23 +396,18 @@ const ProveedorRutas = ({ children }) => {
     const obtenerListadoParticipacion = async (idUsu) => {
       try {
         setCargando(true);
-        console.log(`el MENDAAAAAAAA ES ${idUsu}`);
-        // const idUsu="7b75624a-4002-479a-b463-1e82f39d74c0";
         // Consulta a la base de datos de supabase.
         const { data, error } = await supabaseConexion
           .from("participaruta")
           .select(`
             *`)
           .eq("codUsuPR", idUsu);
-        // console.log(data);
         // Controlamos si ha habido error o no.
         if (error) {
           setErrores(error); 
         } else {
           // Actualizamos el estado correspondiente.
           setParticipacionRutas(data);
-          console.log('listado de participacion ...');
-          console.log(data);
         };
       } catch (errorConexion) {
         setErrores(errorConexion);
@@ -573,7 +431,6 @@ const ProveedorRutas = ({ children }) => {
             .eq("activa", true)
             .order("fechaCreacion", { ascending: false })
             .limit(4);
-      // console.log(data);
       // Controlamos si ha habido error o no.
       if (error) {
         setErrores(error); 
@@ -581,10 +438,7 @@ const ProveedorRutas = ({ children }) => {
         // LLamada a la función externa para simplificar estructura.
         const simplificaRutas = simplificarRutas(data);
         setRutasInicio(simplificaRutas);
-        // console.log('rutas de inicio o home:');
-        // console.log(simplificaRutas);
       }
-      // error ? setErrores(error) : setRutas(data);
       } catch (errorConexion) {
         setErrores(errorConexion);
       } finally {
@@ -592,69 +446,8 @@ const ProveedorRutas = ({ children }) => {
       }
     };
 
-    // Función asíncrona para conseguir los comentarios de las rutas desde Supabase.
-    // CREO QUE NO NECESITO TENER LOS COMENTARIOS DE TODAS LAS RUTAS.
-    // const obtenerListadoComentarios = async () => {
-    //   try {
-    //     setCargando(true);
-    //     // Consulta a la base de datos de supabase.
-      
-    //     const { data, error } = await supabaseConexion
-    //     .from("ruta")
-    //     .select(`
-    //       codRuta,
-    //       conversaruta (
-    //         codUsuCR,
-    //         comentaruta (
-    //           codComenta,
-    //           comentario,
-    //           tipoComenta,
-    //           fecha
-    //         )
-    //       )
-    //     `);
-
-    //     // FORMA DE HACERLO CON RUTAS AHORA.
-    //     // console.log('data o error:');
-    //     // console.log(data, error);
-    //     if (error) {
-    //       setErrores(error); 
-    //       console.log('tenemos error nene');
-    //       console.log(error);
-    //     } else {
-    //       // Antes de pasarlo al estado, simplificamos y nos quedamos con 
-    //       // la info que nos interesa, aplanando la estructura del objeto.
-    //       console.log('ahora viene el mapeo para simplificar');
-    //       // rutas.map((rutaAnterior) => {
-    //       // const simplificaComentarios = data.map((elemento) => {
-    //       //   return {codRuta: elemento.codRuta};
-    //       //   });
-    //       const simplificaComentarios = data.map(elemento => ({
-    //         codRuta: elemento.codRuta,
-    //         comentarios: (elemento.conversaruta || []).map(subelemento => ({
-    //           codUsuCR: subelemento.codUsuCR,
-    //           codComenta: subelemento.comentaruta.codComenta,
-    //           comentario: subelemento.comentaruta.comentario,
-    //           tipoComenta: subelemento.comentaruta.tipoComenta,
-    //           fecha: subelemento.comentaruta.fecha
-    //         }))
-    //       }));
-    //       setComentariosRutas(simplificaComentarios);
-    //       console.log('tenemos simplificado:');
-    //       console.log(simplificaComentarios);
-    //     }
-    //   } catch (errorConexion) {
-    //     setErrores(errorConexion);
-    //   } finally {
-    //     setCargando(false);
-    //   }
-    // };
-
     // Función asíncrona para conseguir los comentarios de una ruta. 
     const obtenerListadoComentarios = async (id) => {
-      // console.log('valor id en funcion de comentarios');
-      // console.log(id);
-      // let id = "42f3097c-cbc5-44c4-9362-c951ded41b95";
       try {
         setCargando(true);
         // Consulta a la base de datos de supabase.
@@ -675,15 +468,10 @@ const ProveedorRutas = ({ children }) => {
         // Comprobamos si ha habido error o no en la consulta.
         if (error) {
           setErrores(error); 
-          console.log('tenemos error nene');
-          console.log(error);
         } else {
           // Antes de pasarlo al estado, simplificamos y nos quedamos con 
           // la info que nos interesa, aplanando la estructura del objeto.
-          // Ademas los ordenamos por la fecha de forma descendente.
-          // console.log('ahora viene el mapeo para simplificar');
-          // console.log(data);
-          
+          // Ademas los ordenamos por la fecha de forma descendente.          
           const simplificaComentarios = data.map(elemento => ({        
               codUsuario: elemento.codUsuCR,
               codComenta: elemento.comentaruta.codComenta,
@@ -695,9 +483,6 @@ const ProveedorRutas = ({ children }) => {
           }))
           .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
           setComentariosRutas(simplificaComentarios);
-          console.log('tenemos simplificado:');
-          console.log(simplificaComentarios);
-          // console.log(comentariosRutas);
         }
       } catch (errorConexion) {
         setErrores(errorConexion);
@@ -708,8 +493,6 @@ const ProveedorRutas = ({ children }) => {
 
     // Función asíncrona para crear una nuevo comentario de ruta en BDatos.
     const crearComentario = async (idUsuario) => {
-      console.log('entrando en crearComentario ...');
-      console.log(comentarioRuta);
       try {
         setCargando(true);
         // Consulta a la base de datos para insertar en comentaruta.
@@ -719,16 +502,11 @@ const ProveedorRutas = ({ children }) => {
             {
               comentario: comentarioRuta.comentario,
               tipoComenta: "publico"
-              // descripcion: ruta.descripcion,
-              // codUsuR: usuario_id,
             },
           ])
           .select();
-          console.log('comentaData de insert en comentaruta');
-          console.log(comentaData);
         // Controlamos el posible error en la inserción del registro.
         if (!error) {
-          console.log("no ha habido error.");
           // Consulta para insertar ahora en conversaruta.
           const { data: conversaData, error2 } = await supabaseConexion
           .from("conversaruta")
@@ -737,42 +515,32 @@ const ProveedorRutas = ({ children }) => {
               codUsuCR: idUsuario,
               codComentaCR: comentaData[0].codComenta,
               codRutaCR: ruta.codRuta
-              // comentario: comentarioRuta.comentario,
-              // tipoComenta: "publico"
-              // descripcion: ruta.descripcion,
-              // codUsuR: usuario_id,
             },
           ])
           .select();
           // Controlamos posible error en inserción en conversaruta.
           if (!error2) {
-            
-            // Actualizamos el estado comentariosRutas (array de comentarios), añadiendo el nuevo.
-            // setComentariosRutas([...comentariosRutas, comentarioRuta]);
             // Inicializamos el estado comentarioRuta.
             setComentarioRuta(valorInicialComentario);
-            // Actualizamos  el estado comentariosRutas.
+            // Actualizamos el estado comentariosRutas.
             obtenerListadoComentarios(ruta.codRuta);
           } else {
             setErrores(error2);
           }
-        // else del error en primera consulta.
+        // Esto viene de else del error en primera consulta.
         } else {
-          console.log("pasa por error");
           setErrores(error);
-          // setErrores(errori);
         }
       } catch (errorConexion) {
           setErrores(errorConexion);
       } finally {
           setCargando(false);
-          // obtenerListadoComentarios();
       }
     };
 
+    // Función asíncrona para eliminar comentario de ruta en BDatos.
     const eliminarComentario = async (id) => {
       try {
-        console.log(`entrando en eliminarComentario con id: ${id}`);
         setCargando(true);
         const { error } = await supabaseConexion
           .from("comentaruta")
@@ -781,13 +549,11 @@ const ProveedorRutas = ({ children }) => {
         // Controlamos si ha habido error en el delete.
         if (!error) {
           // Actualizar el estado comentariosRutas para quitar el eliminado.el método filter del estado comentariosRutas.
-          console.log('no ha habido error');
           const comentariosEditados = comentariosRutas.filter((comentarioAnterior) => {
             return comentarioAnterior.codComenta !== id;
           });
           setComentariosRutas(comentariosEditados);
           setComentarioRuta(valorInicialComentario);
-          console.log(comentariosEditados);
         } else {
           setErrores(error);
         }
@@ -802,28 +568,19 @@ const ProveedorRutas = ({ children }) => {
     // Llamando a la función que hemos creado en Supabase.
     const contarComentariosRutas = async () => {
       try {
-        // console.log('entrando en contarComentarios');
         setCargando(true);
         // Consulta a la base de datos de supabase.
         const { data, error } = await supabaseConexion
           .rpc('count_by_codrutacr');
-        // console.log(data);
         // Controlamos si ha habido error o no.
         if (error) {
           setErrores(error); 
-          console.log(`sale por error`);
-          console.log(error);
         } else {
           // Actualizamos el estado correspondiente.
-          // console.log('estamos contando ...');
-          // console.log(data);
           setContadorComentarios(data);
-          // console.log('rutas de inicio o home:');
-          // console.log(simplificaRutas);
         }
       } catch (errorConexion) {
         setErrores(errorConexion);
-        console.log(`sale por error de conexion ${errorConexion}`);
       } finally {
         setCargando(false);
       }
@@ -831,10 +588,7 @@ const ProveedorRutas = ({ children }) => {
 
     // Función asíncrona para filtrar rutas.
     const filtrarRuta = async (filtros) => {
-      console.log('en filtrarRuta, el objeto es ...');
-      console.log(filtros);
       try {
-        console.log('entrando en try de filtrarRuta');
         setCargando(true);
         // Vamos a ir construyendo la consulta segun los filtros.
         let consulta = supabaseConexion.from("ruta").select(`*,localidad (codLocalidad, codProvL, nombreLocalidad, provincia (codProvincia, nombreProvincia))`);
@@ -848,21 +602,13 @@ const ProveedorRutas = ({ children }) => {
         if (filtros.distancia) {
           consulta = consulta.lte("distancia", filtros.distancia);
         }
-        console.log('consulta de filtrado es ...');
-        console.log(consulta);
         // Realizamos la consulta a la base de datos.
         const { data, error } = await consulta;
         // Controlamos posible error en la consulta.
-        // error ? setErrores(error) : setRutas(data);
-        console.log('¿¿¿ rutas simplificadas, funciona ???');
-        console.log(data);
         if (error) {
           setErrores(error);
-          console.log('paso por error amigo');
         } else {
-          console.log('llamando a la funcion externa');
           const simplificaRutas = simplificarRutas(data);
-          console.log(simplificaRutas);
           setRutas(simplificaRutas);
         }
         
@@ -881,7 +627,6 @@ const ProveedorRutas = ({ children }) => {
           .from("provincia")
           .select("*")
           .order("nombreProvincia", { ascending: true });
-      // console.log(data);
       // Controlamos si ha habido error o no.
       error ? setErrores(error) : setProvincias(data);
       } catch (errorConexion) {
@@ -899,7 +644,6 @@ const ProveedorRutas = ({ children }) => {
           .from("localidad")
           .select("*")
           .order("nombreLocalidad", { ascending: true });
-      // console.log(data);
       // Controlamos si ha habido error o no.
       error ? setErrores(error) : setLocalidades(data);
       } catch (errorConexion) {
@@ -912,26 +656,6 @@ const ProveedorRutas = ({ children }) => {
     // Función para actualizar los datos del campo de formulario de rutas.
     const actualizarDatoFormulario = (evento) => {
         const { name, value, files } = evento.target;
-        // Buscar en estado provincias para actualizar el nombre en el estado
-        // ruta porque solo ha actualizado el codigo, no el nombre de la provincia.
-        // if (name === "codProvR") {
-        //   console.log("entro en el if");
-        //   const provinciaSeleccionada = provincias.find(
-        //     (provincia) => provincia.codProvincia === value
-        //   );
-        //   console.log(`provinciaSeleccionada es: `, provinciaSeleccionada);
-        //   // setRuta({...ruta, provincia: provinciaSeleccionada ? provinciaSeleccionada.nombreProvincia : ""});
-        //   setRuta({ ...ruta, ["provincia"]: provinciaSeleccionada.nombreProvincia});
-        //   // console.log(`provincia es`);
-        //   // console.log(provinciaSeleccionada);
-        // }
-        
-
-        // // Se asignan al estado, que es un objeto clave-valor.
-        // setRuta({ ...ruta, [name]: value });
-        // console.log(`actualizando ruta ...`);
-        // console.log(ruta);
-        // console.log(provincias);
 
         // No hay forma de que actualize los dos a la vez si no es asi.
         // Con los select del formulario (provincia y localidad).
@@ -942,21 +666,18 @@ const ProveedorRutas = ({ children }) => {
               const provinciaSeleccionada = provincias.find(
                   (provincia) => provincia.codProvincia === value
               );
-              // console.log(`provinciaSeleccionada es: `, provinciaSeleccionada);
               nuevaProvincia = provinciaSeleccionada ? provinciaSeleccionada.nombreProvincia : "";
           }
           if (name === "codLocalR") {
             const localidadSeleccionada = localidades.find(
                 (localidad) => localidad.codLocalidad === value
             );
-            // console.log(`localidadSeleccionada es: `, localidadSeleccionada);
             nuevaLocalidad = localidadSeleccionada ? localidadSeleccionada.nombreLocalidad : "";
           }
           // Peculiaridad para imagenesruta (tipo file no utiliza value).
           if (name === "imagenesruta") {
             if (files && files.length > 0) {
-              const nombreArchivo = files[0].name; 
-              // console.log(`Archivo seleccionado: ${nombreArchivo}`);
+              const nombreArchivo = files[0].name;
               // Actualiza el estado ruta (solo para tipo file).
               return {
                   ...prevRuta,
@@ -976,10 +697,6 @@ const ProveedorRutas = ({ children }) => {
               localidad: nuevaLocalidad,
           };
       });
-  
-      // console.log(`actualizando ruta ...`);
-      // console.log(ruta);
-      // console.log(localidades);
     };
 
     // Función para actualizar los datos del campo de formulario de comentarios.
@@ -994,7 +711,6 @@ const ProveedorRutas = ({ children }) => {
       const { name, value } = evento.target;
       // Se asignan al estado, que es un objeto clave-valor.
       setFiltroRuta({ ...filtroRuta, [name]: value });
-      console.log(filtroRuta);
     };
 
     // Función para actualizar los datos del campo del formulario de participar en ruta.
@@ -1002,7 +718,6 @@ const ProveedorRutas = ({ children }) => {
       const { name, value } = evento.target;
       // Se asignan al estado, que es un objeto clave-valor.
       setParticipacionRuta({ ...participacionRuta, [name]: value });
-      console.log(participacionRuta);
     };
 
     // Función para validar elemento input de formulario rutas.
@@ -1069,8 +784,6 @@ const ProveedorRutas = ({ children }) => {
       return listaErroresElemento;
     };
 
-    
-
     // Función para inicializar el estado ruta fuera del contexto.
     const inicializarRuta = () => {
         setRuta(valorInicialRuta);
@@ -1110,16 +823,11 @@ const ProveedorRutas = ({ children }) => {
         obtenerProvincias();
         obtenerLocalidades();
         contarComentariosRutas();
-        // console.log(`TE NECESITO: ${usuario.id}`);
-        // obtenerListadoParticipacion();
-        // obtenerRuta('42f3097c-cbc5-44c4-9362-c951ded41b95');
-        // console.log('llamada a obtenerListadoComentarios');
-        // obtenerListadoComentarios();
     }, []);
 
     // Objeto con la información a exportar del contexto.
     const datosAExportar = {
-        obtenerProvincias, // igual no porque lo hace en el useEffect ???
+        obtenerProvincias, // Se utiliza en el useEffect.
         obtenerLocalidades,
         obtenerListadoRutas,
         obtenerListadoRutasInicio,
@@ -1160,7 +868,6 @@ const ProveedorRutas = ({ children }) => {
         actualizarDatoFormularioComenta,
         actualizarDatoFormularioFiltrar,
         actualizarDatoFormularioParticipar,
-        // validarFormulario,
         inicializarErroresFormulario,
         erroresFormulario,
         cargando,

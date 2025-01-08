@@ -39,7 +39,6 @@ const FormularioRutas = ({accion}) => {
         } else {
           setLocalidadesPorProvincia([]);
         }
-        console.log("en el useEffect:", localidadesPorProvincia);
     }, [ruta.codProvR, localidades]);
 
 

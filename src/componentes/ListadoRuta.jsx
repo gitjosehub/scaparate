@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // he quitado: , { useEffect }
+import React, { useState } from "react"; // he quitado: , { useEffect }
 import { Link } from "react-router-dom";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
@@ -15,60 +15,31 @@ import ConfirmarParticipacionRuta from "./ConfirmarParticipacionRuta.jsx";
 const ListadoRuta = (props) => {
     // Desestructuración de props.
     const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia, descripcion, fechaCreacion, imagen, activa } = props.datosRuta;
-    // console.log(`en listado la ruta ${titulo} esta activa? ${activa}`);
-    // console.log(props.datosRuta);
+    
     // Desestructuración de los contextos recibidos a través del hook.
     const { ruta, obtenerRuta, 
             cambiarRuta, cerrarMostrando, 
             confirmarEliminacion, eliminandoRuta, 
-            activarRuta, obtenerListadoComentarios, 
+            obtenerListadoComentarios, 
             contadorComentarios, 
             participacionRutas } = useContextoRutas();
-    // console.log(imagen);
     const { usuario, registrados } = useContextoUsuarios();
-    // console.log(usuario);
-    // console.log('llega a ListadoRuta y registrados:');
-    // console.log(registrados);
-    // console.log(`participacion ${titulo}`)
-    // console.log(participacionRutas);
-    // Esto no se hace aqui, solo para probar ahora. ?????!!!!!!
-    useEffect(() => {
-        // obtenerListadoRegistrados();
-          }, []);
-    
+
     // Saber si el usuario participa en la ruta o no.
     const participa = participacionRutas.some(
         (participacion) => participacion.codUsuPR === usuario.id && participacion.codRutaPR === codRuta
     );
-    // console.log(`en ${titulo} participa? ${participa}`);
-    // console.log(usuario.id);
 
     // Conseguir los datos del autor de la ruta, con codUsuR y el estado registrados.
     const autorRuta = registrados.filter((usuarioAnterior) => {
         return usuarioAnterior.codUsuario === codUsuR;
     });
     let nickAutor = autorRuta.length <= 0 ? "desconocido" : autorRuta[0].nick;
-    // Conseguir el número de comentarios que tiene la ruta (estado array contadorComentarios).
-    // const cantiComentarios = contadorComentarios.filter((rutaAnterior) => {
-    //     return rutaAnterior.codrutacr === codRuta;
-    // });
+    // Calcular cantidad de comentarios de cada ruta.
     const cantiComenta = contadorComentarios.filter((rutaAnterior) => {
         return rutaAnterior.codrutacr === codRuta;
     });
-    // console.log(cantiComenta);
     let totalComenta = cantiComenta.length <= 0 ? 0 : cantiComenta[0].contador;
-    // if (cantiComenta.length <=0) {
-    //     totalComenta = 0;
-    // } else {
-    //     totalComenta = cantiComenta[0].contador;
-    // }
-    // console.log(totalComenta);
-    // console.log(cantiComentarios[0].contador);
-    // console.log(titulo);
-    // console.log(autorRuta[0].nick);
-    console.log(usuario.id);
-    console.log(codUsuR);
-    console.log('---------------------------');
 
     // Estado local para confirmar eliminación.
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
@@ -81,10 +52,7 @@ const ListadoRuta = (props) => {
         <React.Fragment>
             <section className="position-relative">
             <Card border="secondary" bg="light" style={{ backgroundColor: '#e0e0e0', width: '15rem' }}>
-                {/* <Card.Header as="h5"></Card.Header> */}
-                {/* <Card.Img variant="top" src="holder.js/100px180?text=Image cap" /> */}
                 <Card.Img variant="top" src={`http://localhost:5173/src/assets/img/${imagen}`} />
-                {/* <Card.Img variant="top" src={`/assets/img/${imagen}`} /> */}
                 <Card.Body>
                     <Card.Title className="titulo-ruta">{titulo}</Card.Title>
                     <Card.Subtitle className="autor-ruta"><span className="creado-por-ruta">creada por</span> {nickAutor}</Card.Subtitle>
@@ -118,11 +86,9 @@ const ListadoRuta = (props) => {
                     as={Link} to="veruta"
                     id={codRuta}
                     onClick={(evento) => {
-                        // evento.preventDefault();
                         { /* Obtenemos la ruta e inicializamos mensajes de error formulario 
                             por si los hubiera, activamos estado para cerrar y obtenemos el
                             listado de comentarios de la ruta. */ }
-                        // inicializarErroresFormulario();
                         obtenerRuta(evento.target.id);
                         cerrarMostrando(true);
                         obtenerListadoComentarios(evento.target.id);
@@ -136,14 +102,8 @@ const ListadoRuta = (props) => {
                         id={codRuta}
                         onClick={(evento) => {
                             { /* Obtenemos la ruta  */ }
-                            // inicializarErroresFormulario();
-                            // cambiarRuta(evento.target.id, false);
                             obtenerRuta(evento.target.id);
                             setConfirmandoParticipar(true);
-                            console.log('hola participante');
-                            { /* Activamos el estado para confirmar eliminación. */ }
-                            // confirmarEliminacion(true);
-                            // setConfirmandoEliminar(true);
                         }}
                         >participar
                         </Button>
@@ -156,13 +116,8 @@ const ListadoRuta = (props) => {
                     id={codRuta}
                     onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
                         cambiarRuta(evento.target.id, false);
                         setConfirmandoActivar(true);
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
                     }}
                     >desactivar
                     </Button>
@@ -172,14 +127,8 @@ const ListadoRuta = (props) => {
                     id={codRuta}
                     onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
                         cambiarRuta(evento.target.id, true);
                         setConfirmandoActivar(true);
-                        // activarRuta();
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
                     }}
                     >activar
                     </Button>
@@ -190,10 +139,7 @@ const ListadoRuta = (props) => {
                     as={Link} to="editaruta"
                     id={codRuta}
                     onClick={(evento) => {
-                        // evento.preventDefault();
-                        { /* Obtenemos la ruta e inicializamos
-                            mensajes de error formulario por si los hubiera */ }
-                        // inicializarErroresFormulario();
+                        { /* Obtenemos la ruta. */ }
                         obtenerRuta(evento.target.id);
                     }}
                     >editar
@@ -203,10 +149,8 @@ const ListadoRuta = (props) => {
                     id={codRuta}
                     onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
                         obtenerRuta(evento.target.id);
                         { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
                         setConfirmandoEliminar(true);
                     }}
                     >eliminar
