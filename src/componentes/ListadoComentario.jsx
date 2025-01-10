@@ -1,5 +1,6 @@
 import React from "react";
 import useContextoRutas from "../hooks/useContextoRutas.js";
+import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
 import { formatearFecha } from "../bibliotecas/funciones.js";
 
 import Card from 'react-bootstrap/Card';
@@ -13,6 +14,7 @@ const ListadoComentario = (props) => {
     const { codComenta, codUsuario, comentario, fecha, tipoComenta, nickUsuario, imgUsuario } = props.datosComenta;
     // Desestructuración de los contextos recibidos a través del hook.
     const { eliminarComentario } = useContextoRutas();
+    const { usuario } = useContextoUsuarios();
 
     return (
         <React.Fragment>

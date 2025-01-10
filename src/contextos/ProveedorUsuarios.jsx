@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import { supabaseConexion } from "../config/supabase.js";
 import { useNavigate } from "react-router-dom";
+import { use } from "react";
 
 const ContextoUsuarios = createContext();
 
@@ -40,6 +41,8 @@ const ProveedorUsuarios = ({ children }) => {
     const [errorUsuario, setErrorUsuario] = useState(valorInicialCadena);
     const [errores, setErrores] = useState(valorInicialCadena);
     const [erroresFormuSesion, setErroresFormuSesion] = useState(valorInicialArray);
+    const [erroresFormularioIniciar, setErroresFormularioIniciar] = useState(valorInicialArray);
+    const [erroresFormularioCrear, setErroresFormularioCrear] = useState(valorInicialArray);
     const [cargando, setCargando] = useState(valorInicialFalse);
 
     // Función asíncrona para crear una cuenta de usuario (método signUp de auth).
@@ -83,7 +86,9 @@ const ProveedorUsuarios = ({ children }) => {
                 });
                 if (errorUsuario) {
                     setErrorUsuario(errorUsuario);
-                } 
+                } else {
+                    console.log('no ...');
+                }
             } else {
                 setErrorUsuario(error);
             }
@@ -110,6 +115,7 @@ const ProveedorUsuarios = ({ children }) => {
                         emailRedirectTo: 'http://localhost:5173/',
                         },
             });
+            // Comprobar el objeto que nos devuelve la consulta.
             // Comprobamos posible error en la consulta con el método signInWithPassword.
             if (error) {
                 setErrorUsuario(error.message);
@@ -148,7 +154,6 @@ const ProveedorUsuarios = ({ children }) => {
     const cerrarSesion = async () => {
         try {
             await supabaseConexion.auth.signOut();
-            // Redirigimos a la ruta de la parte pública.
             // Modificamos el estado sesionIniciada.
             setSesionIniciada(false);
             setUsuario(valorInicialUsuario);
@@ -163,18 +168,20 @@ const ProveedorUsuarios = ({ children }) => {
     // Función asíncrona para conseguir listado usuarios o registrados desde Supabase.
     const obtenerListadoRegistrados = async () => {
         try {
-          setCargando(true);
-          // Consulta a la base de datos de supabase.
-          const { data, error } = await supabaseConexion
-              .from("usuario")
-              .select(`*`);
-          // Controlamos si ha habido error o no.
-          if (error) {
-            setErrores(error); 
-          } else {
-            // Actualizamos el estado registrados.
-            setRegistrados(data);
-          };
+        setCargando(true);
+        // Consulta a la base de datos de supabase.
+        const { data, error } = await supabaseConexion
+            .from("usuario")
+            .select(`*`);
+
+        // Controlamos si ha habido error o no.
+        if (error) {
+          setErrores(error); 
+        } else {
+          // Actualizamos el estado registrados.
+          setRegistrados(data);
+        }
+        
         } catch (errorConexion) {
           setErrores(errorConexion);
         } finally {
@@ -314,10 +321,9 @@ const ProveedorUsuarios = ({ children }) => {
                 if (session) {
                     // Cambiamos el estado de sesionIniciada.
                     setSesionIniciada(true);
-                    // Obtenemos listado de usuarios registrados.
                     obtenerListadoRegistrados();
                 } else {
-                    // Utilizamos el hook navegar para dirigirlo hacia inicio.
+                    // Utilizamos el hook navegar para dirigirlo hacia login.
                     navegar("/");
                     // No hay sesión, por tanto modificamos el estado de sesionIniciada.
                     setSesionIniciada(false);
@@ -330,6 +336,7 @@ const ProveedorUsuarios = ({ children }) => {
     // Objeto con los estados y funciones para exportar del contexto.
     const datosAExportar = {
         sesionIniciada,
+        // datosSesion,
         crearCuenta,
         iniciarSesion,
         cerrarSesion,
@@ -339,6 +346,9 @@ const ProveedorUsuarios = ({ children }) => {
         validarFormulario,
         erroresFormuSesion,
         inicializarErroresFormuSesion,
+        // erroresFormularioIniciar,
+        // erroresFormularioCrear,
+        // setSesionIniciada,
         usuario,
     };
     return (

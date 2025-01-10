@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // he quitado: , { useEffect }
+import React, { useState, useEffect } from "react"; // he quitado: , { useEffect }
 import { Link } from "react-router-dom";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
@@ -15,16 +15,21 @@ import ConfirmarParticipacionRuta from "./ConfirmarParticipacionRuta.jsx";
 const ListadoRuta = (props) => {
     // Desestructuración de props.
     const { codRuta, titulo, dificultad, desnivel, distancia, codUsuR, codLocalR, codProvR, localidad, provincia, descripcion, fechaCreacion, imagen, activa } = props.datosRuta;
-    
+
     // Desestructuración de los contextos recibidos a través del hook.
     const { ruta, obtenerRuta, 
             cambiarRuta, cerrarMostrando, 
             confirmarEliminacion, eliminandoRuta, 
-            obtenerListadoComentarios, 
+            activarRuta, obtenerListadoComentarios, 
             contadorComentarios, 
             participacionRutas } = useContextoRutas();
+
     const { usuario, registrados } = useContextoUsuarios();
 
+    useEffect(() => {
+        // obtenerListadoRegistrados();
+          }, []);
+    
     // Saber si el usuario participa en la ruta o no.
     const participa = participacionRutas.some(
         (participacion) => participacion.codUsuPR === usuario.id && participacion.codRutaPR === codRuta
@@ -35,10 +40,11 @@ const ListadoRuta = (props) => {
         return usuarioAnterior.codUsuario === codUsuR;
     });
     let nickAutor = autorRuta.length <= 0 ? "desconocido" : autorRuta[0].nick;
-    // Calcular cantidad de comentarios de cada ruta.
+    // Conseguir el número de comentarios que tiene la ruta (estado array contadorComentarios).
     const cantiComenta = contadorComentarios.filter((rutaAnterior) => {
         return rutaAnterior.codrutacr === codRuta;
     });
+    
     let totalComenta = cantiComenta.length <= 0 ? 0 : cantiComenta[0].contador;
 
     // Estado local para confirmar eliminación.
@@ -56,7 +62,7 @@ const ListadoRuta = (props) => {
                 <Card.Body>
                     <Card.Title className="titulo-ruta">{titulo}</Card.Title>
                     <Card.Subtitle className="autor-ruta"><span className="creado-por-ruta">creada por</span> {nickAutor}</Card.Subtitle>
-                    {/* <Card.Text> */}
+                    
                     <section className="contenedor-tarjeta">
                     <section className="fecha-ruta">{formatearFecha(fechaCreacion)}</section>
                     <section className="d-flex align-items-center justify-content-center ubicacion-ruta">
@@ -79,16 +85,18 @@ const ListadoRuta = (props) => {
                     </article>
                     </section>
                     </section>
-                    {/* </Card.Text> */}    
+                        
                 </Card.Body>
                 <ButtonGroup size="sm" style={{ width: "100%" }}>
                     <Button variant="outline-success" style={{ flex: 1 }}
                     as={Link} to="veruta"
                     id={codRuta}
                     onClick={(evento) => {
+                        // evento.preventDefault();
                         { /* Obtenemos la ruta e inicializamos mensajes de error formulario 
                             por si los hubiera, activamos estado para cerrar y obtenemos el
                             listado de comentarios de la ruta. */ }
+                        // inicializarErroresFormulario();
                         obtenerRuta(evento.target.id);
                         cerrarMostrando(true);
                         obtenerListadoComentarios(evento.target.id);
@@ -102,8 +110,13 @@ const ListadoRuta = (props) => {
                         id={codRuta}
                         onClick={(evento) => {
                             { /* Obtenemos la ruta  */ }
+                            // inicializarErroresFormulario();
+                            // cambiarRuta(evento.target.id, false);
                             obtenerRuta(evento.target.id);
                             setConfirmandoParticipar(true);
+                            { /* Activamos el estado para confirmar eliminación. */ }
+                            // confirmarEliminacion(true);
+                            // setConfirmandoEliminar(true);
                         }}
                         >participar
                         </Button>
@@ -116,8 +129,13 @@ const ListadoRuta = (props) => {
                     id={codRuta}
                     onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
+                        // inicializarErroresFormulario();
                         cambiarRuta(evento.target.id, false);
                         setConfirmandoActivar(true);
+                        
+                        { /* Activamos el estado para confirmar eliminación. */ }
+                        // confirmarEliminacion(true);
+                        // setConfirmandoEliminar(true);
                     }}
                     >desactivar
                     </Button>
@@ -127,8 +145,14 @@ const ListadoRuta = (props) => {
                     id={codRuta}
                     onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
+                        // inicializarErroresFormulario();
                         cambiarRuta(evento.target.id, true);
                         setConfirmandoActivar(true);
+                        // activarRuta();
+                        
+                        { /* Activamos el estado para confirmar eliminación. */ }
+                        // confirmarEliminacion(true);
+                        // setConfirmandoEliminar(true);
                     }}
                     >activar
                     </Button>
@@ -139,7 +163,10 @@ const ListadoRuta = (props) => {
                     as={Link} to="editaruta"
                     id={codRuta}
                     onClick={(evento) => {
-                        { /* Obtenemos la ruta. */ }
+                        // evento.preventDefault();
+                        { /* Obtenemos la ruta e inicializamos
+                            mensajes de error formulario por si los hubiera */ }
+                        // inicializarErroresFormulario();
                         obtenerRuta(evento.target.id);
                     }}
                     >editar
@@ -149,8 +176,10 @@ const ListadoRuta = (props) => {
                     id={codRuta}
                     onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
+                        // inicializarErroresFormulario();
                         obtenerRuta(evento.target.id);
                         { /* Activamos el estado para confirmar eliminación. */ }
+                        // confirmarEliminacion(true);
                         setConfirmandoEliminar(true);
                     }}
                     >eliminar

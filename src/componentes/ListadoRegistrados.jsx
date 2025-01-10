@@ -11,9 +11,13 @@ const ListadoRegistrados = () => {
 
     // Desestructuración de los contextos que recibimos por el hook.
     const { usuario, obtenerListadoRegistrados, registrados } = useContextoUsuarios();
+    console.log('en ListadoRegistrado esto es usuario');
+    console.log(usuario);
     
     // Acciones a la carga del componente.
     useEffect(() => {
+        console.log('usuario.id en el useEffect');
+        // console.log(usuario.id);
         obtenerListadoRegistrados(usuario.id);
           }, []);
 

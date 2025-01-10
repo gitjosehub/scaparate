@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 
 const ListadoRutas = () => {
     // Desestructuración de los contextos que recibimos por el hook.
-    const { rutas, inicializarRuta, obtenerListadoParticipacion } = useContextoRutas();
+    const { rutas, obtenerListadoRutas, inicializarRuta, obtenerListadoParticipacion } = useContextoRutas();
     const { usuario } = useContextoUsuarios();
 
     // Función a realizar en la carga del componente. Para actualizar las rutas del usuario.
@@ -27,6 +27,7 @@ const ListadoRutas = () => {
             <Button variant="outline-success" size="sm"
                 onClick={(evento) => {
                     inicializarRuta();
+                    // inicializarErroresFormulario();
                 }}
             >Crear Ruta
             </Button>

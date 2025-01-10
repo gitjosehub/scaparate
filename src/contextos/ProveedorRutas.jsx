@@ -54,8 +54,8 @@ const ProveedorRutas = ({ children }) => {
       codUsuPR: "",
       codRutaPR: "",
       valoracion: "",
-    };
-
+    }
+    
     // Creación de estados.
     const [ruta, setRuta] = useState(valorInicialRuta);
     const [rutas, setRutas] = useState(valorInicialArray);
@@ -98,6 +98,7 @@ const ProveedorRutas = ({ children }) => {
           const simplificaRutas = simplificarRutas(data);
           setRutas(simplificaRutas);
         }
+        
         } catch (errorConexion) {
           setErrores(errorConexion);
         } finally {
@@ -121,6 +122,7 @@ const ProveedorRutas = ({ children }) => {
                   )
                 `)
                 .eq("codRuta", id);
+          
           if (error) {
             setErrores(error)
           } else {
@@ -161,6 +163,7 @@ const ProveedorRutas = ({ children }) => {
               {
                 titulo: ruta.titulo,
                 descripcion: ruta.descripcion,
+                // localidad: ruta.localidad,
                 dificultad: ruta.dificultad,
                 distancia: ruta.distancia,
                 desnivel: ruta.desnivel,
@@ -201,6 +204,7 @@ const ProveedorRutas = ({ children }) => {
               dificultad: ruta.dificultad,
               distancia: ruta.distancia,
               desnivel: ruta.desnivel,
+              // codUsuR: usuario_id,
               codUsuR: ruta.codUsuR,
               codLocalR: ruta.codLocalR,
               codProvR: ruta.codProvR,
@@ -220,6 +224,7 @@ const ProveedorRutas = ({ children }) => {
           } else {
             setErrores(error);
           }
+          
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
@@ -277,7 +282,9 @@ const ProveedorRutas = ({ children }) => {
             setActivandoRuta(false);
           } else {
             setErrores(error);
+            // setErrores(errori);
           }
+          
         } catch (errorConexion) {
             setErrores(errorConexion);
         } finally {
@@ -332,6 +339,7 @@ const ProveedorRutas = ({ children }) => {
                     )
                   `)
                   .eq("codRuta", id);
+            
             if (error) {
               setErrores(error)
             } else {
@@ -372,6 +380,7 @@ const ProveedorRutas = ({ children }) => {
             {
               codUsuPR: idUsu,
               codRutaPR: ruta.codRuta,
+              // titulo: ruta.titulo,
               valoracion: participacionRuta.valoracion
             },
           ])
@@ -380,6 +389,7 @@ const ProveedorRutas = ({ children }) => {
         if (!error) {
           // Actualizamos el estado participacionRutas con la nueva.
           setParticipacionRutas([...participacionRutas, participacionRuta]);
+          
         } else {
           setErrores(error);
         }
@@ -396,6 +406,7 @@ const ProveedorRutas = ({ children }) => {
     const obtenerListadoParticipacion = async (idUsu) => {
       try {
         setCargando(true);
+        // const idUsu="7b75624a-4002-479a-b463-1e82f39d74c0";
         // Consulta a la base de datos de supabase.
         const { data, error } = await supabaseConexion
           .from("participaruta")
@@ -439,6 +450,7 @@ const ProveedorRutas = ({ children }) => {
         const simplificaRutas = simplificarRutas(data);
         setRutasInicio(simplificaRutas);
       }
+      
       } catch (errorConexion) {
         setErrores(errorConexion);
       } finally {
@@ -471,7 +483,8 @@ const ProveedorRutas = ({ children }) => {
         } else {
           // Antes de pasarlo al estado, simplificamos y nos quedamos con 
           // la info que nos interesa, aplanando la estructura del objeto.
-          // Ademas los ordenamos por la fecha de forma descendente.          
+          // Ademas los ordenamos por la fecha de forma descendente.
+          
           const simplificaComentarios = data.map(elemento => ({        
               codUsuario: elemento.codUsuCR,
               codComenta: elemento.comentaruta.codComenta,
@@ -483,6 +496,7 @@ const ProveedorRutas = ({ children }) => {
           }))
           .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
           setComentariosRutas(simplificaComentarios);
+          
         }
       } catch (errorConexion) {
         setErrores(errorConexion);
@@ -502,6 +516,8 @@ const ProveedorRutas = ({ children }) => {
             {
               comentario: comentarioRuta.comentario,
               tipoComenta: "publico"
+              // descripcion: ruta.descripcion,
+              // codUsuR: usuario_id,
             },
           ])
           .select();
@@ -515,19 +531,24 @@ const ProveedorRutas = ({ children }) => {
               codUsuCR: idUsuario,
               codComentaCR: comentaData[0].codComenta,
               codRutaCR: ruta.codRuta
+              // comentario: comentarioRuta.comentario,
+              // tipoComenta: "publico"
+              // descripcion: ruta.descripcion,
+              // codUsuR: usuario_id,
             },
           ])
           .select();
           // Controlamos posible error en inserción en conversaruta.
           if (!error2) {
+            
             // Inicializamos el estado comentarioRuta.
             setComentarioRuta(valorInicialComentario);
-            // Actualizamos el estado comentariosRutas.
+            // Actualizamos  el estado comentariosRutas.
             obtenerListadoComentarios(ruta.codRuta);
           } else {
             setErrores(error2);
           }
-        // Esto viene de else del error en primera consulta.
+        // else del error en primera consulta.
         } else {
           setErrores(error);
         }
@@ -538,7 +559,6 @@ const ProveedorRutas = ({ children }) => {
       }
     };
 
-    // Función asíncrona para eliminar comentario de ruta en BDatos.
     const eliminarComentario = async (id) => {
       try {
         setCargando(true);
@@ -549,6 +569,7 @@ const ProveedorRutas = ({ children }) => {
         // Controlamos si ha habido error en el delete.
         if (!error) {
           // Actualizar el estado comentariosRutas para quitar el eliminado.el método filter del estado comentariosRutas.
+          
           const comentariosEditados = comentariosRutas.filter((comentarioAnterior) => {
             return comentarioAnterior.codComenta !== id;
           });
@@ -677,7 +698,7 @@ const ProveedorRutas = ({ children }) => {
           // Peculiaridad para imagenesruta (tipo file no utiliza value).
           if (name === "imagenesruta") {
             if (files && files.length > 0) {
-              const nombreArchivo = files[0].name;
+              const nombreArchivo = files[0].name; 
               // Actualiza el estado ruta (solo para tipo file).
               return {
                   ...prevRuta,
@@ -697,6 +718,7 @@ const ProveedorRutas = ({ children }) => {
               localidad: nuevaLocalidad,
           };
       });
+  
     };
 
     // Función para actualizar los datos del campo de formulario de comentarios.
@@ -784,6 +806,8 @@ const ProveedorRutas = ({ children }) => {
       return listaErroresElemento;
     };
 
+    
+
     // Función para inicializar el estado ruta fuera del contexto.
     const inicializarRuta = () => {
         setRuta(valorInicialRuta);
@@ -827,7 +851,7 @@ const ProveedorRutas = ({ children }) => {
 
     // Objeto con la información a exportar del contexto.
     const datosAExportar = {
-        obtenerProvincias, // Se utiliza en el useEffect.
+        obtenerProvincias, // igual no porque lo hace en el useEffect ???
         obtenerLocalidades,
         obtenerListadoRutas,
         obtenerListadoRutasInicio,
@@ -868,6 +892,7 @@ const ProveedorRutas = ({ children }) => {
         actualizarDatoFormularioComenta,
         actualizarDatoFormularioFiltrar,
         actualizarDatoFormularioParticipar,
+        // validarFormulario,
         inicializarErroresFormulario,
         erroresFormulario,
         cargando,
