@@ -76,11 +76,43 @@ const ProveedorRutas = ({ children }) => {
     const [localidades, setLocalidades] = useState(valorInicialArray);
 
     // Función asíncrona para conseguir las rutas desde Supabase.
-    const obtenerListadoRutas = async () => {
-        try {
+    // const obtenerListadoRutas = async () => {
+    //     try {
+    //     setCargando(true);
+    //     // Consulta a la base de datos de supabase.
+    //     const { data, error } = await supabaseConexion
+    //         .from("ruta")
+    //         .select(`
+    //           *,
+    //           localidad (codLocalidad, codProvL, nombreLocalidad, 
+    //           provincia (codProvincia, nombreProvincia))
+    //           `);
+    //           // .eq("activa", true); lo quito para activar.
+    //     // Controlamos si ha habido error o no.
+    //     if (error) {
+    //       setErrores(error); 
+    //     } else {
+    //       // Antes de pasarlo al estado, simplificamos y nos quedamos con 
+    //       // la info que nos interesa, aplanando la estructura del objeto.
+    //       // LLamada a la función externa para simplificar estructura.
+    //       const simplificaRutas = simplificarRutas(data);
+    //       setRutas(simplificaRutas);
+    //     }
+        
+    //     } catch (errorConexion) {
+    //       setErrores(errorConexion);
+    //     } finally {
+    //       setCargando(false);
+    //     }
+    // };
+
+    const obtenerListadoRutas = async (usuPhone) => {
+      console.log('entrando en obtenerlistado');
+      try {
         setCargando(true);
-        // Consulta a la base de datos de supabase.
-        const { data, error } = await supabaseConexion
+        // Consulta a la base de datos de supabase, dependiendo de rol de usuario.
+        if (usuPhone === "rol_admin") {
+          const { data, error } = await supabaseConexion
             .from("ruta")
             .select(`
               *,
@@ -88,22 +120,51 @@ const ProveedorRutas = ({ children }) => {
               provincia (codProvincia, nombreProvincia))
               `);
               // .eq("activa", true); lo quito para activar.
-        // Controlamos si ha habido error o no.
-        if (error) {
-          setErrores(error); 
+          // Controlamos si ha habido error o no.
+          if (error) {
+            setErrores(error); 
+            console.log('error en obtenerlistado');
+            console.log(error);
+          } else {
+            // Antes de pasarlo al estado, simplificamos y nos quedamos con 
+            // la info que nos interesa, aplanando la estructura del objeto.
+            // LLamada a la función externa para simplificar estructura.
+            const simplificaRutas = simplificarRutas(data);
+            setRutas(simplificaRutas);
+            console.log(data);
+          }
         } else {
-          // Antes de pasarlo al estado, simplificamos y nos quedamos con 
-          // la info que nos interesa, aplanando la estructura del objeto.
-          // LLamada a la función externa para simplificar estructura.
-          const simplificaRutas = simplificarRutas(data);
-          setRutas(simplificaRutas);
-        }
+          const { data, error } = await supabaseConexion
+            .from("ruta")
+            .select(`
+              *,
+              localidad (codLocalidad, codProvL, nombreLocalidad, 
+              provincia (codProvincia, nombreProvincia))
+              `)
+              .eq("activa", true);
+          // Controlamos si ha habido error o no.
+          if (error) {
+            setErrores(error); 
+            console.log('error en obtenerlistado');
+            console.log(error);
+          } else {
+            // Antes de pasarlo al estado, simplificamos y nos quedamos con 
+            // la info que nos interesa, aplanando la estructura del objeto.
+            // LLamada a la función externa para simplificar estructura.
+            const simplificaRutas = simplificarRutas(data);
+            setRutas(simplificaRutas);
+            console.log(data);
+          }
+        };
         
-        } catch (errorConexion) {
-          setErrores(errorConexion);
-        } finally {
-          setCargando(false);
-        }
+      
+      } catch (errorConexion) {
+        setErrores(errorConexion);
+        console.log('error en obtenerlistado de conexion');
+        console.log(errorConexion);
+      } finally {
+        setCargando(false);
+      }
     };
 
     // Función asíncrona para conseguir una determinada ruta de Supabase.
@@ -153,7 +214,7 @@ const ProveedorRutas = ({ children }) => {
     };
 
     // Función asíncrona para crear una nueva ruta en BDatos de Supabase.
-    const crearRuta = async (usuario_id) => {
+    const crearRuta = async (usuId) => {
         try {
           setCargando(true);
           // Consulta a la base de datos.
@@ -168,7 +229,7 @@ const ProveedorRutas = ({ children }) => {
                 distancia: ruta.distancia,
                 desnivel: ruta.desnivel,
                 imagen: ruta.imagen,
-                codUsuR: usuario_id,
+                codUsuR: usuId,
                 codLocalR: ruta.codLocalR,
                 codProvR: ruta.codProvR
               },
@@ -369,7 +430,7 @@ const ProveedorRutas = ({ children }) => {
         }
     };
 
-    // Función asíncrona para crear una nueva ruta en BDatos de Supabase.
+    // Función asíncrona para añadir la ruta a favorita (participa) del usuario.
     const crearParticipacion = async (idUsu) => {
       try {
         setCargando(true);
@@ -613,6 +674,7 @@ const ProveedorRutas = ({ children }) => {
         setCargando(true);
         // Vamos a ir construyendo la consulta segun los filtros.
         let consulta = supabaseConexion.from("ruta").select(`*,localidad (codLocalidad, codProvL, nombreLocalidad, provincia (codProvincia, nombreProvincia))`);
+        consulta = consulta.eq("activa", true);
         // Condicionamos a que tenga valor en el objeto para ir completando la consulta.
         if (filtros.titulo) {
           consulta = consulta.ilike("titulo", `%${filtros.titulo}%`);
@@ -842,7 +904,8 @@ const ProveedorRutas = ({ children }) => {
 
     // Funciones a realizar en la carga del componente.
     useEffect(() => {
-        obtenerListadoRutas();
+        console.log('cargando proveedorRutas');
+        // obtenerListadoRutas();
         obtenerListadoRutasInicio();
         obtenerProvincias();
         obtenerLocalidades();

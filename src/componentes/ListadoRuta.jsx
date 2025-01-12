@@ -26,9 +26,6 @@ const ListadoRuta = (props) => {
 
     const { usuario, registrados } = useContextoUsuarios();
 
-    console.log('rol de usuario en ListadoRuta');
-    console.log(usuario.role);
-
     useEffect(() => {
         // obtenerListadoRegistrados();
           }, []);
@@ -108,6 +105,7 @@ const ListadoRuta = (props) => {
                     >ver
                     </Button>
                     {/* ¿¿¿¿ Repasar funcionamiento de participa ???? */}
+                    
                     {!participa ? (
                         <Button variant="outline-success" style={{ flex: 1 }}
                         as={Link} to="participaruta"
@@ -143,8 +141,9 @@ const ListadoRuta = (props) => {
                     )}
                 </ButtonGroup>
                 <ButtonGroup size="sm" style={{ width: "100%" }}>
-                {/* ¿¿¿¿ Solo debe mostrarlo si el usuario es administrador ???? */}
-                {activa ? (
+                {/* Solo muestra activar/desactivar correspondiente y si es rol admin. */}
+                {usuario.phone === "rol_admin" && (
+                activa ? (
                     <Button variant="outline-danger" style={{ flex: 1 }}
                     as={Link} to="activaruta"
                     id={codRuta}
@@ -177,7 +176,7 @@ const ListadoRuta = (props) => {
                     }}
                     >publicar
                     </Button>
-                )}
+                ))}
                     {usuario.id === codUsuR && (
                     <>
                     <Button variant="outline-success" style={{ flex: 1 }}

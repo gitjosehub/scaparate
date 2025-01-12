@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useContextoRutas from "../hooks/useContextoRutas";
+import useContextoUsuarios from "../hooks/useContextoUsuarios";
 
 // Importación elementos de react-bootstrap.
 import Accordion from 'react-bootstrap/Accordion';
@@ -21,6 +22,7 @@ const BuscadorRutas = () => {
         erroresFormulario,
         provincias,
         localidades } = useContextoRutas();
+    const { usuario } = useContextoUsuarios();
 
     // Validar formulario con componente de react-bootstrap no se 
     // como funciona todavia, de momento nada de nada.
@@ -100,7 +102,8 @@ const BuscadorRutas = () => {
                                 // Validamos el formulario antes de realizar la acción (crear o editar).
                                 // if (validarFormulario(evento)) {
                                     inicializarFiltroRuta();
-                                    obtenerListadoRutas();
+                                    console.log('buscador de rutas');
+                                    obtenerListadoRutas(usuario.phone);
                                 // }
                             }}
                             >Limpiar filtros
