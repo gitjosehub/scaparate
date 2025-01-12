@@ -463,6 +463,39 @@ const ProveedorRutas = ({ children }) => {
       }
     };
 
+    // Función asíncrona para quitar ruta de favorita (participa) de un usuario.
+    const eliminarParticipacion = async (idUsu) => {
+      try {
+
+        setCargando(true);
+          const { error } = await supabaseConexion
+            .from("participaruta")
+            .delete()
+            .eq("codUsuPR", idUsu)
+            .eq("codRutaPR", ruta.codRuta);
+          // Controlamos si ha habido error en el delete.
+          if (!error) {
+            // Actualizar el estado participacionRutas para quitar la eliminada, mediante
+            // el método filter..
+            const participaEditadas = participacionRutas.filter((participaAnterior) => {
+              return !(participaAnterior.codUsuPR === idUsu && participaAnterior.codRutaPR === ruta.codRuta);
+            });
+            console.log(participaEditadas);
+            setParticipacionRutas(participaEditadas);
+            setParticipacionRuta(valorInicialParticipar);
+          } else {
+            setErrores(error);
+          }
+
+      } catch (errorConexion) {
+          setErrores(errorConexion);
+      } finally {
+          setCargando(false);
+          setParticipacionRuta(valorInicialParticipar);
+          obtenerListadoParticipacion(idUsu);
+      }
+    };
+
     // Función asíncrona para conseguir las rutas desde Supabase.
     const obtenerListadoParticipacion = async (idUsu) => {
       try {
@@ -938,6 +971,7 @@ const ProveedorRutas = ({ children }) => {
         confirmarEliminacion,
         confirmarActivacion,
         crearParticipacion,
+        eliminarParticipacion,
         obtenerListadoParticipacion,
         participacionRuta,
         participacionRutas,

@@ -114,6 +114,7 @@ const ListadoRuta = (props) => {
                             { /* Obtenemos la ruta  */ }
                             // inicializarErroresFormulario();
                             // cambiarRuta(evento.target.id, false);
+                            console.log(`boton añadir favo y participa vale ${participa}`);
                             obtenerRuta(evento.target.id);
                             setConfirmandoParticipar(true);
                             { /* Activamos el estado para confirmar eliminación. */ }
@@ -130,8 +131,9 @@ const ListadoRuta = (props) => {
                             { /* Obtenemos la ruta  */ }
                             // inicializarErroresFormulario();
                             // cambiarRuta(evento.target.id, false);
+                            console.log(`boton quitar favo y participa vale ${participa}`);
                             obtenerRuta(evento.target.id);
-                            setConfirmandoParticipar(false);
+                            setConfirmandoParticipar(true);
                             { /* Activamos el estado para confirmar eliminación. */ }
                             // confirmarEliminacion(true);
                             // setConfirmandoEliminar(true);
@@ -220,8 +222,9 @@ const ListadoRuta = (props) => {
             )}
             {confirmandoParticipar && (
                 <ConfirmarParticipacionRuta 
-                confirmandoParticipar={confirmandoParticipar}
-                    setConfirmandoParticipar={setConfirmandoParticipar} />
+                    confirmandoParticipar={confirmandoParticipar}
+                    setConfirmandoParticipar={setConfirmandoParticipar} 
+                    accion={participa} />
             )}
             </section>
         </React.Fragment>
