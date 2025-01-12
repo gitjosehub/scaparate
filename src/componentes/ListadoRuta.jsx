@@ -26,6 +26,9 @@ const ListadoRuta = (props) => {
 
     const { usuario, registrados } = useContextoUsuarios();
 
+    console.log('rol de usuario en ListadoRuta');
+    console.log(usuario.role);
+
     useEffect(() => {
         // obtenerListadoRegistrados();
           }, []);
@@ -104,7 +107,8 @@ const ListadoRuta = (props) => {
                     }
                     >ver
                     </Button>
-                    {!participa && (
+                    {/* ¿¿¿¿ Repasar funcionamiento de participa ???? */}
+                    {!participa ? (
                         <Button variant="outline-success" style={{ flex: 1 }}
                         as={Link} to="participaruta"
                         id={codRuta}
@@ -118,11 +122,28 @@ const ListadoRuta = (props) => {
                             // confirmarEliminacion(true);
                             // setConfirmandoEliminar(true);
                         }}
-                        >participar
+                        ><i className="bi bi-star"></i> añadir
+                        </Button>
+                    ) : (
+                        <Button variant="outline-success" style={{ flex: 1 }}
+                        as={Link} to="participaruta"
+                        id={codRuta}
+                        onClick={(evento) => {
+                            { /* Obtenemos la ruta  */ }
+                            // inicializarErroresFormulario();
+                            // cambiarRuta(evento.target.id, false);
+                            obtenerRuta(evento.target.id);
+                            setConfirmandoParticipar(false);
+                            { /* Activamos el estado para confirmar eliminación. */ }
+                            // confirmarEliminacion(true);
+                            // setConfirmandoEliminar(true);
+                        }}
+                        ><i className="bi bi-star-fill"></i> quitar
                         </Button>
                     )}
                 </ButtonGroup>
                 <ButtonGroup size="sm" style={{ width: "100%" }}>
+                {/* ¿¿¿¿ Solo debe mostrarlo si el usuario es administrador ???? */}
                 {activa ? (
                     <Button variant="outline-danger" style={{ flex: 1 }}
                     as={Link} to="activaruta"
@@ -137,7 +158,7 @@ const ListadoRuta = (props) => {
                         // confirmarEliminacion(true);
                         // setConfirmandoEliminar(true);
                     }}
-                    >desactivar
+                    >ocultar
                     </Button>
                 ) : (
                     <Button variant="outline-success" style={{ flex: 1 }}
@@ -154,7 +175,7 @@ const ListadoRuta = (props) => {
                         // confirmarEliminacion(true);
                         // setConfirmandoEliminar(true);
                     }}
-                    >activar
+                    >publicar
                     </Button>
                 )}
                     {usuario.id === codUsuR && (
