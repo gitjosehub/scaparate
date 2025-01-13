@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // he quitado: , { useEffect }
+import React, { useState, useEffect } from "react"; 
 import { Link } from "react-router-dom";
 import useContextoRutas from "../hooks/useContextoRutas.js";
 import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
@@ -21,7 +21,7 @@ const ListadoRuta = (props) => {
             cambiarRuta, cerrarMostrando, 
             confirmarEliminacion, eliminandoRuta, 
             activarRuta, obtenerListadoComentarios, 
-            contadorComentarios, 
+            contadorComentarios, contadorParticipantes,
             participacionRutas } = useContextoRutas();
 
     const { usuario, registrados } = useContextoUsuarios();
@@ -30,7 +30,7 @@ const ListadoRuta = (props) => {
         // obtenerListadoRegistrados();
           }, []);
     
-    // Saber si el usuario participa en la ruta o no.
+    // Saber si el usuario participa (favorita) en la ruta o no.
     const participa = participacionRutas.some(
         (participacion) => participacion.codUsuPR === usuario.id && participacion.codRutaPR === codRuta
     );
@@ -44,9 +44,13 @@ const ListadoRuta = (props) => {
     const cantiComenta = contadorComentarios.filter((rutaAnterior) => {
         return rutaAnterior.codrutacr === codRuta;
     });
-    
     let totalComenta = cantiComenta.length <= 0 ? 0 : cantiComenta[0].contador;
-
+    // Conseguir el número de participantes que tiene una ruta (estado array contadorParticipantes).
+    const cantiParticipa = contadorParticipantes.filter((rutaAnterior) => {
+        return rutaAnterior.codRutaCR === codRuta;
+    });
+    let totalParticipa = cantiParticipa.length <= 0 ? 0 : cantiParticipa[0].contador;
+    
     // Estado local para confirmar eliminación.
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
     // Estado local para confirmar activación.
@@ -71,16 +75,16 @@ const ListadoRuta = (props) => {
                     </section>
                     <section className="d-flex justify-content-between">
                     <article className="contador-ruta">
-                        <i className="bi bi-person me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
-                        <span>5</span>
+                        <i className="bi bi-clipboard-data me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
+                        <span>0</span>
                     </article>
                     <article className="contador-ruta">
                         
-                        <i className="bi bi-star me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
-                        <span>123</span>
+                        <i className="bi bi-star-fill me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
+                        <span>{totalParticipa}</span>
                     </article>
                     <article className="contador-ruta">
-                        <i className="bi bi-chat me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
+                        <i className="bi bi-chat-right me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
                         <span>{totalComenta}</span>
                     </article>
                     </section>
@@ -111,15 +115,9 @@ const ListadoRuta = (props) => {
                         as={Link} to="participaruta"
                         id={codRuta}
                         onClick={(evento) => {
-                            { /* Obtenemos la ruta  */ }
-                            // inicializarErroresFormulario();
-                            // cambiarRuta(evento.target.id, false);
-                            console.log(`boton añadir favo y participa vale ${participa}`);
+                            { /* Obtenemos la ruta.  */ }
                             obtenerRuta(evento.target.id);
                             setConfirmandoParticipar(true);
-                            { /* Activamos el estado para confirmar eliminación. */ }
-                            // confirmarEliminacion(true);
-                            // setConfirmandoEliminar(true);
                         }}
                         ><i className="bi bi-star"></i> añadir
                         </Button>
@@ -129,14 +127,8 @@ const ListadoRuta = (props) => {
                         id={codRuta}
                         onClick={(evento) => {
                             { /* Obtenemos la ruta  */ }
-                            // inicializarErroresFormulario();
-                            // cambiarRuta(evento.target.id, false);
-                            console.log(`boton quitar favo y participa vale ${participa}`);
                             obtenerRuta(evento.target.id);
                             setConfirmandoParticipar(true);
-                            { /* Activamos el estado para confirmar eliminación. */ }
-                            // confirmarEliminacion(true);
-                            // setConfirmandoEliminar(true);
                         }}
                         ><i className="bi bi-star-fill"></i> quitar
                         </Button>
@@ -167,14 +159,8 @@ const ListadoRuta = (props) => {
                     id={codRuta}
                     onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
                         cambiarRuta(evento.target.id, true);
                         setConfirmandoActivar(true);
-                        // activarRuta();
-                        
-                        { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
-                        // setConfirmandoEliminar(true);
                     }}
                     >publicar
                     </Button>
@@ -198,10 +184,9 @@ const ListadoRuta = (props) => {
                     id={codRuta}
                     onClick={(evento) => {
                         { /* Obtenemos la ruta  */ }
-                        // inicializarErroresFormulario();
                         obtenerRuta(evento.target.id);
                         { /* Activamos el estado para confirmar eliminación. */ }
-                        // confirmarEliminacion(true);
+                        
                         setConfirmandoEliminar(true);
                     }}
                     >eliminar

@@ -122,7 +122,6 @@ const ProveedorUsuarios = ({ children }) => {
             } else {
                 // Obtenemos los datos del usuario para nuestro estado,
                 // añadiendo información de la tabla usuario.
-                console.log(userData.user);
                 const usuarioInicial = userData.user;
                 const idUsuario = usuarioInicial.id;
                 // Consulta a la tabla usuario para obtener información adicional.
@@ -314,14 +313,12 @@ const ProveedorUsuarios = ({ children }) => {
                 permanece a la escucha de los cambios que se produzcan en la sesión. */
         /* Se trata de una función callback que recibe un objeto con la sesión activa
                 y una cadena de texto con el evento que se ha producido. */
-        console.log('cargando ProveedorUsuarios');
         const monitorSuscripcion = supabaseConexion.auth.onAuthStateChange(
             (event, session) => {
                 // Dependiendo de si hay o no sesión redirigimos al usuario a una parte u otra
                 // de la aplicación y modificamos el estado sesionIniciada.
                 if (session) {
                     // Cambiamos el estado de sesionIniciada.
-                    console.log('iniciando sesion');
                     setSesionIniciada(true);
                     obtenerListadoRegistrados();
                 } else {

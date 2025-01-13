@@ -26,20 +26,20 @@ const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParti
     // Hook para trabajar con las rutas de router-dom de React.
     const navegar = useNavigate();
 
-    console.log(`props ha recibido participa y entonces accion es: ${accion}`);
-
     return (
         <React.Fragment>
             <section className="confirmacion-eliminar">
             <Card className="p-2">
                 <Card.Body>
+                    {/* Muestra un elemento p dependiendo de si añade o quita de favorita/participa. */}
                     {!accion ? (
-                        <p className="eliminar-ruta">Por favor, valora {ruta.titulo}. Y confirma que es favorita.</p>
+                        <p className="eliminar-ruta">Por favor, valora {ruta.titulo}. Y confirma que añadirla a tus favoritas.</p>
                     ) : (
-                        <p className="eliminar-ruta">Por favor, confirma que quieres quitar {ruta.titulo} de favorita.</p>
+                        <p className="eliminar-ruta">Por favor, confirma que quieres quitar {ruta.titulo} de tus favoritas.</p>
                     )}
                     
                     {/* Campo númerico para valoración. */}
+                    {/* No lo muestra si no es para añadir a participa/favorita. */}
                     {!accion && (
                         <Form>
                         <Form.Group controlId="exampleForm.ControlInput2">
@@ -61,13 +61,12 @@ const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParti
                             onClick={
                                 (evento) => {
                                     evento.preventDefault();
+                                    // Realiza una accion u otra dependiendo de si añade o quita de favorita/participacionRuta.
                                     if (!accion) {
                                         crearParticipacion(usuario.id);
                                     } else {
                                         eliminarParticipacion(usuario.id);
-                                        console.log('ahora eliminarParticipacion');
                                     }
-                                    
                                     setConfirmandoParticipar(false);
                                     navegar("/rutas");
                                 }

@@ -25,19 +25,16 @@ const BuscadorRutas = () => {
     const { usuario } = useContextoUsuarios();
 
     // Validar formulario con componente de react-bootstrap no se 
-    // como funciona todavia, de momento nada de nada.
+    // como funciona, de momento nada de nada.
         const [validated, setValidated] = useState(false);
-    
-      const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-    
-        setValidated(true);
-      };
-
+        const handleSubmit = (event) => {
+            const form = event.currentTarget;
+            if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            }
+            setValidated(true);
+        };
 
     return (
         <React.Fragment>
@@ -102,7 +99,6 @@ const BuscadorRutas = () => {
                                 // Validamos el formulario antes de realizar la acción (crear o editar).
                                 // if (validarFormulario(evento)) {
                                     inicializarFiltroRuta();
-                                    console.log('buscador de rutas');
                                     obtenerListadoRutas(usuario.phone);
                                 // }
                             }}

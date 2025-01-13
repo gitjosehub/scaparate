@@ -63,6 +63,7 @@ const ProveedorRutas = ({ children }) => {
     const [comentariosRutas, setComentariosRutas] = useState(valorInicialArray);
     const [comentarioRuta, setComentarioRuta] = useState(valorInicialComentario);
     const [contadorComentarios, setContadorComentarios] = useState(valorInicialArray);
+    const [contadorParticipantes, setContadorParticipantes] = useState(valorInicialArray);
     const [filtroRuta, setFiltroRuta] = useState(valorInicialFiltroRuta);
     const [participacionRuta, setParticipacionRuta] = useState(valorInicialParticipar);
     const [participacionRutas, setParticipacionRutas] = useState(valorInicialArray);
@@ -76,38 +77,7 @@ const ProveedorRutas = ({ children }) => {
     const [localidades, setLocalidades] = useState(valorInicialArray);
 
     // Función asíncrona para conseguir las rutas desde Supabase.
-    // const obtenerListadoRutas = async () => {
-    //     try {
-    //     setCargando(true);
-    //     // Consulta a la base de datos de supabase.
-    //     const { data, error } = await supabaseConexion
-    //         .from("ruta")
-    //         .select(`
-    //           *,
-    //           localidad (codLocalidad, codProvL, nombreLocalidad, 
-    //           provincia (codProvincia, nombreProvincia))
-    //           `);
-    //           // .eq("activa", true); lo quito para activar.
-    //     // Controlamos si ha habido error o no.
-    //     if (error) {
-    //       setErrores(error); 
-    //     } else {
-    //       // Antes de pasarlo al estado, simplificamos y nos quedamos con 
-    //       // la info que nos interesa, aplanando la estructura del objeto.
-    //       // LLamada a la función externa para simplificar estructura.
-    //       const simplificaRutas = simplificarRutas(data);
-    //       setRutas(simplificaRutas);
-    //     }
-        
-    //     } catch (errorConexion) {
-    //       setErrores(errorConexion);
-    //     } finally {
-    //       setCargando(false);
-    //     }
-    // };
-
     const obtenerListadoRutas = async (usuPhone) => {
-      console.log('entrando en obtenerlistado');
       try {
         setCargando(true);
         // Consulta a la base de datos de supabase, dependiendo de rol de usuario.
@@ -119,19 +89,15 @@ const ProveedorRutas = ({ children }) => {
               localidad (codLocalidad, codProvL, nombreLocalidad, 
               provincia (codProvincia, nombreProvincia))
               `);
-              // .eq("activa", true); lo quito para activar.
           // Controlamos si ha habido error o no.
           if (error) {
             setErrores(error); 
-            console.log('error en obtenerlistado');
-            console.log(error);
           } else {
             // Antes de pasarlo al estado, simplificamos y nos quedamos con 
             // la info que nos interesa, aplanando la estructura del objeto.
             // LLamada a la función externa para simplificar estructura.
             const simplificaRutas = simplificarRutas(data);
             setRutas(simplificaRutas);
-            console.log(data);
           }
         } else {
           const { data, error } = await supabaseConexion
@@ -145,23 +111,17 @@ const ProveedorRutas = ({ children }) => {
           // Controlamos si ha habido error o no.
           if (error) {
             setErrores(error); 
-            console.log('error en obtenerlistado');
-            console.log(error);
           } else {
             // Antes de pasarlo al estado, simplificamos y nos quedamos con 
             // la info que nos interesa, aplanando la estructura del objeto.
             // LLamada a la función externa para simplificar estructura.
             const simplificaRutas = simplificarRutas(data);
             setRutas(simplificaRutas);
-            console.log(data);
           }
         };
         
-      
       } catch (errorConexion) {
         setErrores(errorConexion);
-        console.log('error en obtenerlistado de conexion');
-        console.log(errorConexion);
       } finally {
         setCargando(false);
       }
@@ -480,7 +440,6 @@ const ProveedorRutas = ({ children }) => {
             const participaEditadas = participacionRutas.filter((participaAnterior) => {
               return !(participaAnterior.codUsuPR === idUsu && participaAnterior.codRutaPR === ruta.codRuta);
             });
-            console.log(participaEditadas);
             setParticipacionRutas(participaEditadas);
             setParticipacionRuta(valorInicialParticipar);
           } else {
@@ -500,7 +459,6 @@ const ProveedorRutas = ({ children }) => {
     const obtenerListadoParticipacion = async (idUsu) => {
       try {
         setCargando(true);
-        // const idUsu="7b75624a-4002-479a-b463-1e82f39d74c0";
         // Consulta a la base de datos de supabase.
         const { data, error } = await supabaseConexion
           .from("participaruta")
@@ -625,16 +583,12 @@ const ProveedorRutas = ({ children }) => {
               codUsuCR: idUsuario,
               codComentaCR: comentaData[0].codComenta,
               codRutaCR: ruta.codRuta
-              // comentario: comentarioRuta.comentario,
-              // tipoComenta: "publico"
-              // descripcion: ruta.descripcion,
               // codUsuR: usuario_id,
             },
           ])
           .select();
           // Controlamos posible error en inserción en conversaruta.
           if (!error2) {
-            
             // Inicializamos el estado comentarioRuta.
             setComentarioRuta(valorInicialComentario);
             // Actualizamos  el estado comentariosRutas.
@@ -663,7 +617,6 @@ const ProveedorRutas = ({ children }) => {
         // Controlamos si ha habido error en el delete.
         if (!error) {
           // Actualizar el estado comentariosRutas para quitar el eliminado.el método filter del estado comentariosRutas.
-          
           const comentariosEditados = comentariosRutas.filter((comentarioAnterior) => {
             return comentarioAnterior.codComenta !== id;
           });
@@ -693,6 +646,28 @@ const ProveedorRutas = ({ children }) => {
         } else {
           // Actualizamos el estado correspondiente.
           setContadorComentarios(data);
+        }
+      } catch (errorConexion) {
+        setErrores(errorConexion);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    // Función asíncrona para obtener recuento de comentarios en cada ruta.
+    // Llamando a la función que hemos creado en Supabase.
+    const contarParticipantesRutas = async () => {
+      try {
+        setCargando(true);
+        // Consulta a la base de datos de supabase.
+        const { data, error } = await supabaseConexion
+          .rpc('count_by_codrutapr');
+        // Controlamos si ha habido error o no.
+        if (error) {
+          setErrores(error); 
+        } else {
+          // Actualizamos el estado correspondiente.
+          setContadorParticipantes(data);
         }
       } catch (errorConexion) {
         setErrores(errorConexion);
@@ -772,7 +747,6 @@ const ProveedorRutas = ({ children }) => {
     // Función para actualizar los datos del campo de formulario de rutas.
     const actualizarDatoFormulario = (evento) => {
         const { name, value, files } = evento.target;
-
         // No hay forma de que actualize los dos a la vez si no es asi.
         // Con los select del formulario (provincia y localidad).
         setRuta((prevRuta) => {
@@ -901,8 +875,6 @@ const ProveedorRutas = ({ children }) => {
       return listaErroresElemento;
     };
 
-    
-
     // Función para inicializar el estado ruta fuera del contexto.
     const inicializarRuta = () => {
         setRuta(valorInicialRuta);
@@ -937,17 +909,17 @@ const ProveedorRutas = ({ children }) => {
 
     // Funciones a realizar en la carga del componente.
     useEffect(() => {
-        console.log('cargando proveedorRutas');
         // obtenerListadoRutas();
         obtenerListadoRutasInicio();
         obtenerProvincias();
         obtenerLocalidades();
         contarComentariosRutas();
+        contarParticipantesRutas();
     }, []);
 
     // Objeto con la información a exportar del contexto.
     const datosAExportar = {
-        obtenerProvincias, // igual no porque lo hace en el useEffect ???
+        obtenerProvincias, 
         obtenerLocalidades,
         obtenerListadoRutas,
         obtenerListadoRutasInicio,
@@ -962,7 +934,9 @@ const ProveedorRutas = ({ children }) => {
         comentariosRutas,
         comentarioRuta,
         contarComentariosRutas,
+        contarParticipantesRutas,
         contadorComentarios,
+        contadorParticipantes,
         crearRuta,
         editarRuta,
         eliminarRuta,

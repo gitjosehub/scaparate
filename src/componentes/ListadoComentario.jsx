@@ -16,6 +16,10 @@ const ListadoComentario = (props) => {
     const { eliminarComentario } = useContextoRutas();
     const { usuario } = useContextoUsuarios();
 
+    console.log('ListadoComentario y codUsuario del comentario y el usuario ...');
+    console.log(codUsuario);
+    console.log(usuario);
+
     return (
         <React.Fragment>
             <Form>
@@ -34,13 +38,17 @@ const ListadoComentario = (props) => {
                 style={{ resize: "none" }}
                 />
                 <InputGroup.Text>{formatearFecha(fecha)}</InputGroup.Text>
+                {/* Muestra button solo en caso que sea del usuario logeado. */}
+                {codUsuario === usuario.id && (
                 <Button variant="outline-danger"
                     id={codComenta}
                     onClick={(evento) => {
                         {/* Eliminamos el mensaje sin confirmación. */}
                         eliminarComentario(evento.target.id);
                         }}
-                >eliminar</Button>
+                >eliminar
+                </Button>
+                )}
             </InputGroup>
             </Form>
         </React.Fragment>
