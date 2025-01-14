@@ -21,11 +21,11 @@ const ListadoRutas = () => {
     
     return (
         <React.Fragment>
-            <section className="d-flex justify-content-between mb-4">
+            <section className="d-flex justify-content-center mb-4">
             {/* Indicar al enrutador el link para que conecte con outlet de la subruta. */}
             <Link to="crearuta">
             {/* Boton para crear una nueva ruta */}
-            <Button variant="outline-success" size="sm"
+            <Button variant="outline-success" size="sm" style={{ width: '15rem' }}
                 onClick={(evento) => {
                     inicializarRuta();
                     // inicializarErroresFormulario();

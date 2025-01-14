@@ -16,10 +16,6 @@ const ListadoComentario = (props) => {
     const { eliminarComentario } = useContextoRutas();
     const { usuario } = useContextoUsuarios();
 
-    console.log('ListadoComentario y codUsuario del comentario y el usuario ...');
-    console.log(codUsuario);
-    console.log(usuario);
-
     return (
         <React.Fragment>
             <Form>

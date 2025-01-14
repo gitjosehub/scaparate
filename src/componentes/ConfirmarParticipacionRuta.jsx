@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import useContextoUsuarios from "../hooks/useContextoUsuarios.js";
 
-const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParticipar, accion }) => {
+const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParticipar, accion, setNumParticipa }) => {
 
     // Deconstrucción de los contextos a través del hook, con estados y funciones
     // que necesitamos.
@@ -64,8 +64,12 @@ const ConfirmarParticipacionRuta = ({ confirmandoParticipar, setConfirmandoParti
                                     // Realiza una accion u otra dependiendo de si añade o quita de favorita/participacionRuta.
                                     if (!accion) {
                                         crearParticipacion(usuario.id);
+                                        // Actualizamos estado de participantes.
+                                        setNumParticipa(anterior => anterior +  1);
                                     } else {
                                         eliminarParticipacion(usuario.id);
+                                        // Actualizamos estado de participantes.
+                                        setNumParticipa(anterior => anterior - 1);
                                     }
                                     setConfirmandoParticipar(false);
                                     navegar("/rutas");

@@ -45,27 +45,11 @@ const ListadoRuta = (props) => {
         return rutaAnterior.codrutacr === codRuta;
     });
     let totalComenta = cantiComenta.length <= 0 ? 0 : cantiComenta[0].contador;
-    // Estado local para cantidad de comentarios.
-    const [numComenta, setNumComenta] = useState(totalComenta);
-    // Conseguir el número de participantes que tiene una ruta 
-    // y la media de puntos de la misma (estado array contadorParticipantes).
-    console.log(contadorParticipantes);
+    // Conseguir el número de participantes que tiene una ruta (estado array contadorParticipantes).
     const cantiParticipa = contadorParticipantes.filter((rutaAnterior) => {
-        return rutaAnterior.codrutapr === codRuta;
+        return rutaAnterior.codRutaCR === codRuta;
     });
-    console.log(cantiParticipa);
-    let totalParticipa, puntuacion;
-    if (cantiParticipa.length <=0) {
-        totalParticipa = 0;
-        puntuacion = 0;
-    } else {
-        totalParticipa = cantiParticipa[0].contador;
-        puntuacion = cantiParticipa[0].suma_valoracion / totalParticipa;
-        puntuacion = parseFloat(puntuacion.toFixed(1));
-    }
-    console.log(totalParticipa, puntuacion);
-    // Estado local para participantes.
-    const [numParticipa, setNumParticipa] = useState(totalParticipa);
+    let totalParticipa = cantiParticipa.length <= 0 ? 0 : cantiParticipa[0].contador;
     
     // Estado local para confirmar eliminación.
     const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
@@ -92,16 +76,16 @@ const ListadoRuta = (props) => {
                     <section className="d-flex justify-content-between">
                     <article className="contador-ruta">
                         <i className="bi bi-award me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
-                        <span>{puntuacion}</span>
+                        <span>0</span>
                     </article>
                     <article className="contador-ruta">
                         
                         <i className="bi bi-star-fill me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
-                        <span>{numParticipa}</span>
+                        <span>{totalParticipa}</span>
                     </article>
                     <article className="contador-ruta">
                         <i className="bi bi-chat-right me-2" style={{ fontSize: '20px', color: 'rgb(19, 148, 8)' }}></i>
-                        <span>{numComenta}</span>
+                        <span>{totalComenta}</span>
                     </article>
                     </section>
                     </section>
@@ -123,7 +107,9 @@ const ListadoRuta = (props) => {
                         }
                     }
                     >ver
-                    </Button>                    
+                    </Button>
+                    {/* ¿¿¿¿ Repasar funcionamiento de participa ???? */}
+                    
                     {!participa ? (
                         <Button variant="outline-success" style={{ flex: 1 }}
                         as={Link} to="participaruta"
@@ -223,8 +209,7 @@ const ListadoRuta = (props) => {
                 <ConfirmarParticipacionRuta 
                     confirmandoParticipar={confirmandoParticipar}
                     setConfirmandoParticipar={setConfirmandoParticipar} 
-                    accion={participa} 
-                    setNumParticipa={setNumParticipa} />
+                    accion={participa} />
             )}
             </section>
         </React.Fragment>

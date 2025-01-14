@@ -40,7 +40,7 @@ const ControlSesion = () => {
                   cerrarSesion();
                 }}
               >
-                Cerrar sesion
+              Cerrar sesion
               </Button>
             ) : (
               <Button variant="outline-success" size="sm" onClick={() => setShow(true)}>

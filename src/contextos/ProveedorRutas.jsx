@@ -661,7 +661,8 @@ const ProveedorRutas = ({ children }) => {
         setCargando(true);
         // Consulta a la base de datos de supabase.
         const { data, error } = await supabaseConexion
-          .rpc('count_by_codrutapr');
+          // .rpc('count_by_codrutapr');
+          .rpc('count_sum_by_codrutapr');
         // Controlamos si ha habido error o no.
         if (error) {
           setErrores(error); 

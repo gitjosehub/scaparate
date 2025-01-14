@@ -21,9 +21,6 @@ const ListadoComentarios = () => {
     const participa = participacionRutas.some(
         (participacion) => participacion.codUsuPR === usuario.id && participacion.codRutaPR === ruta.codRuta
     );
-    // console.log(`ListadoComentarios y participa es: ${participa}`);
-    // console.log(`participaRuta es: `);
-    // console.log(participacionRuta);
     
     return (
         <React.Fragment>
