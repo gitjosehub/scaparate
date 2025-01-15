@@ -49,11 +49,9 @@ const ListadoRuta = (props) => {
     const [numComenta, setNumComenta] = useState(totalComenta);
     // Conseguir el número de participantes que tiene una ruta 
     // y la media de puntos de la misma (estado array contadorParticipantes).
-    console.log(contadorParticipantes);
     const cantiParticipa = contadorParticipantes.filter((rutaAnterior) => {
         return rutaAnterior.codrutapr === codRuta;
     });
-    console.log(cantiParticipa);
     let totalParticipa, puntuacion;
     if (cantiParticipa.length <=0) {
         totalParticipa = 0;
@@ -63,7 +61,6 @@ const ListadoRuta = (props) => {
         puntuacion = cantiParticipa[0].suma_valoracion / totalParticipa;
         puntuacion = parseFloat(puntuacion.toFixed(1));
     }
-    console.log(totalParticipa, puntuacion);
     // Estado local para participantes.
     const [numParticipa, setNumParticipa] = useState(totalParticipa);
     

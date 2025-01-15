@@ -9,6 +9,7 @@ const ListadoRegistrado = (props) => {
 
   // Desestructuración de props.
   const { codUsuario, nick, nombre, dni, imagen } = props.datosRegistrado;
+  
   const pasar = () => { console.log('esto es pasar'); };
 
   return (
